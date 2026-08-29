@@ -1,9 +1,318 @@
+/**
+ * Morfofisiología Humana III - Base de Datos Estructurada de Páginas Estáticas
+ * Formato pedagógico moderno con tarjetas interactivas, llamadas de atención e iconografía médica.
+ */
+
 var STATIC_PAGES_DATA_M3 = {
-  "objetivos": "<div class=Section1> \n <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b><font size=\"3\">Sistema \n de objetivos</font></b><br>\n <br>\n Los objetivos son las metas, propósitos, fines o aspiraciones que deben \n ser alcanzados por los alumnos durante el proceso de enseñanza aprendizaje. \n Es importante que el estudiante los conozca y los use como guía \n imprescindible para toda su actividad docente en la adquisición de \n los conocimientos y habilidades de la asignatura.<br>\n <br>\n Teniendo en cuenta su grado de generalización se distinguen tres \n tipos de objetivos. </font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Los objetivos generales.</b><br>\n <br>\n Reflejan las grandes metas o propósitos de la asignatura, su cumplimiento \n por parte de los estudiantes sólo es posible una vez terminado el estudio \n integral de la misma, siendo los que se exploran en el examen final. <br>\n <br>\n De acuerdo con su función pedagógica los objetivos generales \n pueden ser educativos si están encaminados a la formación integral \n de la personalidad del estudiante e instructivos si se refieren concretamente \n a las metas propuestas en el aprendizaje de los contenidos de la asignatura. \n </font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Los objetivos parciales.</b><br>\n <br>\n Se refieren a los propósitos a lograr en el aprendizaje de los contenidos \n temáticos, por lo que se comprueban en las evaluaciones parciales.</font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Los objetivos específicos.</b><br>\n <br>\n Son las metas a lograr en las diferentes formas de organización de \n la enseñanza. Su alcance es más limitado, pues el estudiante \n debe lograrlos a través del desarrollo de tareas propuestas para vencer \n los contenidos, y se controlan durante el desarrollo de las evaluaciones frecuentes.</font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Los objetivos propios \n de la Asignatura Morfofisiología Humana III son:</b></font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Objetivos Educativos:</b><br>\n <br>\n 1. Contribuir a la formación de una concepción científica \n del hombre a partir de los principios y regularidades de su desarrollo, con \n un conocimiento profundo del individuo, la familia y la comunidad en su integración \n biopsicosocial; en estado de salud o enfermedad.</font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">2. Contribuir al desarrollo \n de una conducta profesional de elevado nivel científico, ético \n y humanista, acorde a los mejores valores de su época y tomando como \n modelo profesional al médico comunitario.</font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">3. Contribuir al desarrollo \n de la independencia cognoscitiva del estudiante mediante la aplicación \n de los conocimientos y habilidades adquiridos en el estudio de la Morfofisiología \n Humana III a situaciones de salud de la comunidad.</font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Objetivos Instructivos:</b><br>\n <br>\n 1. Interpretar las vías metabólicas de los glúcidos, \n lípidos y compuestos nitrogenados, teniendo en cuenta la relación \n estructura-función, mecanismos de regulación e integración \n y su importancia biológica a nivel molecular; utilizando la bibliografía \n básica y complementaria y los medios correspondientes, en función \n de la formación del médico integral comunitario.<br>\n <br>\n 2. Explicar las características morfofuncionales de los sistemas endocrino \n y reproductor atendiendo a su origen, situación, composición, \n particularidades macroscópicas y microscópicas, mecanismos de \n acción y efectos fisiológicos de las hormonas producidas para \n el mantenimiento de la homeostasia, destacando su interrelación funcional, \n mediante el uso de la bibliografía básica y complementaria y \n los medios correspondientes, en función de la formación del \n médico integral comunitario.<br>\n <br>\n 3. Interpretar los efectos de las alteraciones que se producen en el medio \n interno, teniendo en cuenta las funciones y mecanismos de regulación \n de las secreciones hormonales en situaciones reales o modeladas, mediante \n el uso de la bibliografía y los medios correspondientes, en función \n de la formación del médico integral comunitario.<br>\n <br>\n 4. Explicar las características morfofuncionales de la sangre y las \n estructuras del sistema inmune hasta el nivel molecular, destacando sus interrelaciones \n funcionales e importancia, mediante el uso de la bibliografía básica, \n complementaria y los medios correspondientes, en función de la formación \n del médico integral comunitario.<br>\n <br>\n 5. Interpretar las alteraciones del funcionamiento de las células de \n la sangre y del sistema inmune, teniendo en cuenta la relación estructura-función, \n en situaciones reales o simuladas mediante el uso de la bibliografía \n básica y complementaria y los medios correspondientes en función \n de la formación del médico integral comunitario.<br>\n <br>\n 6. Interpretar los cambios que se producen en el medio interno en situaciones \n de salud y enfermedad relacionados con los sistemas endocrino, reproductor, \n la sangre y el sistema inmune según sus niveles de organización \n morfofuncional; utilizando la bibliografía básica y complementaria \n correspondiente, en función de la formación del médico \n integral comunitario.</font></p>\n <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><br>\n </font> </p>\n</div>",
-  "clases": "<p align=\"justify\" class=\"texto\"> <font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b><font size=\"3\">El \n sistema de clases</font></b><br>\n </font></p>\n<p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Esta asignatura \n se desarrolla a través de diferentes formas de organización de \n la enseñanza, siendo las fundamentales: actividades orientadoras, de \n consolidación, evaluativas, práctica docente y encuentros de estudio \n colectivo dirigido.<br>\n <br>\n <b>Actividad orientadora.</b> En ella el profesor expone los aspectos más \n significativos del contenido tratando de motivar la actividad intelectual del \n estudiante. En esta asignatura las actividades orientadoras no se emplean para \n repetir la información que aparece en el libro de texto, sino para orientar \n los nuevos contenidos según su lógica interna, estructura y nivel \n de complejidad; a la vez que se presentan situaciones problémicas y se \n actualizan los conocimientos sobre un tema. Su propósito principal es \n dotar al estudiante de las herramientas necesarias para su estudio y aprendizaje \n independiente.<br>\n <br>\n <b>Actividad de ejercitación y consolidación.</b> Tiene como objetivo \n ejercitar y profundizar en el análisis de los contenidos, generalizar \n conocimientos individuales, desarrollar el diálogo, la polémica \n y consolidar conocimientos. En ella es necesario formar un juicio de valor sobre \n el desempeño de los estudiantes. En cada actividad se emplearán \n métodos activos de enseñanza que permitan al estudiante la adquisición \n y consolidación de conocimientos. <br>\n <br>\n <b>Actividad evaluativa.</b> Permite desarrollar el diálogo, la polémica, \n reafirmar los conocimientos, profundizar y generalizar conocimientos particulares \n y vincular los contenidos a situaciones de salud del individuo, la familia y \n la comunidad; su finalidad es la comprobación del logro de los objetivos \n propuestos y la retroalimentación sobre el desarrollo del proceso con \n vistas a su perfeccionamiento.<br>\n <br>\n <b>Práctica docente.</b> Permite vincular los conocimientos adquiridos \n con situaciones reales o modeladas en los escenarios de la atención primaria \n y desarrollar en el estudiante habilidades que contribuyan a la solución \n de problemas de salud. <br>\n <br>\n <b>Encuentro de estudio colectivo dirigido.</b> Tiene como objetivo profundizar \n en los contenidos, aclarar dudas surgidas durante la autopreparación, \n consolidar y generalizar conocimientos particulares. <br>\n <br>\n Estas actividades se desarrollan en la hora y local que indica el horario. </font> \n</p>\n<p></p>",
-  "evaluacion": "<font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b><font size=\"3\">El sistema \nde evaluación</font></b></font><br>\n<br>\n<p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">La asignatura \n contempla <b>evaluaciones frecuentes, parciales y final</b>. Las frecuentes \n comprueban objetivos específicos, las parciales evalúan objetivos \n temáticos y la final evalúa los objetivos generales de la asignatura. \n <br>\n <br>\n Las evaluaciones frecuentes pueden desarrollarse de diferentes formas, ya sea \n en las actividades de consolidación, práctica docente y estudio \n colectivo dirigido, teniendo su núcleo central al inicio de la semana \n una vez terminado el estudio del contenido de la semana anterior lo que te permite \n conocer el logro de los objetivos y el grado de asimilación de los conocimientos \n y/o la adquisición de habilidades.<br>\n <br>\n Es importante que tengas presente que uno de los propósitos de la evaluación \n es dar cumplimiento a los objetivos educativos contribuyendo al desarrollo de \n tu cultura, de la expresión oral, la redacción, interpretación, \n análisis y síntesis lo que te facilita el grado de desempeño \n en cada una de las situaciones que puedan presentársete en la comunidad \n donde te encuentres.<br>\n <br>\n La evaluación final se podrá realizar mediante un examen oral \n o escrito, teórico, práctico o teórico-práctico, \n con cuatro horas de duración donde se exploran los objetivos generales \n de la asignatura. En el caso de que se asuma la modalidad de examen teórico \n y práctico, para presentarte al examen teórico escrito es imprescindible \n que hayas aprobado el examen práctico y para acudir al examen final debes \n haber asistido a no menos del 80% de las actividades docentes del trimestre.<br>\n <br>\n La calificación final se emite mediante un análisis de las evaluaciones \n frecuentes del trimestre y el examen final, una vez que éste haya sido \n aprobado. Las calificaciones se otorgan según la escala adoptada en la \n Educación Superior.<br>\n <br>\n En caso de reprobar la asignatura debes informarte de lo establecido en el reglamento \n docente para estos casos.</font><br>\n</p>\n<font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><br>\n</font><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><br>\n</font>",
-  "estudio": "<p align=\"justify\"><b><font size=\"3\" face=\"Arial, Helvetica, sans-serif\">Recomendaciones \n para el estudio</font></b><font size=\"3\" face=\"Arial, Helvetica, sans-serif\"><br>\n </font><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><br>\n A continuación te ofrecemos orientaciones que pueden ayudar al estudio \n de esta asignatura:</font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"> • Acostúmbrate \n a estudiar por los materiales orientados. Considera que las notas de clases, \n por muy bien que las hayas tomado, nunca podrán sustituirlos, por lo \n escuetas que pueden ser. <br>\n • Cuando estudies evita repetir al pie de la letra el texto; trata \n primero de captar los conceptos correctamente y después expresarlos con \n tus propias palabras. <br>\n • No estudies nunca un tema considerando que lo tienes que examinar, \n sino como un medio de adquirir conocimientos para la carrera que estudias y \n que te serán tanto más útiles cuanto con mayor amplitud \n y profundidad los asimiles. <br>\n • En el estudio la memoria pura tiene poco valor, junto a ella es \n necesario ejercitar el análisis, el razonamiento y la integración \n de los conocimientos de una manera que resulte natural y no forzada.<br>\n • Al estudiar cada aspecto de un tema, no debes hacerlo aisladamente, sino \n tratando siempre de relacionarlo con los demás del mismo tema y de otros \n temas ya estudiados. <br>\n • Cuando en el material que estudias aparece un concepto, un vocablo, etc., \n cuyo significado no tengas claro, no debes seguir adelante sin investigarlo \n y aclararlo.</font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">¿Cómo estudiar \n y aprender la Asignatura?<br>\n <br>\n Atención estudiante, utilizando la guía y la bibliografía \n básica y complementaria, puedes realizar una serie de tareas y acciones \n que, ejecutadas de manera consciente e intencional, pueden contribuir a que \n tu aprendizaje sea eficiente. <br>\n <br>\n Por ello te recomendamos que: <br>\n <br>\n <b>1. Realices una lectura de estudio de los acápites relacionados en \n el contenido. </b></font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Si no recuerdas qué \n es y cómo se hace una lectura de estudio, te sugerimos leer el párrafo \n que se brinda a continuación. <br>\n La lectura de estudio es un tipo de lectura que te permite profundizar en aquellos \n contenidos específicos que debes aprender de la información brindada \n en el material a consultar. Para ello debes, en primer lugar, leer cuidadosamente \n cada párrafo para identificar las ideas claves empleando el método \n de comprensión de lectura (sujeto lógico, predicado lógico). \n </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Esto no quiere decir que \n tengas que memorizar lo que lees, sino que vas a interactuar con esa información \n a través de las preguntas ¿de qué, quién o quiénes \n se habla? y ¿qué se dice de aquello que se habla? </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Recuerda que una idea clave \n puede identificarse entre otras cosas porque: <br>\n <br>\n • Identifica o define un objeto, fenómeno o proceso.<br>\n • Explica las causas que lo originan. <br>\n • Compara o contrasta ideas, objetos, fenómenos o procesos. \n <br>\n • Indica el procedimiento para obtener un resultado o para elaborar \n y/o ejecutar una metodología. <br>\n • Jerarquiza los hechos por su importancia o por su sucesión \n temporal. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">¿Cómo identificar \n las ideas claves? Para ello puedes auxiliarte de un procedimiento que consiste \n en preguntarte acerca de lo que se habla. Las preguntas ¿Qué es?, \n ¿Cómo es?, ¿Por qué es? son algunas de las que pueden \n guiarte en la búsqueda de esas ideas. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>2. Confecciones un resumen \n de cada uno de estos acápites, incluyendo esquemas, gráficos o \n representaciones observadas en los materiales utilizados o creados por ti, ya \n que: </b></font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">• Los resúmenes \n constituyen un elemento importante durante la actividad de estudio, te permiten \n sintetizar grandes volúmenes de información y constituyen una \n forma breve y precisa de expresar con tus propias palabras los aspectos fundamentales \n de lo estudiado. Te ayudan a ampliar la capacidad para memorizar ya que te exige \n reestructurar todo el material de estudio en un esquema lógico sobre \n la base de las relaciones que es posible establecer entre las ideas que se brindan \n en la información que se desea resumir, de manera que sólo tengan \n que recordar una estructura lógicamente organizada de palabras y frases \n claves. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">¿Sabes cómo \n elaborar resúmenes?, Si aún presentas dificultad, a continuación \n te recomendamos un conjunto de acciones que puedes tener en cuenta durante su \n elaboración. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">• Realiza una \n lectura de estudio de todo el material. <br>\n • Selecciona las ideas claves y establece relaciones entre ellas. \n <br>\n • Expresa en pocas palabras pero con fluidez y precisión, \n el contenido de la información del material de estudio. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Utilizar esta vía \n para fijar la información es un valioso medio auxiliar para el estudio \n independiente que repercute favorablemente en tu aprendizaje, ya que tu participación \n reflexiva durante su confección disminuye la necesidad de repasar varias \n veces esa información, con el consiguiente ahorro de tiempo. Por otra \n parte, constituye una de las actividades que como profesional desarrollarás, \n ya que los resúmenes son requisitos indispensables para la presentación \n y divulgación de los resultados de la actividad científico-técnica. \n </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>3. Intentes responder \n las preguntas y solucionar las actividades prácticas que se orientan \n a medida que vayas estudiando para esta actividad. </b></font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">A continuación te \n presentamos otras formas de fijar la información y de estimular la productividad \n del proceso de aprendizaje que desarrollas, las cuales pueden ser utilizadas \n para exponer un resumen. Su empleo organizado y consciente puede mejorar tu \n eficiencia académica: </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">• Esquema de \n llaves. Este procedimiento permite expresar la relación de pertenencia \n entre los diferentes aspectos de la información desde lo más general \n hasta lo particular. Se representa de izquierda a derecha de manera que se evidencie \n la relación de subordinación que determinan la pertenencia o no \n de un objeto, proceso o fenómeno a un tema.<br>\n • Esquemas. Son también esquemas de subordinación. \n Desde las acciones más generales hasta las específicas. Constituyen \n &quot;representaciones gráficas que permiten mostrar la organización, \n estructuración y jerarquización de las acciones que se llevan \n a cabo durante la realización de una tarea&quot;, utilizando para ello \n la representación gráfica a fin de esquematizar el recorrido mental \n a seguir para procesar la información. En dependencia del uso que de \n ellos se haga, pueden considerarse como una técnica, recurso, medio, \n método y/o estrategia. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">¿Qué elementos \n lo integran? </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Estos esquemas tienen como \n componentes básicos: </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">• Las acciones \n generales a desarrollar durante la orientación. <br>\n • Las propiedades o características que conllevan a la toma \n de decisiones expresada en términos de interrogantes sobre la(s) cuál(es) \n fundamentar la decisión que se tomará. <br>\n • Las acciones específicas o conclusivas. <br>\n • Los métodos y técnicas a emplear para arribar a la \n solución o al final del proceso.<br>\n </font><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"> <br>\n Para el abordaje de esta asignatura es muy importante que aprendas a comparar, \n a plantear suposiciones, a buscar argumentos y a valorar, en correspondencia \n con la situación planteada. Te preguntarás en que consisten estos \n procedimientos, a continuación brindaremos una síntesis de sus \n aspectos cruciales y te recomendamos que consultes el material ¿cómo \n estudiar y aprender la asignatura Morfofisiología?, en el cual encontraras \n una explicación detallada de los mismos, así como un ejemplo aplicativo \n y relacionado específicamente con esta temática. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">¿Qué significa \n aprender a comparar? </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Este procedimiento te permite \n realizar la acción de comparar teniendo en cuenta los criterios establecidos \n como base de comparación y consiste en el establecimiento de semejanzas \n y diferencias de objetos, hechos, fenómenos o procesos, sobre la base \n de las características comunes y diferentes. Estas semejanzas y diferencias \n se fundamentan en los criterios de comparación correspondientes. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">¿Qué significa \n plantear suposiciones? </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Mediante este procedimiento \n puedes, a partir del análisis, plantear posibles respuestas a lo que \n observas o a las problemáticas que puedan surgir durante cualquier actividad \n que realices. Contribuye a que te entrenes en el planteamiento y formulación \n de hipótesis, componente estructural del conocimiento científico. \n </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">¿Qué significa \n buscar argumentos? </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Con este procedimiento puedes \n buscar, integrar y expresar las ideas, que te permitan fundamentar el valor \n de verdad acerca de un objeto, proceso o fenómeno. Esto conlleva a que \n amplíes, profundices en el establecimiento de relaciones, apliques los \n conocimientos con los cuales argumentar las posiciones que asumas y puedes adoptar \n una posición ante un juicio formulado por ti mismo o por otra persona. \n </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">¿Qué significa \n aprender a valorar? </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">El procedimiento &quot; \n aprendo a valorar &quot; consiste en contraponer el objeto de estudio con otros \n puntos de vista, con sus patrones de conducta y valores morales (sí algo \n es bueno o malo, correcto e incorrecto). Pretende que el estudiante aprenda \n a tomar una posición crítica ante un objeto, hecho o fenómeno, \n proceso natural o social, incluso de personalidades, de manera que el desarrollo \n de estas acciones valorativas se convierta en modos de actuación del \n individuo en la sociedad. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Este procedimiento promueve \n que tu aprendizaje sea consciente, sólido, ya que cuando valoras es necesario \n que analice los objetos, hechos o fenómenos, proceso natural o social \n en su origen, desarrollo, relaciones y trascendencia. </font></p>\n<p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>4. Autocontroles tu actividad \n de estudio y discutas con otros estudiantes los contenidos.</b> Que anotes en \n hojas aparte las conclusiones de esta discusión y las dudas que se produzcan \n en el transcurso de la misma, para aclararlas con el profesor en la consulta \n docente, actividades de estudio colectivo dirigido o en la propia actividad. \n </font></p>\n<p align=\"justify\"></p>",
-  "bibliografia": "<p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b><font size=\"3\">Bibliografía</font></b></font></p>\n<p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Textos Básicos:</b><br>\n </font></p>\n<ul>\n <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Histología Básica \n de Junqueira y Carneiro. 6<sup>ta</sup> edición. </font></li>\n <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Embriología Médica \n con orientación clínica de Langman Sadler. 9<sup>na</sup> edición. \n </font></li>\n <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Anatomía Humana \n de García Porrero y Hurlé. 4<sup>ta</sup> edición.</font></li>\n <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Tratado de Fisiología \n Médica Guyton 10<sup>ma</sup> edición. </font></li>\n</ul>\n<p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Textos Complementarios:</b></font></p>\n<ul>\n <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"> Anatomía con \n orientación clínica Keith L. Moore. </font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Histología, texto \n y atlas. Ross, Kaye y Pawlina. 4ta edición.</font></li>\n <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Morfología humana \n Rosell, Dovale y Álvarez Tomo II. </font></li>\n <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Embriología clínica \n de Moore Persaud. 7ta edición.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Histología. Capítulos \n del texto del colectivo de Autores Cubanos. </font></li>\n</ul>\n<p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Materiales Complementarios:</b></font></p>\n<ul>\n <li> <font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Web de anatomía \n II.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Web de embriología \n II.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Material complementario \n endocrinología fetal.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Regulación de \n la glicemia.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Material didáctico \n de endocrino.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Material complementario \n modelos celulares.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Tejido linfoides.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Sistema inmunitario.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Folleto complementario \n de metabolismo intermediario.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Supercurso de sangre.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Material complementario \n de lactancia materna.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Material complementario \n compuestos nitrogenados.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Material complementario \n sobre colesterol.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Material complementario \n sobre hormonas pancreáticas.</font></li>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Material complementario \n sobre metabolismo de la glucosa</font><br>\n </li>\n</ul>\n<p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Galería de Imágenes:</b></font></p>\n<ul>\n <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Galería</font> \n <font size=\"2\" face=\"Arial, Helvetica, sans-serif\">de Anatomía. </font></li>\n <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Laminario Virtual de \n Histología.</font>\n </li>\n</ul>",
-  "creditos": "<p class=\"texto\"> </p>\n<p class=\"textonegro\">Copyright (c) 2006. </p>\n<p class=\"texto\">La asignatura de Morfofisiología Humana III, está desarrollado \n con fines educativos. Representa el soporte para el desarrollo del Programa \n Nacional de Formación de Medicina Integral Comunitaria en la República \n Bolivariana de Venezuela. No puede reproducirse con fines comerciales. \n La reproducción de los materiales está permitida siempre y cuando \n no se modifique su contenido y deje clara constancia del origen del mismo. </p>\n<p class=\"textonegro\">Créditos </p>\n<p class=\"textonegro\">Coordinación </p>\n<p class=\"texto\">Dr. Pedro A. Díaz Rojas</p>\n<p class=\"textonegro\">Programación </p>\n<p class=\"texto\">Dirección: Dr. Pedro Monteagudo </p>\n<p class=\"texto\">Programadores:</p>\n<p class=\"texto\"> </p>\n<p class=\"textonegro\">Diseño: </p>\n<p class=\"texto\">Dirección: Dr. Athos Sánchez Mansola</p>\n<p class=\"texto\">Diseñadores: </p>\n<p class=\"texto\">Contenidos:</p>\n<p class=\"texto\"> Dirección: Dr. Pedro A. Díaz Rojas.</p>\n<p class=\"texto\"> Dra. Elizabeth Leyva Sánchez.<br>\n Dra. María Nelia Martínez Lima.<br>\n Dra. Odalis Pérez Gari.<br>\n Dr. Silvio Niño Escofet.<br>\n Dr. Armando Rodríguez González.<br>\n Dr. Oscar Cañizares Luna.<br>\n Dra. Nelida Sarasa Muñoz.<br>\n Dra. Marlenes Hernández.........<br>\n Dr. Enrique Santiesteban.........<br>\n Dr. Rolando del Valle Torres.<br>\n Dra. Aracelis Chia Mena.<br>\n Dra. Mirtha Sixto Valdés. </p>\n<p class=\"texto\">República Bolivariana de Venezuela.<br>\n Abril 2006.</p>\n<p class=\"texto\"> \n</p>",
+  "objetivos": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">🎯</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Sistema de Objetivos Formativos de Morfofisiología Humana III</h3>
+          <p class="banner-desc">La asignatura aborda el Metabolismo Intermediario y su regulación hormonal, la morfofisiología de los Sistemas Endocrino y Reproductor, el Desarrollo Fetal y la Fisiología de la Sangre y los Mecanismos de Defensa Inmunológica.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group">
+        <span class="section-subtitle-tag">Dimensión Ética, Humanista y Social</span>
+        <h3 class="section-main-heading">1. Objetivos Educativos</h3>
+        <p class="section-lead-text">Valores, principios éticos y concepción integral que rigen el aprendizaje médico:</p>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">1</div>
+            <div class="learning-card-icon">🌍</div>
+          </div>
+          <h4 class="learning-card-title">Concepción Científica y Biopsicosocial</h4>
+          <p class="learning-card-text">Contribuir a la formación de una concepción científica del hombre a partir de los principios y regularidades de su desarrollo, con un conocimiento profundo del individuo, la familia y la comunidad en su integración <strong>biopsicosocial</strong> en estado de salud o enfermedad.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">2</div>
+            <div class="learning-card-icon">🩺</div>
+          </div>
+          <h4 class="learning-card-title">Conducta Profesional y Humanismo</h4>
+          <p class="learning-card-text">Contribuir al desarrollo de una conducta profesional de elevado nivel científico, ético y humanista, acorde a los mejores valores de la medicina comunitaria y la salud integral.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">3</div>
+            <div class="learning-card-icon">🧠</div>
+          </div>
+          <h4 class="learning-card-title">Independencia Cognoscitiva Aplicada</h4>
+          <p class="learning-card-text">Desarrollar la independencia cognoscitiva del estudiante mediante la aplicación de los conocimientos de regulación metabólica, endocrinología, inmunología y salud reproductiva ante <strong>situaciones de salud reales de la comunidad</strong>.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group" style="margin-top: 40px;">
+        <span class="section-subtitle-tag">Dimensión Técnica y Biomédica</span>
+        <h3 class="section-main-heading">2. Objetivos Instructivos</h3>
+        <p class="section-lead-text">Competencias biomédicas, conocimientos y habilidades que el estudiante dominará al culminar la asignatura:</p>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card featured">
+          <div class="learning-card-header">
+            <div class="card-number-badge">I</div>
+            <div class="learning-card-icon">🍞</div>
+          </div>
+          <h4 class="learning-card-title">Metabolismo Intermediario e Integración</h4>
+          <p class="learning-card-text">Interpretar las vías metabólicas de los <strong>glúcidos, lípidos y compuestos nitrogenados</strong>, teniendo en cuenta la relación estructura-función, mecanismos de control alostérico y hormonal, e integración bioenergética a nivel molecular.</p>
+          <div class="card-tag-pill">Bioquímica Metabólica</div>
+        </div>
+
+        <div class="learning-card featured">
+          <div class="learning-card-header">
+            <div class="card-number-badge">II</div>
+            <div class="learning-card-icon">⚥</div>
+          </div>
+          <h4 class="learning-card-title">Sistemas Endocrino y Reproductor</h4>
+          <p class="learning-card-text">Explicar las características morfofuncionales de las glándulas endocrinas y los órganos reproductores masculinos y femeninos, destacando los <strong>mecanismos hormonales de retroalimentación</strong> (feedback) para el mantenimiento de la homeostasis y la reproducción.</p>
+          <div class="card-tag-pill">Endocrinología y Reproducción</div>
+        </div>
+
+        <div class="learning-card featured">
+          <div class="learning-card-header">
+            <div class="card-number-badge">III</div>
+            <div class="learning-card-icon">🛡️</div>
+          </div>
+          <h4 class="learning-card-title">Sangre, Hemostasia e Inmunidad</h4>
+          <p class="learning-card-text">Explicar las características morfofuncionales de los elementos figurados de la sangre, los <strong>mecanismos de la coagulación</strong> y los órganos del sistema inmune (timo, bazo, ganglios), interpretando la respuesta inmune humoral y celular ante agresiones biológicas.</p>
+          <div class="card-tag-pill">Hematología e Inmunología</div>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "clases": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">🏛️</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Sistema de Organización de la Enseñanza</h3>
+          <p class="banner-desc">La metodología de Morfofisiología Humana III promueve el razonamiento clínico temprano mediante la integración de la fisiología metabólica con los escenarios docentes comunitarios.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group">
+        <span class="section-subtitle-tag">Estructura Curricular</span>
+        <h3 class="section-main-heading">Formas de Organización Docente</h3>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">01</div>
+            <div class="learning-card-icon">🎯</div>
+          </div>
+          <h4 class="learning-card-title">Actividades Orientadoras (AO)</h4>
+          <p class="learning-card-text">Conferencias semanales donde el profesor orienta la lógica interna y complejidad de las vías metabólicas y los ejes hormonales. <strong>Orientan las tareas de autoestudio</strong> para profundizar en la bibliografía.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">02</div>
+            <div class="learning-card-icon">📝</div>
+          </div>
+          <h4 class="learning-card-title">Consolidación y Ejercitación</h4>
+          <p class="learning-card-text">Talleres de resolución de problemas fisiopatológicos, interpretación de curvas de tolerancia a la glucosa, fórmulas leucocitarias y análisis de preparados histológicos de glándulas.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">03</div>
+            <div class="learning-card-icon">🩺</div>
+          </div>
+          <h4 class="learning-card-title">Práctica Docente en Salud</h4>
+          <p class="learning-card-text">Vinculación en consultorios populares para ejercitar la <strong>interpretación de análisis de laboratorio clínico</strong> (hematocrito, glicemia, perfil lipídico) y el seguimiento del embarazo y puerperio.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">04</div>
+            <div class="learning-card-icon">📊</div>
+          </div>
+          <h4 class="learning-card-title">Actividades Evaluativas Frecuentes</h4>
+          <p class="learning-card-text">Controles semanales de aprendizaje para asegurar la asimilación continua y progresiva de los contenidos de endocrino y metabolismo.</p>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "evaluacion": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">📊</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Sistema de Evaluación Integral del Rendimiento</h3>
+          <p class="banner-desc">La evaluación en Morfofisiología III combina controles semanales continuos, exámenes parciales y un examen final teórico-práctico integrador.</p>
+        </div>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">01</div>
+            <div class="learning-card-icon">📋</div>
+          </div>
+          <h4 class="learning-card-title">Evaluaciones Frecuentes (Semanales)</h4>
+          <p class="learning-card-text">Preguntas escritas y orales al inicio de cada semana para comprobar la preparación individual en metabolismo, endocrino, reproducción y hematología.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">02</div>
+            <div class="learning-card-icon">📑</div>
+          </div>
+          <h4 class="learning-card-title">Evaluaciones Parciales</h4>
+          <p class="learning-card-text">Exámenes por unidades temáticas: Parcial 1 (Metabolismo Intermediario), Parcial 2 (Endocrino y Reproductor) y Parcial 3 (Sangre y Defensa).</p>
+        </div>
+
+        <div class="learning-card featured">
+          <div class="learning-card-header">
+            <div class="card-number-badge">03</div>
+            <div class="learning-card-icon">🎓</div>
+          </div>
+          <h4 class="learning-card-title">Examen Final Integrador</h4>
+          <p class="learning-card-text">Examen teórico-práctico de 4 horas de duración. Requiere un mínimo del <strong>80% de asistencia a las clases</strong> y la aprobación previa de la práctica médica comunitaria.</p>
+          <div class="card-tag-pill">Cierre Trimestral Oficial</div>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "estudio": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">💡</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Recomendaciones y Metodología para el Autoaprendizaje</h3>
+          <p class="banner-desc">Pautas didácticas esenciales para abordar con éxito las rutas metabólicas, la regulación hormonal y la inmunología.</p>
+        </div>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">1</div>
+            <div class="learning-card-icon">🔄</div>
+          </div>
+          <h4 class="learning-card-title">Dominio de Rutas Metabólicas Clave</h4>
+          <p class="learning-card-text">No memorices fórmulas aisladas. Identifica en cada ruta: <strong>sustrato inicial, producto final, enzima marcapaso o reguladora, ganancia energética de ATP</strong> y la hormona que la activa o inhibe.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">2</div>
+            <div class="learning-card-icon">⚖️</div>
+          </div>
+          <h4 class="learning-card-title">Ejes Endocrinos y Retroalimentación</h4>
+          <p class="learning-card-text">Grafica los ejes hipotálamo-hipófisis-órgano diana (tiroides, suprarrenal, gónadas). Comprende cómo el aumento de la hormona periférica inhibe por feedback negativo a los niveles superiores.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">3</div>
+            <div class="learning-card-icon">🔬</div>
+          </div>
+          <h4 class="learning-card-title">Laminario Virtual de Glándulas y Sangre</h4>
+          <p class="learning-card-text">Repasa las fotomicrografías de hipófisis, tiroides, islotes de Langerhans, testículo, ovario y frotis sanguíneo. Relaciona la morfología celular con la hormona secretada.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">4</div>
+            <div class="learning-card-icon">🩺</div>
+          </div>
+          <h4 class="learning-card-title">Correlación con Casos Clínicos</h4>
+          <p class="learning-card-text">Aplica lo aprendido para deducir qué ocurre en la diabetes mellitus (déficit de insulina), hipotiroidismo, anemias o trastornos de la hemostasia.</p>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "bibliografia": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">📚</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Bibliografía Oficial y Materiales de Referencia</h3>
+          <p class="banner-desc">Textos básicos, monografías temáticas y recursos digitales recomendados para Morfofisiología Humana III.</p>
+        </div>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card featured">
+          <div class="learning-card-header">
+            <div class="card-number-badge">Básicos</div>
+            <div class="learning-card-icon">📕</div>
+          </div>
+          <h4 class="learning-card-title">Textos Básicos</h4>
+          <ul style="margin-top: 10px; padding-left: 18px; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;">
+            <li><strong>Histología Básica</strong> &bull; Junqueira & Carneiro (6ta edición).</li>
+            <li><strong>Embriología Médica</strong> &bull; Langman Sadler (9na edición).</li>
+            <li><strong>Bioquímica Médica (MIR)</strong> &bull; Cardellá Hernández (Tomos I al IV).</li>
+            <li><strong>Anatomía Humana</strong> &bull; García Porrero & Hurlé (4ta edición).</li>
+            <li><strong>Tratado de Fisiología Médica</strong> &bull; Guyton & Hall (10ma edición).</li>
+          </ul>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">Complementarios</div>
+            <div class="learning-card-icon">📗</div>
+          </div>
+          <h4 class="learning-card-title">Textos Complementarios</h4>
+          <ul style="margin-top: 10px; padding-left: 18px; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;">
+            <li><strong>Anatomía con Orientación Clínica</strong> &bull; Keith L. Moore.</li>
+            <li><strong>Histología Texto y Atlas</strong> &bull; Ross, Kaye & Pawlina.</li>
+            <li><strong>Morfología Humana</strong> &bull; Rosell, Dovale & Álvarez (Tomo II).</li>
+            <li><strong>Embriología Clínica</strong> &bull; Moore & Persaud (7ma edición).</li>
+          </ul>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">Digitales</div>
+            <div class="learning-card-icon">💻</div>
+          </div>
+          <h4 class="learning-card-title">Materiales y Laminarios Virtuales</h4>
+          <ul style="margin-top: 10px; padding-left: 18px; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;">
+            <li>Laminario Virtual de Histología (116 preparados).</li>
+            <li>Folletos sobre metabolismo intermediario y glicemia.</li>
+            <li>Monografías sobre hormonas pancreáticas y colesterol.</li>
+            <li>Supercurso interactivo de fisiología sanguínea.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "creditos": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">🏛️</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Créditos Institucionales y Equipo Docente</h3>
+          <p class="banner-desc">Programa Nacional de Formación en Medicina Integral Comunitaria (MIC) &bull; República Bolivariana de Venezuela.</p>
+        </div>
+      </div>
+
+      <div class="learning-card" style="margin-top: 20px;">
+        <h4 class="learning-card-title">Comisión Académica de Morfofisiología III</h4>
+        <p class="learning-card-text" style="line-height: 1.6;">
+          <strong>Coordinación General:</strong> Dr. Pedro A. Díaz Rojas.<br>
+          <strong>Equipo de Contenidos:</strong> Dra. Elizabeth Leyva Sánchez, Dra. María Nelia Martínez Lima, Dra. Odalis Pérez Gari, Dr. Silvio Niño Escofet, Dr. Armando Rodríguez González, Dr. Oscar Cañizares Luna, Dra. Nelida Sarasa Muñoz, Dra. Aracelis Chia Mena, Dra. Mirtha Sixto Valdés.<br><br>
+          Desarrollado como soporte interactivo para el Sistema Público Nacional de Salud de la República Bolivariana de Venezuela.
+        </p>
+      </div>
+    </div>
+  `,
+
   "habilidades": {}
 };

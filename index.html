@@ -475,8 +475,16 @@
             <!-- Registered users list card with Deep Info Buttons -->
             <div class="card" style="padding: 32px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-                    <h3 style="font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem;">Directorio Completo de Usuarios Registrados</h3>
-                    <input type="text" id="adminUsersTableSearch" class="search-input" style="padding: 8px 14px; font-size: 0.85rem; width: 220px;" placeholder="Buscar en tabla...">
+                    <div>
+                        <h3 style="font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem;">Directorio Completo de Usuarios Registrados</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px;">Visualiza, audita y gestiona las credenciales y datos de todos los estudiantes</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button id="toggleAllPasswordsBtn" class="download-btn" style="padding: 8px 14px; font-size: 0.82rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color);">
+                            👁️ Alternar Contraseñas
+                        </button>
+                        <input type="text" id="adminUsersTableSearch" class="search-input" style="padding: 8px 14px; font-size: 0.85rem; width: 200px;" placeholder="Buscar en tabla...">
+                    </div>
                 </div>
                 
                 <div style="overflow-x: auto; width: 100%;">
@@ -486,12 +494,13 @@
                                 <th style="padding: 12px 14px;">Foto</th>
                                 <th style="padding: 12px 14px;">Nombre y Apellido</th>
                                 <th style="padding: 12px 14px;">Teléfono / WhatsApp</th>
-                                <th style="padding: 12px 14px;">Correo</th>
+                                <th style="padding: 12px 14px;">Correo Electrónico</th>
+                                <th style="padding: 12px 14px;">Contraseña</th>
                                 <th style="padding: 12px 14px;">Estado</th>
                                 <th style="padding: 12px 14px;">Año Cursante</th>
                                 <th style="padding: 12px 14px;">Inscripción</th>
                                 <th style="padding: 12px 14px;">Rol</th>
-                                <th style="padding: 12px 14px; text-align: center;">Auditoría</th>
+                                <th style="padding: 12px 14px; text-align: center;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="usersTableBody">
@@ -518,18 +527,18 @@
                     <div class="ai-avatar-badge">🤖</div>
                     <div>
                         <h4 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: #ffffff; margin: 0;">Tutor IA Morfo II</h4>
-                        <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">● En línea • Orientación y Dudas</span>
+                        <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">● Ayudante Académico Activo</span>
                     </div>
                 </div>
-                <button id="aiChatCloseBtn" class="ai-close-btn" aria-label="Cerrar Chat">&times;</button>
+                <button id="aiChatCloseBtn" class="ai-close-btn" aria-label="Cerrar">&times;</button>
             </div>
 
-            <!-- Quick Suggestions Chips -->
-            <div class="ai-chips-bar" id="aiChipsBar">
-                <button class="ai-chip-btn" data-query="Explícame las vías piramidales y extrapiramidales con un ejemplo clínico sencillo">🧠 Vías Piramidales</button>
-                <button class="ai-chip-btn" data-query="¿Cómo funciona el arco reflejo y cuál es su correlato médico?">⚡ Arco Reflejo</button>
-                <button class="ai-chip-btn" data-query="Ayúdame a razonar los ejercicios de consolidación de esta semana">📝 Consolidación</button>
-                <button class="ai-chip-btn" data-query="¿Cuál es la diferencia histológica entre sustancia gris y sustancia blanca?">🔬 Histología SNC</button>
+            <!-- Suggestion Quick Chips -->
+            <div class="ai-chips-bar">
+                <button class="ai-chip-btn" data-query="¿Qué es el arco reflejo y cuáles son sus 5 componentes?">⚡ Arco Reflejo</button>
+                <button class="ai-chip-btn" data-query="Explícame la vía piramidal y extrapiramidal con un ejemplo clínico">🧠 Vías Motoras</button>
+                <button class="ai-chip-btn" data-query="¿Cómo diferencio las capas histológicas del cerebelo?">🔬 Cerebelo e Histología</button>
+                <button class="ai-chip-btn" data-query="¿Cómo razonar las preguntas de consolidación paso a paso?">📝 Ayuda en Consolidación</button>
             </div>
 
             <!-- Messages Log -->
@@ -569,16 +578,22 @@
 
             <!-- Deep Info Sub Tabs -->
             <div class="tab-headers" style="padding: 0 24px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.1);">
-                <button class="tab-btn active" data-deep-tab="aiChat">🤖 Historial de Consultas IA (<span id="deepCountAi">0</span>)</button>
-                <button class="tab-btn" data-deep-tab="downloads">📥 Historial de Descargas (<span id="deepCountDownloads">0</span>)</button>
-                <button class="tab-btn" data-deep-tab="navigation">🧭 Ruta de Navegación (<span id="deepCountNav">0</span>)</button>
-                <button class="tab-btn" data-deep-tab="notes">📝 Apuntes de Consolidación</button>
+                <button class="tab-btn active" data-deep-tab="credentials">🔑 Ficha y Credenciales</button>
+                <button class="tab-btn" data-deep-tab="aiChat">🤖 Consultas IA (<span id="deepCountAi">0</span>)</button>
+                <button class="tab-btn" data-deep-tab="downloads">📥 Descargas (<span id="deepCountDownloads">0</span>)</button>
+                <button class="tab-btn" data-deep-tab="navigation">🧭 Navegación (<span id="deepCountNav">0</span>)</button>
+                <button class="tab-btn" data-deep-tab="notes">📝 Cuaderno</button>
             </div>
 
             <!-- Deep Info Tab Panels -->
             <div class="deep-info-body" style="padding: 24px; max-height: 60vh; overflow-y: auto;">
+                <!-- Panel 0: Full Credentials & Data Sheet -->
+                <div class="deep-tab-panel active" id="deepPanelCredentials">
+                    <!-- Javascript rendered credentials & complete info sheet -->
+                </div>
+
                 <!-- Panel 1: AI Chat History -->
-                <div class="deep-tab-panel active" id="deepPanelAiChat">
+                <div class="deep-tab-panel" id="deepPanelAiChat" style="display: none;">
                     <!-- Javascript rendered AI logs -->
                 </div>
 
@@ -596,6 +611,31 @@
                 <div class="deep-tab-panel" id="deepPanelNotes" style="display: none;">
                     <!-- Javascript rendered student notes -->
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FICHA COMPLETA DEL ESTUDIANTE (MODAL DEDICADO) -->
+    <div class="deep-info-modal-backdrop" id="studentFullInfoModal" style="z-index: 2200;">
+        <div class="deep-info-modal-card" style="max-width: 650px;">
+            <div class="deep-info-header">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        📋
+                    </div>
+                    <div>
+                        <h3 id="fullInfoCardTitle" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">
+                            Ficha Completa del Estudiante
+                        </h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">
+                            Todos los datos registrados, correo y contraseña de acceso
+                        </p>
+                    </div>
+                </div>
+                <button id="studentFullInfoCloseBtn" class="lightbox-close-btn" style="position: static;" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="deep-info-body" id="studentFullInfoContent" style="padding: 24px;">
+                <!-- Javascript rendered full student dossier -->
             </div>
         </div>
     </div>

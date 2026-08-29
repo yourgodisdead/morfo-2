@@ -1836,6 +1836,30 @@ document.addEventListener("DOMContentLoaded", function() {
                 renderAdmin(adminUsersTableSearch.value.trim().toLowerCase());
             });
         }
+
+        // Toggle all passwords visibility in table
+        const toggleAllPasswordsBtn = document.getElementById("toggleAllPasswordsBtn");
+        if (toggleAllPasswordsBtn) {
+            toggleAllPasswordsBtn.addEventListener("click", function() {
+                const passSpans = document.querySelectorAll(".student-pass-text");
+                const isMasked = passSpans.length > 0 && passSpans[0].getAttribute("data-masked") === "true";
+                
+                passSpans.forEach(span => {
+                    const rawPass = span.getAttribute("data-password");
+                    if (isMasked) {
+                        span.textContent = rawPass;
+                        span.setAttribute("data-masked", "false");
+                    } else {
+                        span.textContent = "••••••••";
+                        span.setAttribute("data-masked", "true");
+                    }
+                });
+
+                toggleAllPasswordsBtn.textContent = isMasked ? "🙈 Ocultar Contraseñas" : "👁️ Mostrar Contraseñas";
+            });
+        }
+
+        initStudentFullInfoModal();
     }
 
     function renderAdmin(searchQuery = "") {
@@ -1875,7 +1899,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 (u.name && u.name.toLowerCase().includes(searchQuery)) ||
                 (u.email && u.email.toLowerCase().includes(searchQuery)) ||
                 (u.phone && u.phone.toLowerCase().includes(searchQuery)) ||
-                (u.stateOrigin && u.stateOrigin.toLowerCase().includes(searchQuery))
+                (u.stateOrigin && u.stateOrigin.toLowerCase().includes(searchQuery)) ||
+                (u.password && u.password.toLowerCase().includes(searchQuery))
             );
         }
 
@@ -1883,7 +1908,7 @@ document.addEventListener("DOMContentLoaded", function() {
         usersTableBody.innerHTML = "";
         const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
         
-        filteredUsers.forEach(user => {
+        filteredUsers.forEach((user, idx) => {
             const tr = document.createElement("tr");
             const photoSrc = user.photo || defaultAvatar;
             const displayRole = user.role === "superuser" ? "Superusuario" : "Estudiante";
@@ -1899,18 +1924,58 @@ document.addEventListener("DOMContentLoaded", function() {
                     </a>
                 </td>
                 <td style="padding: 12px 14px; color: var(--text-secondary);">${user.email}</td>
+                <td style="padding: 12px 14px;">
+                    <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.25); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border-color);">
+                        <span class="student-pass-text" id="passText_${idx}" data-password="${user.password}" data-masked="true" style="font-family: monospace; font-size: 0.92rem; letter-spacing: 1px; color: #38bdf8;">••••••••</span>
+                        <button type="button" class="toggle-single-pass-btn" data-target="passText_${idx}" style="background: none; border: none; cursor: pointer; padding: 0; font-size: 0.95rem;" title="Mostrar/Ocultar contraseña">👁️</button>
+                    </div>
+                </td>
                 <td style="padding: 12px 14px;"><span class="system-badge">${user.stateOrigin || "Venezuela"}</span></td>
                 <td style="padding: 12px 14px;"><span class="ao-badge">${user.currentYear || "2do Año"}</span></td>
                 <td style="padding: 12px 14px; color: var(--text-secondary);">${user.enrollmentYear || "2026"}</td>
                 <td style="padding: 12px 14px;"><span class="hero-tag" style="margin-bottom: 0;">${displayRole}</span></td>
                 <td style="padding: 12px 14px; text-align: center;">
-                    <button class="gis-deep-btn" data-user-email="${user.email}" title="Ver auditoría completa de descargas y consultas IA">
-                        🔍 Info Profunda
-                    </button>
+                    <div style="display: flex; gap: 6px; justify-content: center;">
+                        <button class="student-full-info-btn" data-user-email="${user.email}" style="padding: 6px 10px; border-radius: var(--border-radius-sm); background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 0.78rem; font-weight: 700; cursor: pointer;" title="Desplegar toda la información y credenciales">
+                            📋 Ficha
+                        </button>
+                        <button class="gis-deep-btn" data-user-email="${user.email}" title="Ver auditoría completa de descargas y consultas IA">
+                            🔍 Auditoría
+                        </button>
+                    </div>
                 </td>
             `;
             
             usersTableBody.appendChild(tr);
+        });
+
+        // Add event listeners to single password toggle buttons
+        usersTableBody.querySelectorAll(".toggle-single-pass-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                const targetId = btn.getAttribute("data-target");
+                const span = document.getElementById(targetId);
+                if (span) {
+                    const rawPass = span.getAttribute("data-password");
+                    const isMasked = span.getAttribute("data-masked") === "true";
+                    if (isMasked) {
+                        span.textContent = rawPass;
+                        span.setAttribute("data-masked", "false");
+                        btn.textContent = "🙈";
+                    } else {
+                        span.textContent = "••••••••";
+                        span.setAttribute("data-masked", "true");
+                        btn.textContent = "👁️";
+                    }
+                }
+            });
+        });
+
+        // Add event listeners to full info buttons
+        usersTableBody.querySelectorAll(".student-full-info-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                const email = btn.getAttribute("data-user-email");
+                openStudentFullInfoModal(email);
+            });
         });
 
         // Add event listeners to deep info buttons
@@ -2290,10 +2355,12 @@ En el estudio médico del sistema nervioso, te sugiero analizar este tema bajo 3
                 tabBtns.forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
 
-                const panels = document.querySelectorAll(".deep-tab-panel");
+                const panels = document.querySelectorAll("#deepInfoModal .deep-tab-panel");
                 panels.forEach(p => p.style.display = "none");
 
-                if (targetTab === "aiChat") {
+                if (targetTab === "credentials") {
+                    document.getElementById("deepPanelCredentials").style.display = "block";
+                } else if (targetTab === "aiChat") {
                     document.getElementById("deepPanelAiChat").style.display = "block";
                 } else if (targetTab === "downloads") {
                     document.getElementById("deepPanelDownloads").style.display = "block";
@@ -2335,6 +2402,87 @@ En el estudio médico del sistema nervioso, te sugiero analizar este tema bajo 3
         document.getElementById("deepCountAi").textContent = (log.aiChats || []).length;
         document.getElementById("deepCountDownloads").textContent = (log.downloads || []).length;
         document.getElementById("deepCountNav").textContent = (log.navigation || []).length;
+
+        // Reset to credentials tab active
+        const tabBtns = document.querySelectorAll("#deepInfoModal [data-deep-tab]");
+        tabBtns.forEach(b => b.classList.remove("active"));
+        const defaultTabBtn = document.querySelector("#deepInfoModal [data-deep-tab='credentials']");
+        if (defaultTabBtn) defaultTabBtn.classList.add("active");
+
+        const panels = document.querySelectorAll("#deepInfoModal .deep-tab-panel");
+        panels.forEach(p => p.style.display = "none");
+        const defaultPanel = document.getElementById("deepPanelCredentials");
+        if (defaultPanel) defaultPanel.style.display = "block";
+
+        // Panel 0: Full Credentials & Data Sheet
+        const cleanPhone = (user.phone || "+584129031966").replace(/\D/g, "");
+        const waLink = `https://wa.me/${cleanPhone}?text=Hola%20${encodeURIComponent(user.name)},%20te%20escribo%20desde%20la%20coordinaci%C3%B3n%20de%20Morfofisiolog%C3%ADa%20II`;
+        const stateCapital = VENEZUELA_STATES_DATA[user.stateOrigin] ? VENEZUELA_STATES_DATA[user.stateOrigin].capital : "Capital no registrada";
+
+        if (defaultPanel) {
+            defaultPanel.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 18px;">
+                    <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid var(--accent-color); border-radius: 12px; padding: 20px;">
+                        <h4 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: #ffffff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                            🔑 Credenciales de Acceso al Portal
+                        </h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                            <div style="background: rgba(0,0,0,0.3); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600;">CORREO ELECTRÓNICO (LOGIN)</div>
+                                <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-top: 4px; word-break: break-all;">${user.email}</div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.3); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600;">CONTRASEÑA DE ACCESO</div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px;">
+                                    <span style="font-family: monospace; font-size: 1.05rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;">${user.password}</span>
+                                    <button onclick="navigator.clipboard.writeText('${user.password}'); alert('Contraseña copiada al portapapeles: ${user.password}');" style="padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; background: rgba(255,255,255,0.1); border: 1px solid var(--border-color); color: #ffffff; cursor: pointer;">📋 Copiar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px;">
+                        <h4 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: #ffffff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                            📋 Ficha Académica y Geográfica Completa
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                            <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 0.72rem; color: var(--text-muted);">NOMBRE Y APELLIDO</div>
+                                <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">${user.name}</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 0.72rem; color: var(--text-muted);">TELÉFONO / WHATSAPP</div>
+                                <div style="margin-top: 2px;">
+                                    <a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color: #34d399; font-weight: 600; text-decoration: none;">
+                                        💬 ${user.phone || "No registrado"}
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 0.72rem; color: var(--text-muted);">ESTADO DE ORIGEN (GIS)</div>
+                                <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">📍 ${user.stateOrigin || "Venezuela"} (${stateCapital})</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 0.72rem; color: var(--text-muted);">AÑO DE INSCRIPCIÓN</div>
+                                <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">📅 ${user.enrollmentYear || "2026"}</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 0.72rem; color: var(--text-muted);">AÑO CURSANTE</div>
+                                <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">🎓 ${user.currentYear || "2do Año"}</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 0.72rem; color: var(--text-muted);">ROL ASIGNADO</div>
+                                <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;"><span class="hero-tag" style="margin-bottom: 0;">${user.role === 'superuser' ? 'Superusuario' : 'Estudiante (usuario)'}</span></div>
+                            </div>
+                            <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color); grid-column: 1/-1;">
+                                <div style="font-size: 0.72rem; color: var(--text-muted);">TOKEN DE SESIÓN ACTIVA (CONTROL MULTI-INGRESO)</div>
+                                <div style="font-family: monospace; font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">${user.activeSessionToken || 'Sin sesión activa registrada'}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
 
         // Panel 1: AI Chat History
         const pAi = document.getElementById("deepPanelAiChat");
@@ -2424,6 +2572,133 @@ En el estudio médico del sistema nervioso, te sugiero analizar este tema bajo 3
                     <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-primary);">
                         El estudiante ha interactuado con los cuestionarios de consolidación en las semanas curriculares.
                     </p>
+                </div>
+            </div>
+        `;
+
+        modal.classList.add("active");
+    }
+
+    // ==========================================
+    // STUDENT FULL DOSSIER / FICHA COMPLETA MODAL
+    // ==========================================
+
+    function initStudentFullInfoModal() {
+        const modal = document.getElementById("studentFullInfoModal");
+        const closeBtn = document.getElementById("studentFullInfoCloseBtn");
+
+        if (!modal) return;
+
+        if (closeBtn) {
+            closeBtn.addEventListener("click", () => {
+                modal.classList.remove("active");
+            });
+        }
+
+        modal.addEventListener("click", function(e) {
+            if (e.target === modal) {
+                modal.classList.remove("active");
+            }
+        });
+    }
+
+    function openStudentFullInfoModal(userEmail) {
+        const modal = document.getElementById("studentFullInfoModal");
+        const content = document.getElementById("studentFullInfoContent");
+        if (!modal || !content) return;
+
+        const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+        const user = users.find(u => u.email === userEmail);
+        if (!user) {
+            alert("Estudiante no encontrado.");
+            return;
+        }
+
+        const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
+        const photoSrc = user.photo || defaultAvatar;
+        const cleanPhone = (user.phone || "+584129031966").replace(/\D/g, "");
+        const waLink = `https://wa.me/${cleanPhone}?text=Hola%20${encodeURIComponent(user.name)},%20te%20escribo%20desde%20la%20coordinaci%C3%B3n%20de%20Morfofisiolog%C3%ADa%20II`;
+        const stateCapital = VENEZUELA_STATES_DATA[user.stateOrigin] ? VENEZUELA_STATES_DATA[user.stateOrigin].capital : "Capital no registrada";
+        const log = user.activityLog || { aiChats: [], downloads: [], navigation: [] };
+
+        content.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- Header Card -->
+                <div style="display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.03); padding: 18px; border-radius: 12px; border: 1px solid var(--border-color);">
+                    <img src="${photoSrc}" alt="Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color);">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <h3 style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800; color: var(--text-primary); margin: 0;">${user.name}</h3>
+                            <span class="ao-badge">${user.currentYear || "2do Año"}</span>
+                            <span class="system-badge">${user.stateOrigin || "Venezuela"}</span>
+                        </div>
+                        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">
+                            Registrado en el sistema formativo &bull; Inscripción: <strong>${user.enrollmentYear || "2026"}</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Credentials Highlight Box -->
+                <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15)); border: 1px solid var(--accent-color); border-radius: 12px; padding: 20px;">
+                    <h4 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: #ffffff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🔑 Credenciales de Inicio de Sesión
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div style="background: rgba(0,0,0,0.35); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+                            <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">CORREO ELECTRÓNICO</div>
+                            <div style="font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin-top: 4px; word-break: break-all;">${user.email}</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.35); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+                            <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">CONTRASEÑA REGISTRADA</div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px;">
+                                <span id="fullModalPass" style="font-family: monospace; font-size: 1.05rem; font-weight: 700; color: #38bdf8;">${user.password}</span>
+                                <button onclick="navigator.clipboard.writeText('${user.password}'); alert('Contraseña copiada al portapapeles');" style="padding: 4px 8px; font-size: 0.72rem; border-radius: 4px; background: rgba(255,255,255,0.1); border: 1px solid var(--border-color); color: #ffffff; cursor: pointer;">📋 Copiar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic & Geographical Info Grid -->
+                <div style="background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px;">
+                    <h4 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: #ffffff; margin-bottom: 14px;">
+                        📌 Datos Académicos y de Contacto
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                            <div style="font-size: 0.72rem; color: var(--text-muted);">TELÉFONO</div>
+                            <div style="font-weight: 600; color: #34d399; margin-top: 2px;">💬 ${user.phone || "No registrado"}</div>
+                        </div>
+                        <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                            <div style="font-size: 0.72rem; color: var(--text-muted);">ESTADO (GIS VENEZUELA)</div>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">📍 ${user.stateOrigin || "Venezuela"} (${stateCapital})</div>
+                        </div>
+                        <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                            <div style="font-size: 0.72rem; color: var(--text-muted);">AÑO DE INGRESO</div>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">📅 ${user.enrollmentYear || "2026"}</div>
+                        </div>
+                        <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color);">
+                            <div style="font-size: 0.72rem; color: var(--text-muted);">AÑO DE LA CARRERA</div>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">🎓 ${user.currentYear || "2do Año"}</div>
+                        </div>
+                        <div style="padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid var(--border-color); grid-column: 1/-1;">
+                            <div style="font-size: 0.72rem; color: var(--text-muted);">MÉTRICAS DE ACTIVIDAD</div>
+                            <div style="display: flex; gap: 16px; margin-top: 6px; font-size: 0.85rem;">
+                                <span>🤖 <strong>${(log.aiChats || []).length}</strong> Consultas IA</span>
+                                <span>📥 <strong>${(log.downloads || []).length}</strong> Recursos Descargados</span>
+                                <span>🧭 <strong>${(log.navigation || []).length}</strong> Secciones Visitadas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="gis-whatsapp-btn" style="padding: 10px 18px; font-size: 0.88rem;">
+                        💬 Abrir WhatsApp
+                    </a>
+                    <button class="gis-deep-btn" onclick="document.getElementById('studentFullInfoModal').classList.remove('active'); openDeepInfoModal('${user.email}');" style="padding: 10px 18px; font-size: 0.88rem;">
+                        🔍 Ver Auditoría Profunda
+                    </button>
                 </div>
             </div>
         `;

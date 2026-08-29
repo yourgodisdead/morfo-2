@@ -688,15 +688,20 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
         
-        // Handle logout
-        logoutBtn.addEventListener("click", function() {
-            localStorage.removeItem("morfo2_session");
-            window.location.reload();
-        });
+        // Handle logout - listener is set in setupUserUI
     }
 
     function setupUserUI() {
         if (!state.currentUser) return;
+        
+        // Register logout listener only once
+        if (!logoutBtn._listenerAdded) {
+            logoutBtn.addEventListener("click", function() {
+                localStorage.removeItem("morfo2_session");
+                window.location.reload();
+            });
+            logoutBtn._listenerAdded = true;
+        }
         
         // Show Sidebar items
         userSidebarProfile.style.display = "block";

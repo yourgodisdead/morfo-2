@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="morfo2/templates/encabezado.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<style type="text/css">
+<!--
+.antes {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-style: normal; font-weight: bold; color: #993300; text-decoration: underline}
+.despues {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-weight: bold; color: #000099; text-decoration: underline}
+-->
+</style>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Tema 1. Consolidaci&oacute;n</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<SCRIPT language="JavaScript">
+window.onerror = null;
+var topMargin = 89;
+var slideTime = 1200;
+var ns6 = (!document.all && document.getElementById);
+var ie4 = (document.all);
+var ns4 = (document.layers);
+function layerObject(id,left) {
+if (ns6) {
+this.obj = document.getElementById(id).style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ie4) {
+this.obj = document.all[id].style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ns4) {
+this.obj = document.layers[id];
+this.obj.left = left;
+return this.obj;
+   }
+}
+function layerSetup() {
+floatLyr1 = new layerObject('floatLayer1', 0);
+floatLyr2 = new layerObject('floatLayer2', 665);
+window.setInterval("main()", 10)
+}
+function floatObject() {
+if (ns4 || ns6) {
+findHt = window.innerHeight;
+} else if(ie4) {
+findHt = document.body.clientHeight;
+   }
+  
+} 
+function main() {
+if (ns4) {
+this.currentY = document.layers["floatLayer1"].top;
+this.scrollTop = window.pageYOffset;
+mainTrigger();
+}
+else if(ns6) {
+this.currentY = parseInt(document.getElementById('floatLayer1').style.top);
+this.scrollTop = scrollY;
+mainTrigger();
+} else if(ie4) {
+this.currentY = floatLayer1.style.pixelTop;
+if (document.documentElement && document.documentElement.scrollTop)
+	this.scrollTop = document.documentElement.scrollTop;
+else if (document.body)
+	this.scrollTop = document.body.scrollTop;
+mainTrigger();
+   }
+}
+function mainTrigger() {
+var newTargetY = this.scrollTop + this.topMargin;
+if ( this.currentY != newTargetY ) {
+if ( newTargetY != this.targetY ) {
+this.targetY = newTargetY;
+floatStart();
+}
+animator();
+   }
+}
+function floatStart() {
+var now = new Date();
+this.A = this.targetY - this.currentY;
+
+this.B = Math.PI / ( 2 * this.slideTime );
+this.C = now.getTime();
+
+if (Math.abs(this.A) > this.findHt) {
+this.D = this.A > 0 ? this.targetY - this.findHt : this.targetY + this.findHt;
+this.A = this.A > 0 ? this.findHt : -this.findHt;
+}
+else {
+this.D = this.currentY;
+   }
+ 
+}
+function animator() {
+var now = new Date();
+var newY = this.A * Math.sin( this.B * ( now.getTime() - this.C ) ) + this.D;
+newY = Math.round(newY);
+var tope1 = (98+document.all.idmenuderecha.clientHeight)-(newY+floatLayer1.clientHeight);
+
+if (( this.A > 0 && newY > this.currentY ) || ( this.A < 0 && newY < this.currentY )) {
+if (tope1 >0) 
+{
+
+if ( ie4 )document.all.floatLayer1.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer1"].top = newY;
+if ( ns6 )document.getElementById('floatLayer1').style.top = newY + "px";
+if ( ie4 )document.all.floatLayer2.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer2"].top = newY;
+if ( ns6 )document.getElementById('floatLayer2').style.top = newY + "px";
+   }
+   }
+}
+function start() {
+if(ns6||ns4) {
+pageWidth = innerWidth;
+pageHeight = innerHeight;
+layerSetup();
+floatObject();
+}
+else if(ie4) {
+pageWidth = document.body.clientWidth;
+pageHeight = document.body.clientHeight;
+layerSetup();
+floatObject();
+   }
+}
+function movermenu(celda,leccion)
+{
+	FW_startTimeout();
+	var posiciony = floatLayer1.style.pixelTop+3+(22*leccion);
+    eval ('window.FW_showMenu(window.fw_menu_'+leccion+',112,'+posiciony+');');
+    celda.className='menuizquierdarojo';
+}
+//  End -->
+</script>
+<script language="JavaScript" src="../../../morfo3/scripts/testengine.js" type="text/JavaScript"> </script>
+<script language="JavaScript" src="../../../morfo3/scripts/ventana.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="../../../morfo3/scripts/call.js" type="text/JavaScript"></script>
+<script language="JavaScript"  src="../../../morfo3/scripts/fw_menu.js" type="text/JavaScript"></script>
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+// -->
+</script>
+</head>
+
+<body onLoad="start();" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0">
+<table width="770" height="20%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="1" valign="top" bgcolor="#EDD3B5"> 
+      <table width="100%" height="1"  border="0" align="left" cellpadding="0" cellspacing="0" background="../../../imagenes/cabezal0.jpg">
+        <tr bgcolor="#3366CC"> 
+          <td background="../../../imagenes/cabezal0.jpg" valign="top" height="81" bgcolor="#3366CC"> 
+            <div id="Layer3" style="position:absolute; width:39px; height:16px; z-index:103; left: 721px; top: 54px"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="../../../indext1.htm" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Inicio</a></strong></font></div>
+            <div id="Layer1" style="position:absolute; width:124px; height:83px; z-index:101"> 
+              <div align="center"> <br>
+                <b><font face="Verdana, Arial, Helvetica, sans-serif">Temas: <br>
+                <!-- #BeginLibraryItem "../morfo2/library/cuadro1.lbi" -->
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<table width="80"  border="0" cellpadding="1" cellspacing="1">
+  <tr align="center" valign="middle">
+    <td width="25%" class="celdanumeroselecc">1 </td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../Tema2/intro2.htm" >2</a></td>
+</table>
+<!-- #EndLibraryItem --></font></b></div>
+            </div>
+            <script language=JavaScript1.2>fwLoadMenus(); </script>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="1" valign="top" bgcolor="#3366cc"> 
+      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td height="1" bgcolor="#FFFFFF"></td>
+        </tr>
+        <tr> 
+          <td> 
+            <table width="98%" height="0"  border="0" cellpadding="0" cellspacing="0">
+              <tr> 
+                <td width="116" valign="bottom" class="celdanormal"></td>
+                <td valign="bottom" width="719"> <!-- #BeginLibraryItem "/morfo2/library/tema1consolida.lbi" --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000">
+  <tr> 
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion1" bgcolor="#000000"><a href="intro1.htm" class="celdanormalazul">Introducción</a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="obj1.htm" class="celdanormalazul">Objetivos</a></td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="cont1.htm" class="celdanormalazul">Contenidos</a></td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="pdoc1.htm" class="celdanormalazul">Práctica docente</a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdaseleccionadanegra" id="leccion3" bgcolor="#000000">Consolidación</td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="735" valign="top"> 
+      <table width="100%" height="27%"  border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="115" height="737" align="center" valign="top" bgcolor="#3366CC" id=idmenuizquierda>&nbsp;</td>
+          <td height="737" valign="top" bgcolor="#FDF7E2"> 
+            <table width="100%"  cellspacing="3" cellpadding="3" height="701">
+              <tr> 
+                <td height="691" > 
+                  <!-- InstanceBeginEditable name="contenido" -->
+                  <b><font face="Arial, Helvetica, sans-serif" size="2">Tema 1. 
+                  Sistema nervioso perif&eacute;rico.</font></b><br>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    1. Consolidaci&oacute;n 1.</b></font><br>
+                  </p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.1 
+                    Generalidades del sistema Nervioso. Concepto de sistema nervioso. 
+                    Etapas generales de la filogenia del sistema nervioso. Propiedades 
+                    fundamentales y funciones. Divisi&oacute;n del sistema nervioso 
+                    para su estudio.<br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.2 
+                    Desarrollo embrionario del sistema nervioso. Origen y desarrollo. 
+                    Defectos del desarrollo. Clasificaci&oacute;n.<br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.3 
+                    Tejido Nervioso. Caracter&iacute;sticas morfofuncionales. 
+                    Componentes. Neuronas. Clasificaci&oacute;n. Integraci&oacute;n 
+                    morfofuncional de sus componentes. Neuroglias. Tipos. Caracter&iacute;sticas 
+                    y funciones. Organizaci&oacute;n del Tejido Nervioso. Sustancia 
+                    gris y Sustancia blanca. Componentes y disposici&oacute;n. 
+                    Composici&oacute;n qu&iacute;mica y metabolismo del tejido 
+                    nervioso.<br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.4 
+                    Arco reflejo. Componentes y tipos. <br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.5. 
+                    Sistema nervioso perif&eacute;rico. Receptores nerviosos perif&eacute;ricos. 
+                    Clasificaci&oacute;n y caracter&iacute;sticas morfofuncionales. 
+                    Proceso de transducci&oacute;n. Potencial generador. Bases 
+                    i&oacute;nicas. Relaci&oacute;n entre la intensidad del est&iacute;mulo, 
+                    el potencial generador y el potencial de acci&oacute;n. Proceso 
+                    de adaptaci&oacute;n de los receptores. Receptores f&aacute;sicos 
+                    y t&oacute;nicos. Importancia biol&oacute;gica de los receptores.<br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.6 
+                    Fibra nerviosa, ganglio nervioso y Nervio perif&eacute;rico. 
+                    Concepto. Clasificaci&oacute;n morfol&oacute;gica y funcional. 
+                    Caracter&iacute;sticas morfofuncionales. <br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.7 
+                    Nervios espinales Constituci&oacute;n y ramos. Plexos som&aacute;ticos 
+                    (cervical, braquial, lumbar y sacrococc&iacute;geo). Constituci&oacute;n. 
+                    Principales ramos y territorios de distribuci&oacute;n. Nervios 
+                    intercostales. Principales lesiones de los nervios perif&eacute;ricos.<br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/semana%201/conso11.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a la consolidaci&oacute;n de los contenidos del 1.1. al 1.7.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    2. Consolidaci&oacute;n 2.</b></font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.8 
+                    Nervios craneales. Constituci&oacute;n. Principales ramos 
+                    y territorios de distribuci&oacute;n. Principales lesiones 
+                    de los nervios craneales.<br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">1.9 
+                    Sinapsis. Concepto. Clasificaci&oacute;n. Estructura de la 
+                    sinapsis tipo. Mecanismo de la transmisi&oacute;n sin&aacute;ptica. 
+                    Potenciales postsin&aacute;pticos. Bases i&oacute;nicas y 
+                    caracter&iacute;sticas. El cono ax&oacute;nico como integrador. 
+                    Tipos de neurotransmisores. Efectos de f&aacute;rmacos y alteraciones 
+                    del medio sobre la transmisi&oacute;n neuro neuronal.</font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/semana%202/conso%2012.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a la consolidaci&oacute;n de los contenidos del 1.8. al 1.9.</a></strong></font> 
+                  </p>
+                  <p align="justify">
+                    <!-- InstanceEndEditable -->
+                  </p>
+                  </td>
+              </tr>
+            </table>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<DIV id="floatLayer1" style="position: absolute; left:2px; top:83px; z-index: 100; width: 115px;; height: 293px"> 
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="2" class=fondoazuloscuro>
+    <tr> 
+      <td width="82%" align="center" class="fondoazuloscuro" height="28"> Cerrar</td>
+      <td width="18%" align="center" onClick="window.close();" style="cursor:hand" height="28">X</td>
+    </tr>
+  </table>
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+                           
+      <td height="14" align="center"> 
+        <div align="center"><a   class="celdanormalblanca" href=javascript:MostrarPopup('../../../htm/ayuda.htm',1/2,3)>Ayuda</a><font color="#000000">aa</font></div>
+      </td>    
+    </tr>
+  </table>
+  <b></b> <img src="../../imagenes/derechabiolog.jpg" ><b></b> </div>
+</body>
+<!-- InstanceEnd --></html>

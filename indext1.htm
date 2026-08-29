@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="morfo2/templates/encabezado.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Asignatura Morfofisiolog&iacute;a Humana II</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<SCRIPT language="JavaScript">
+window.onerror = null;
+var topMargin = 89;
+var slideTime = 1200;
+var ns6 = (!document.all && document.getElementById);
+var ie4 = (document.all);
+var ns4 = (document.layers);
+function layerObject(id,left) {
+if (ns6) {
+this.obj = document.getElementById(id).style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ie4) {
+this.obj = document.all[id].style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ns4) {
+this.obj = document.layers[id];
+this.obj.left = left;
+return this.obj;
+   }
+}
+function layerSetup() {
+floatLyr1 = new layerObject('floatLayer1', 0);
+floatLyr2 = new layerObject('floatLayer2', 665);
+window.setInterval("main()", 10)
+}
+function floatObject() {
+if (ns4 || ns6) {
+findHt = window.innerHeight;
+} else if(ie4) {
+findHt = document.body.clientHeight;
+   }
+  
+} 
+function main() {
+if (ns4) {
+this.currentY = document.layers["floatLayer1"].top;
+this.scrollTop = window.pageYOffset;
+mainTrigger();
+}
+else if(ns6) {
+this.currentY = parseInt(document.getElementById('floatLayer1').style.top);
+this.scrollTop = scrollY;
+mainTrigger();
+} else if(ie4) {
+this.currentY = floatLayer1.style.pixelTop;
+if (document.documentElement && document.documentElement.scrollTop)
+	this.scrollTop = document.documentElement.scrollTop;
+else if (document.body)
+	this.scrollTop = document.body.scrollTop;
+mainTrigger();
+   }
+}
+function mainTrigger() {
+var newTargetY = this.scrollTop + this.topMargin;
+if ( this.currentY != newTargetY ) {
+if ( newTargetY != this.targetY ) {
+this.targetY = newTargetY;
+floatStart();
+}
+animator();
+   }
+}
+function floatStart() {
+var now = new Date();
+this.A = this.targetY - this.currentY;
+
+this.B = Math.PI / ( 2 * this.slideTime );
+this.C = now.getTime();
+
+if (Math.abs(this.A) > this.findHt) {
+this.D = this.A > 0 ? this.targetY - this.findHt : this.targetY + this.findHt;
+this.A = this.A > 0 ? this.findHt : -this.findHt;
+}
+else {
+this.D = this.currentY;
+   }
+ 
+}
+function animator() {
+var now = new Date();
+var newY = this.A * Math.sin( this.B * ( now.getTime() - this.C ) ) + this.D;
+newY = Math.round(newY);
+var tope1 = (98+document.all.idmenuderecha.clientHeight)-(newY+floatLayer1.clientHeight);
+
+if (( this.A > 0 && newY > this.currentY ) || ( this.A < 0 && newY < this.currentY )) {
+if (tope1 >0) 
+{
+
+if ( ie4 )document.all.floatLayer1.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer1"].top = newY;
+if ( ns6 )document.getElementById('floatLayer1').style.top = newY + "px";
+if ( ie4 )document.all.floatLayer2.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer2"].top = newY;
+if ( ns6 )document.getElementById('floatLayer2').style.top = newY + "px";
+   }
+   }
+}
+function start() {
+if(ns6||ns4) {
+pageWidth = innerWidth;
+pageHeight = innerHeight;
+layerSetup();
+floatObject();
+}
+else if(ie4) {
+pageWidth = document.body.clientWidth;
+pageHeight = document.body.clientHeight;
+layerSetup();
+floatObject();
+   }
+}
+function movermenu(celda,leccion)
+{
+	FW_startTimeout();
+	var posiciony = floatLayer1.style.pixelTop+3+(22*leccion);
+    eval ('window.FW_showMenu(window.fw_menu_'+leccion+',112,'+posiciony+');');
+    celda.className='menuizquierdarojo';
+}
+//  End -->
+</script>
+<script language="JavaScript" src="morfo2/scripts/testengine.js" type="text/JavaScript"> </script>
+<script language="JavaScript" src="morfo2/scripts/ventana.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="morfo2/scripts/call.js" type="text/JavaScript"></script>
+<script language="JavaScript"  src="morfo2/scripts/fw_menu.js" type="text/JavaScript"></script>
+<link href="morfo2/estilos/biologicas.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+// -->
+</script>
+</head>
+
+<body onLoad="start();" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0">
+<table width="764" height="82%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="89" valign="top" bgcolor="#3366CC"> 
+      <table width="100%" height="85"  border="0" align="left" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td valign="top" bgcolor="#3366CC" height="89"> <img src="imagenes/cabezal0.jpg" width="770" height="89"></td>
+        </tr>
+      </table>
+      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="490" valign="top"> 
+      <table width="100%" height="66%"  border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="113" height="485" align="center" valign="top" bgcolor="#3366CC" id=idmenuizquierda>&nbsp;</td>
+          <td width="548" height="485" valign="top" bgcolor="#FDF7E2"> 
+            <table width="100%"  cellspacing="3" cellpadding="3" height="283">
+              <tr> 
+                <td height="249" ><font color="#000000" size="2" face="Arial, Helvetica, sans-serif"><b>Caracterizaci&oacute;n 
+                  de la asignatura Morfofisiolog&iacute;a Humana II. </b></font> 
+                  <p align="justify" class="texto"><br>
+                    La Morfofisiolog&iacute;a Humana II aborda conceptos y elementos 
+                    que le permitir&aacute;n al estudiante integrar el estudio 
+                    del sistema nervioso como un todo, as&iacute; como las caracter&iacute;sticas 
+                    morfofuncionales de las diferentes estructuras que lo constituyen, 
+                    lo que permite que el organismo responda a cambios continuos 
+                    de su medio externo e interno y controle e integre todas las 
+                    actividades funcionales de los &oacute;rganos y sistemas de 
+                    &oacute;rganos, haciendo &eacute;nfasis en la interrelaci&oacute;n 
+                    de cada uno de sus componentes. La estrategia docente a emplear 
+                    tiene como elementos fundamentales la orientaci&oacute;n de 
+                    los contenidos, el desarrollo del aprendizaje independiente 
+                    a trav&eacute;s de la ejercitaci&oacute;n y la consolidaci&oacute;n, 
+                    as&iacute; como la evaluaci&oacute;n sistem&aacute;tica, siempre 
+                    desde los escenarios docentes de la comunidad.<br>
+                  </p>
+                  
+                </td>
+              </tr>
+            </table>
+            <p><font face="Arial, Helvetica, sans-serif" size="2"><b><font color="#0000FF">Registro:</font></b></font></p>
+            <table width="53%" border="1" cellspacing="0" cellpadding="1" bordercolor="#0000FF">
+              <tr>
+                <td><img src="imagenes/CD121-243-03-07.jpg" width="293" height="133"></td>
+              </tr>
+            </table>
+            <br>
+            <font size="1" face="Arial, Helvetica, sans-serif" color="#0000FF">3ra 
+            ed 2007</font>
+          <td width="103" height="485" valign="bottom" bgcolor="#3366CC" id=idmenuderecha> 
+            <div id="Layer1" style="position:absolute; width:88px; height:52px; z-index:101; left: 19px; top: 19px"> 
+              <div align="left"><b><font face="Arial, Helvetica, sans-serif" size="2">Temas:</font><font face="Arial, Helvetica, sans-serif"><!-- #BeginLibraryItem "../morfo3/library/cuadroB.lbi" --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<table width="100%"  border="0" cellpadding="2" cellspacing="2">
+  <tr align="center" valign="middle">
+    <td width="50%" class="celdanumero"><a href="morfo2/contenidos/tema1/intro1.htm" class="celdatexto">1</a></td>
+    <td width="50%" class="celdanumero"><a href="morfo2/contenidos/Tema2/intro2.htm" class="celdatexto">2</a></td>
+  </tr>
+  <tr align="center" valign="middle">
+    <td class="celdanumero">
+    <td class="celdanumero">
+    <td class="celdanumero">
+    <td class="celdanumero">
+    <td class="celdanumero"></td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --></font></b> 
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<DIV id="floatLayer2" style="position: absolute; left:665px; top:160px; width: 100px; z-index: 100; height: 360px"> 
+  <!-- InstanceBeginEditable name="menuderecho" -->
+  <!-- #BeginLibraryItem "/Library/menuderecha.lbi" class="menuderecha" --><title>Menu derecho</title>
+<table width="102" cellpadding="1" cellspacing="0" bgcolor="#000000">
+  <tr>
+    <td>
+      <table width="102%"  border="0" cellpadding="2" cellspacing="4">
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/objetivos.htm',1/2,3)>Sistema 
+            de Objetivos</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/contenidos.htm',1/2,3)>Contenidos</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/habilidades.htm',1/2,3)>Habilidades</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a href=javascript:MostrarPopup('htm/clases.htm',1/2,3) class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'">Sistema 
+            de Clases</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/evaluacion.htm',1/2,3)>Evaluaci&oacute;n</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/estudio.htm',1/2,3)>Consejos 
+            para el Estudio</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/bibliografia.htm',1/2,3)>Bibliograf&iacute;a</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" colspan="2"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/ayuda.htm',1/2,3)>Ayuda</a></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+ <!-- #EndLibraryItem --><!-- InstanceEndEditable -->
+	 		
+</div>
+<DIV id="floatLayer1" style="position: absolute; left:-2px; top:161px; z-index: 100; width: 100;"> 
+  <table width="115%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+      <td width="82%" align="center" class="fondoazuloscuro" bgcolor="#3366CC" height="27">Cerrar</td>
+      <td width="18%" align="center" onClick="window.close();" style="cursor:hand" height="27">X</td>
+    </tr>
+  </table>
+  <img src="morfo2/imagenes/derechabiolog.jpg" width="115" height="285"> 
+  <script language=JavaScript1.2>fwLoadMenus(); </script>
+  <!-- InstanceEndEditable -->
+  <!-- InstanceBeginEditable name="menuizquierdo" -->
+</div>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>Morfo1</title>
+<!-- TemplateEndEditable --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<SCRIPT LANGUAGE="JavaScript">
+window.onerror = null;
+var topMargin = 89;
+var slideTime = 1200;
+var ns6 = (!document.all && document.getElementById);
+var ie4 = (document.all);
+var ns4 = (document.layers);
+function layerObject(id,left) {
+if (ns6) {
+this.obj = document.getElementById(id).style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ie4) {
+this.obj = document.all[id].style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ns4) {
+this.obj = document.layers[id];
+this.obj.left = left;
+return this.obj;
+   }
+}
+function layerSetup() {
+floatLyr1 = new layerObject('floatLayer1', 0);
+floatLyr2 = new layerObject('floatLayer2', 665);
+window.setInterval("main()", 10)
+}
+function floatObject() {
+if (ns4 || ns6) {
+findHt = window.innerHeight;
+} else if(ie4) {
+findHt = document.body.clientHeight;
+   }
+  
+} 
+function main() {
+if (ns4) {
+this.currentY = document.layers["floatLayer1"].top;
+this.scrollTop = window.pageYOffset;
+mainTrigger();
+}
+else if(ns6) {
+this.currentY = parseInt(document.getElementById('floatLayer1').style.top);
+this.scrollTop = scrollY;
+mainTrigger();
+} else if(ie4) {
+this.currentY = floatLayer1.style.pixelTop;
+if (document.documentElement && document.documentElement.scrollTop)
+	this.scrollTop = document.documentElement.scrollTop;
+else if (document.body)
+	this.scrollTop = document.body.scrollTop;
+mainTrigger();
+   }
+}
+function mainTrigger() {
+var newTargetY = this.scrollTop + this.topMargin;
+if ( this.currentY != newTargetY ) {
+if ( newTargetY != this.targetY ) {
+this.targetY = newTargetY;
+floatStart();
+}
+animator();
+   }
+}
+function floatStart() {
+var now = new Date();
+this.A = this.targetY - this.currentY;
+
+this.B = Math.PI / ( 2 * this.slideTime );
+this.C = now.getTime();
+
+if (Math.abs(this.A) > this.findHt) {
+this.D = this.A > 0 ? this.targetY - this.findHt : this.targetY + this.findHt;
+this.A = this.A > 0 ? this.findHt : -this.findHt;
+}
+else {
+this.D = this.currentY;
+   }
+ 
+}
+function animator() {
+var now = new Date();
+var newY = this.A * Math.sin( this.B * ( now.getTime() - this.C ) ) + this.D;
+newY = Math.round(newY);
+var tope1 = (98+document.all.idmenuderecha.clientHeight)-(newY+floatLayer1.clientHeight);
+
+if (( this.A > 0 && newY > this.currentY ) || ( this.A < 0 && newY < this.currentY )) {
+if (tope1 >0) 
+{
+
+if ( ie4 )document.all.floatLayer1.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer1"].top = newY;
+if ( ns6 )document.getElementById('floatLayer1').style.top = newY + "px";
+if ( ie4 )document.all.floatLayer2.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer2"].top = newY;
+if ( ns6 )document.getElementById('floatLayer2').style.top = newY + "px";
+   }
+   }
+}
+function start() {
+if(ns6||ns4) {
+pageWidth = innerWidth;
+pageHeight = innerHeight;
+layerSetup();
+floatObject();
+}
+else if(ie4) {
+pageWidth = document.body.clientWidth;
+pageHeight = document.body.clientHeight;
+layerSetup();
+floatObject();
+   }
+}
+function movermenu(celda,leccion)
+{
+	FW_startTimeout();
+	var posiciony = floatLayer1.style.pixelTop+3+(22*leccion);
+    eval ('window.FW_showMenu(window.fw_menu_'+leccion+',112,'+posiciony+');');
+    celda.className='menuizquierdarojo';
+}
+//  End -->
+</script>
+<script language="JavaScript" src="../../morfo3/scripts/testengine.js" type="text/JavaScript"> </script>
+<script language="JavaScript" src="../../morfo3/scripts/ventana.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="../../morfo3/scripts/call.js" type="text/JavaScript"></script>
+<script language="JavaScript"  src="../../morfo3/scripts/fw_menu.js" type="text/JavaScript"></script>
+
+<link href="../estilos/biologicas.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onLoad="start();" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0">
+<p class="celdatexto">
+  <SCRIPT language=JavaScript1.2>fwLoadMenus(); </SCRIPT>
+</p>
+<table width="778" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="1" valign="top" bgcolor="#EDD3B5">
+      <table width="100%" height="1"  border="0" align="left" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="116" valign="top" bgcolor="#084A37"><table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+            <tr bgcolor="335599">
+              <td height="18" align="center" valign="middle" bgcolor="#211E1C"class=fondoazuloscuro id="nombremodulo"><!-- TemplateBeginEditable name="modulo" --> Temas <!-- TemplateEndEditable --></td>
+            </tr>
+            <tr>
+              <td width="0" height="50" align="center" valign="middle" bgcolor="#084A37"><table width="100%" height="100%"  border="0" cellpadding="2" cellspacing="0">
+                <tr>
+                  <td><table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td height="1"></td>
+                    </tr>
+                    <tr>
+                      <td valign="middle"><table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td height="32" align="center"><!-- TemplateBeginEditable name="menumodulos" --><!-- TemplateEndEditable --></td>
+                            <td width="1" bgcolor="#EDD3B5"></td>
+                          </tr>
+                      </table></td>
+                    </tr>
+                    <tr>
+                      <td height="1"></td>
+                    </tr>
+                  </table></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+          <td align="center" valign="middle" background="../../morfo3/imagenes/cabezal.jpg"><a href="../../default.htm" class="titulosuperior"><font color="#FF0000"><strong>Medicina 
+            Integral Comunitaria</strong></font></a></td>
+          <td width="113" align="right" valign="top"><table width="100%"  border="0" align="right" cellpadding="0" cellspacing="0">
+            <tr>
+              <td width="100" height="18" align="center" valign="middle" bgcolor="#211E1C">
+                <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+                  <tr>
+                    <td width="82%" align="center" class="fondoazuloscuro">Cerrar</td>
+                    <td width="18%" align="center" onClick="window.close();" style="cursor:hand">X</td>
+                  </tr>
+              </table></td>
+            </tr>
+            <tr>
+              <td align="left" valign="middle" bgcolor="#084A37"><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td height="1"></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td height="1"></td>
+                        </tr>
+                        <tr>
+                          <td><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td height="1"></td>
+                              </tr>
+                              <tr>
+                                <td><table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                      <td width="1" bgcolor="#EDD3B5"></td>
+                                      <td height="50" align="center"><a   class="celdanormalblanca" href=javascript:MostrarPopup('../../../Recursos/Ayuda.htm',1/2,3)>Ayuda</a></td>
+                                    </tr>
+                                </table></td>
+                              </tr>
+                              <tr>
+                                <td></td>
+                              </tr>
+                          </table></td>
+                        </tr>
+                        <tr>
+                          <td height="2"></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td height="1"></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="1" valign="top" bgcolor="#084A37"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="1" bgcolor="#FFFFFF"></td>
+        </tr>
+        <tr>
+          <td><table width="100%" height="0"  border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="116" valign="bottom" class="celdanormal"></td>
+                <td valign="bottom"> <!-- TemplateBeginEditable name="menumodulo" --><!-- TemplateEndEditable --></td>
+                <td width="115"></td>
+              </tr>
+          </table></td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="100%" valign="top"><table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="115" height="100%" align="center" valign="top" bgcolor="#F7B67F" id=idmenuizquierda>&nbsp;</td>
+          <td width="548" height="100%" valign="top" bgcolor="#FDF7E2"><table width="100%"  cellspacing="3" cellpadding="3">
+              <tr>
+                <td > <!-- TemplateBeginEditable name="contenido" --><!-- TemplateEndEditable --></td>
+              </tr>
+          </table>
+           
+          <td width="113" height="100%" valign="bottom" bgcolor="#F7B67F" id=idmenuderecha></td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+<DIV id="floatLayer2" style="position: absolute; left:665px; top:202px; width: 100; z-index: 100;">
+      
+  
+           <!-- TemplateBeginEditable name="menuderecho" --><!-- TemplateEndEditable -->
+	 		
+</div>
+<DIV id="floatLayer1" style="position: absolute; left:-22px; top:115px; z-index: 100; width: 100;"> 
+  <!-- TemplateBeginEditable name="menuizquierdo" -->
+  <!-- TemplateEndEditable -->
+  <img src="../imagenes/derechabiolog.jpg" > </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<table width="112" cellpadding="0" cellspacing="0" bgcolor="#F7B67F">
+  <tr>
+    <td>
+      <table width="100%"  border="0" cellpadding="2" cellspacing="4">
+        <tr>
+          <td bgcolor="#084A37"  class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"> <a href="javascript:MostrarVentana('../../../RecursosComp/galeria.htm','no','yes','no', 'no','no',550,650,10,10);" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'">Galer&iacute;a</a></td>
+        </tr>
+        <tr>
+          <td bgcolor="#084A37"  class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a class="menuizquierdablanco" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href="javascript:MostrarPopup('../../../RecursosComp/materiales.htm',1/2,3)">Materiales</a></td>
+		  
+        </tr>
+        <tr>
+          <td bgcolor="#084A37"  class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a class="menuizquierdablanco" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href="javascript:MostrarPopup('../../../RecursosComp/guias.htm',1/2,3)">Gu&iacute;as</a></td>
+        </tr>
+    </table></td>
+  </tr>
+</table>

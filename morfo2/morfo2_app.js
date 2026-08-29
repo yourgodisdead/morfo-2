@@ -262,6 +262,7 @@ document.addEventListener("DOMContentLoaded", function() {
     initGisMap();
     initAiTutor();
     initDeepInfoModal();
+    initProfileCompleteness();
     initPasswordToggles();
 
     // Default Load
@@ -1331,20 +1332,189 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // ==========================================
-    // AUTHENTICATION & SESSION MANAGEMENT
+    // AUTHENTICATION & SINGLE SESSION MANAGEMENT
     // ==========================================
+
+    let sessionWatcherInterval = null;
+
+    function createAndSaveSessionToken(user) {
+        const token = "sess_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
+        localStorage.setItem("morfo2_session_token", token);
+        
+        // Save token into user's database record
+        const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+        const idx = users.findIndex(u => u.email === user.email);
+        if (idx !== -1) {
+            users[idx].activeSessionToken = token;
+            localStorage.setItem("morfo2_users", JSON.stringify(users));
+            user.activeSessionToken = token;
+        }
+        state.currentUser = user;
+        return token;
+    }
+
+    function startSessionWatcher() {
+        if (sessionWatcherInterval) clearInterval(sessionWatcherInterval);
+
+        function checkActiveSession() {
+            if (!state.currentUser) return;
+            const localToken = localStorage.getItem("morfo2_session_token");
+            if (!localToken) return;
+
+            const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+            const freshUser = users.find(u => u.email === state.currentUser.email);
+            if (freshUser && freshUser.activeSessionToken && freshUser.activeSessionToken !== localToken) {
+                // Another device or browser window logged in with this account
+                terminateConcurrentSession();
+            }
+        }
+
+        // Storage event listener triggers instantly across tabs/windows
+        window.addEventListener("storage", function(e) {
+            if (e.key === "morfo2_users" || e.key === "morfo2_session_token") {
+                checkActiveSession();
+            }
+        });
+
+        // Window focus and heartbeat every 2.5s
+        window.addEventListener("focus", checkActiveSession);
+        sessionWatcherInterval = setInterval(checkActiveSession, 2500);
+    }
+
+    function terminateConcurrentSession() {
+        if (sessionWatcherInterval) clearInterval(sessionWatcherInterval);
+        localStorage.removeItem("morfo2_session");
+        localStorage.removeItem("morfo2_session_token");
+        state.currentUser = null;
+
+        const modal = document.getElementById("concurrentSessionModal");
+        if (modal) modal.classList.add("active");
+    }
+
+    function checkProfileCompleteness(user) {
+        if (!user || user.role === "superuser") return; // Superuser bypasses check
+
+        const isComplete = (
+            user.name && user.name.trim().length >= 3 &&
+            user.phone && user.phone.trim().length >= 7 &&
+            user.stateOrigin && user.stateOrigin.trim() !== "" &&
+            user.enrollmentYear && user.enrollmentYear.trim() !== "" &&
+            user.currentYear && user.currentYear.trim() !== ""
+        );
+
+        const modal = document.getElementById("completeProfileModal");
+        if (!isComplete && modal) {
+            // Populate Venezuelan States dropdown if not populated
+            const compStateOrigin = document.getElementById("compStateOrigin");
+            if (compStateOrigin && compStateOrigin.children.length <= 1) {
+                compStateOrigin.innerHTML = `<option value="" disabled selected>Selecciona tu Estado...</option>`;
+                Object.keys(VENEZUELA_STATES_DATA).sort().forEach(stateName => {
+                    const opt = document.createElement("option");
+                    opt.value = stateName;
+                    opt.textContent = `${stateName} (${VENEZUELA_STATES_DATA[stateName].capital})`;
+                    compStateOrigin.appendChild(opt);
+                });
+            }
+
+            // Prefill any existing fields
+            const compName = document.getElementById("compName");
+            const compPhone = document.getElementById("compPhone");
+            const compEnrollmentYear = document.getElementById("compEnrollmentYear");
+            const compCurrentYear = document.getElementById("compCurrentYear");
+
+            if (compName && user.name) compName.value = user.name;
+            if (compPhone && user.phone) compPhone.value = user.phone;
+            if (compStateOrigin && user.stateOrigin) compStateOrigin.value = user.stateOrigin;
+            if (compEnrollmentYear && user.enrollmentYear) compEnrollmentYear.value = user.enrollmentYear;
+            if (compCurrentYear && user.currentYear) compCurrentYear.value = user.currentYear;
+
+            modal.classList.add("active");
+        } else if (modal) {
+            modal.classList.remove("active");
+        }
+    }
+
+    function initProfileCompleteness() {
+        const form = document.getElementById("completeProfileForm");
+        const modal = document.getElementById("completeProfileModal");
+        const compError = document.getElementById("compError");
+        const reloginBtn = document.getElementById("reloginBtn");
+
+        if (reloginBtn) {
+            reloginBtn.addEventListener("click", () => {
+                window.location.reload();
+            });
+        }
+
+        if (form) {
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                if (!state.currentUser) return;
+
+                const nameVal = document.getElementById("compName").value.trim();
+                const phoneVal = document.getElementById("compPhone").value.trim();
+                const stateVal = document.getElementById("compStateOrigin").value;
+                const enrollVal = document.getElementById("compEnrollmentYear").value;
+                const curYearVal = document.getElementById("compCurrentYear").value;
+
+                if (!nameVal || !phoneVal || !stateVal || !enrollVal || !curYearVal) {
+                    if (compError) compError.style.display = "block";
+                    return;
+                }
+
+                // Update user in localStorage
+                const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+                const idx = users.findIndex(u => u.email === state.currentUser.email);
+                if (idx !== -1) {
+                    users[idx].name = nameVal;
+                    users[idx].phone = phoneVal;
+                    users[idx].stateOrigin = stateVal;
+                    users[idx].enrollmentYear = enrollVal;
+                    users[idx].currentYear = curYearVal;
+                    localStorage.setItem("morfo2_users", JSON.stringify(users));
+
+                    state.currentUser = users[idx];
+                    setupUserUI();
+                    renderProfile();
+                    renderAdmin();
+                    renderGisMap();
+
+                    trackUserActivity("navigation", {
+                        section: "perfil_actualizado",
+                        name: "Datos de Estudiante Completados"
+                    });
+                }
+
+                if (modal) modal.classList.remove("active");
+            });
+        }
+    }
 
     function initAuth() {
         const sessionEmail = localStorage.getItem("morfo2_session");
+        const sessionToken = localStorage.getItem("morfo2_session_token");
         
         if (sessionEmail) {
             const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
             const user = users.find(u => u.email === sessionEmail);
             if (user) {
-                state.currentUser = user;
-                loginOverlay.classList.remove("active");
-                setupUserUI();
-                return;
+                // If user doesn't have an active token or tokens match, restore session
+                if (!user.activeSessionToken || user.activeSessionToken === sessionToken) {
+                    if (!user.activeSessionToken) {
+                        createAndSaveSessionToken(user);
+                    } else {
+                        state.currentUser = user;
+                    }
+                    loginOverlay.classList.remove("active");
+                    setupUserUI();
+                    startSessionWatcher();
+                    checkProfileCompleteness(user);
+                    return;
+                } else {
+                    // Stale / concurrent session from another device
+                    terminateConcurrentSession();
+                    return;
+                }
             }
         }
         
@@ -1368,11 +1538,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 loginError.style.display = "none";
                 state.currentUser = user;
                 localStorage.setItem("morfo2_session", user.email);
+                
+                // Generate and enforce unique active session token
+                createAndSaveSessionToken(user);
+                
                 loginOverlay.classList.remove("active");
                 
                 // Reset to home section
                 showSection("inicio");
                 setupUserUI();
+                startSessionWatcher();
+                checkProfileCompleteness(user);
                 
                 // Clear form
                 loginEmail.value = "";
@@ -1381,8 +1557,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 loginError.style.display = "block";
             }
         });
-        
-        // Handle logout - listener is set in setupUserUI
     }
 
     function setupUserUI() {
@@ -1392,6 +1566,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!logoutBtn._listenerAdded) {
             logoutBtn.addEventListener("click", function() {
                 localStorage.removeItem("morfo2_session");
+                localStorage.removeItem("morfo2_session_token");
                 window.location.reload();
             });
             logoutBtn._listenerAdded = true;

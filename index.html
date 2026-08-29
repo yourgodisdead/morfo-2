@@ -16,24 +16,25 @@
     <!-- Local Static Databases -->
     <script src="morfo2/static_pages_data.js?v=3" defer></script>
     <script src="morfo2/gallery_data.js?v=2" defer></script>
+    <script src="morfo2/laminarios_data.js?v=1" defer></script>
     <script src="morfo2/extracted_data.js?v=2" defer></script>
 
     <!-- SPA Logic Controller -->
-    <script src="morfo2/morfo2_app.js?v=6" defer></script>
+    <script src="morfo2/morfo2_app.js?v=7" defer></script>
 </head>
 <body>
 
     <!-- LOGIN SCREEN OVERLAY -->
     <div class="login-overlay active" id="loginOverlay">
         <div class="login-card">
-            <div class="brand-section" style="justify-content: center; margin-bottom: 24px;">
+            <div class="brand-section" style="justify-content: center; margin-bottom: 20px;">
                 <div class="brand-logo">MII</div>
                 <h1 class="brand-title">Morfo II</h1>
             </div>
-            <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 8px;">Iniciar Sesión</h2>
-            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px;">Ingresa tus credenciales para acceder al portal</p>
+            <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 6px;">Iniciar Sesión</h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 20px;">Ingresa tus credenciales para acceder al portal médico</p>
             
-            <form id="loginForm" style="display: flex; flex-direction: column; gap: 16px;">
+            <form id="loginForm" style="display: flex; flex-direction: column; gap: 14px;">
                 <div style="display: flex; flex-direction: column; gap: 6px;">
                     <label for="loginEmail" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Correo Electrónico</label>
                     <input type="email" id="loginEmail" required class="search-input" style="padding-left: 16px;" placeholder="ejemplo@morfo.com">
@@ -46,8 +47,17 @@
                     </div>
                 </div>
                 <div id="loginError" style="color: var(--danger-color); font-size: 0.85rem; font-weight: 600; text-align: center; display: none;">Credenciales incorrectas</div>
-                <button type="submit" class="download-btn" style="justify-content: center; margin-top: 8px; width: 100%;">Ingresar</button>
+                <button type="submit" class="download-btn" style="justify-content: center; margin-top: 6px; width: 100%;">Ingresar</button>
             </form>
+
+            <!-- WHATSAPP ACCESS / HELP BANNER -->
+            <div class="login-whatsapp-banner">
+                <span class="whatsapp-question">¿Quieres entrar?</span>
+                <a href="https://wa.me/584129031966?text=Hola,%20deseo%20acceder%20al%20portal%20educativo%20de%20Morfofisiolog%C3%ADa%20II" target="_blank" rel="noopener noreferrer" class="whatsapp-link-btn" id="loginWhatsAppLink">
+                    <svg viewBox="0 0 24 24" class="whatsapp-svg-icon"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.11 7.17C8.94 7.17 8.66 7.24 8.42 7.5C8.18 7.76 7.5 8.4 7.5 9.72C7.5 11.04 8.46 12.31 8.6 12.5C8.74 12.68 10.48 15.38 13.16 16.54C15.38 17.5 15.83 17.31 16.31 17.27C16.79 17.22 17.86 16.63 18.08 16C18.3 15.37 18.3 14.83 18.23 14.72C18.17 14.61 18.01 14.55 17.75 14.42C17.49 14.29 16.23 13.67 16 13.58C15.77 13.49 15.6 13.45 15.43 13.71C15.26 13.97 14.77 14.55 14.62 14.72C14.47 14.89 14.33 14.91 14.07 14.78C13.81 14.65 12.98 14.38 11.99 13.5C11.22 12.81 10.7 11.96 10.55 11.7C10.4 11.44 10.53 11.3 10.66 11.17C10.78 11.05 10.93 10.86 11.06 10.71C11.19 10.56 11.23 10.45 11.32 10.28C11.41 10.11 11.36 9.96 11.3 9.83C11.24 9.7 10.75 8.5 10.55 8C10.35 7.53 10.15 7.59 9.98 7.58C9.83 7.58 9.66 7.57 9.48 7.57C9.31 7.57 9.11 7.17 9.11 7.17Z"/></svg>
+                    <span>Escribe al WhatsApp <strong>+584129031966</strong></span>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -74,9 +84,13 @@
                 <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
                 <span>Temario Semanal</span>
             </a>
-            <a class="nav-item" data-section="atlas" id="navAtlas">
+            <a class="nav-item" data-section="orientadoras" id="navOrientadoras">
+                <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+                <span>Clases Orientadoras</span>
+            </a>
+            <a class="nav-item" data-section="laminarios" id="navLaminarios">
                 <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                <span>Atlas Anat&oacute;mico</span>
+                <span>Laminarios y Atlas</span>
             </a>
             <a class="nav-item" data-section="habilidades" id="navSkills">
                 <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 18.5c-3.73 0-6.93-1.95-8.66-4.88L12 21l8.66-4.38c-1.73 2.93-4.93 4.88-8.66 4.88z"/></svg>
@@ -120,7 +134,7 @@
             <header class="hero-banner">
                 <span class="hero-tag">Segundo A&ntilde;o de Medicina</span>
                 <h2 class="hero-title">Morfofisiolog&iacute;a Humana II</h2>
-                <p class="hero-subtitle">Portal educativo de estudio para el Programa Nacional de Formaci&oacute;n de M&eacute;dicos Integrales Comunitarios. Explora objetivos, temas de estudio y un laminario virtual interactivo completo.</p>
+                <p class="hero-subtitle">Portal educativo de estudio para el Programa Nacional de Formaci&oacute;n de M&eacute;dicos Integrales Comunitarios. Explora objetivos, temas de estudio, clases orientadoras y un laminario virtual interactivo completo.</p>
             </header>
 
             <div class="tab-container">
@@ -166,7 +180,7 @@
                             <button class="tab-btn active" data-tab="orientacion" id="tabWeekOrien">Orientaci&oacute;n</button>
                             <button class="tab-btn" data-tab="practica" id="tabWeekPract">Pr&aacute;ctica Docente</button>
                             <button class="tab-btn" data-tab="consolidacion" id="tabWeekConso">Consolidaci&oacute;n</button>
-                            <button class="tab-btn" data-tab="pdf" id="tabWeekDownloads">Descargas</button>
+                            <button class="tab-btn" data-tab="pdf" id="tabWeekDownloads">Descargas y Materiales</button>
                         </div>
                         
                         <!-- Dynamic week sub-panel contents -->
@@ -178,27 +192,66 @@
             </div>
         </section>
 
-        <!-- SECTION: ATLAS ANAT&Oacute;MICO (IMAGENES GALLERY) -->
-        <section class="content-section" id="atlasSection">
+        <!-- SECTION: CLASES ORIENTADORAS (NEW) -->
+        <section class="content-section" id="orientadorasSection">
             <header class="hero-banner">
-                <span class="hero-tag">Laminario Virtual de Anatom&iacute;a y Embriolog&iacute;a</span>
-                <h2 class="hero-title">Atlas Anat&oacute;mico del Estudiante</h2>
-                <p class="hero-subtitle">Explora y consulta las 346 im&aacute;genes anat&oacute;micas digitales, esquemas de desarrollo embriol&oacute;gico y cortes macrosc&oacute;picos del sistema nervioso central y perif&eacute;rico.</p>
+                <span class="hero-tag">Actividades Orientadoras de Morfofisiología Humana II</span>
+                <h2 class="hero-title">Clases Orientadoras (AO 01 - AO 14)</h2>
+                <p class="hero-subtitle">Accede al compendio completo de las 14 conferencias orientadoras oficiales del programa formativo. Consulta los temas, visualiza los documentos en formato PDF o descárgalos para tu estudio independiente.</p>
             </header>
 
-            <div class="atlas-control-bar">
-                <div class="search-wrapper">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" class="search-input" id="atlasSearchInput" placeholder="Buscar por n&uacute;mero de figura o nombre...">
+            <div class="orientadoras-layout">
+                <div class="orientadoras-sidebar">
+                    <div class="search-wrapper" style="margin-bottom: 16px;">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" class="search-input" id="aoSearchInput" placeholder="Buscar por tema o número de AO...">
+                    </div>
+                    <div class="ao-list" id="aoListContainer">
+                        <!-- Javascript rendered list of 14 AO cards -->
+                    </div>
                 </div>
-                
-                <div class="page-selector" id="atlasPageSelector">
-                    <!-- Javascript generated pages 1 to 28 -->
+
+                <div class="orientadoras-viewer" id="aoViewerContainer">
+                    <!-- Javascript rendered active AO view and PDF preview -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: LAMINARIOS Y ATLAS (ENHANCED) -->
+        <section class="content-section" id="laminariosSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Atlas y Colecciones Microscópicas y Teratológicas</span>
+                <h2 class="hero-title">Laminarios Médicos y Atlas Anatómico</h2>
+                <p class="hero-subtitle">Explora preparados histológicos reales con tinciones diagnósticas, galería teratológica de malformaciones congénitas, atlas anatómico de 346 figuras y presentaciones de diapositivas.</p>
+            </header>
+
+            <!-- Laminarios Sub Tabs -->
+            <div class="tab-container" style="margin-bottom: 24px;">
+                <div class="tab-headers">
+                    <button class="tab-btn active" data-lam-tab="histologico" id="tabLamHisto">🔬 Laminario Histológico (44)</button>
+                    <button class="tab-btn" data-lam-tab="malformaciones" id="tabLamMalfor">🧬 Malformaciones Congénitas (61)</button>
+                    <button class="tab-btn" data-lam-tab="atlas" id="tabLamAtlas">📐 Atlas Anatómico (346)</button>
+                    <button class="tab-btn" data-lam-tab="ppt" id="tabLamPpt">📊 Presentaciones PPT / Diapositivas</button>
                 </div>
             </div>
 
-            <!-- Grid listing of images cards -->
-            <div class="atlas-grid" id="atlasGrid">
+            <div class="atlas-control-bar" id="laminariosControlBar">
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" class="search-input" id="laminariosSearchInput" placeholder="Buscar láminas por nombre, órgano, tinción o diagnóstico...">
+                </div>
+
+                <div class="category-filters" id="laminariosCategoryFilters">
+                    <!-- Dynamic category pills generated by Javascript -->
+                </div>
+                
+                <div class="page-selector" id="atlasPageSelector" style="display: none;">
+                    <!-- Javascript generated pages 1 to 28 for Atlas tab -->
+                </div>
+            </div>
+
+            <!-- Grid listing of items -->
+            <div class="atlas-grid" id="laminariosGrid">
                 <!-- Javascript rendered items -->
             </div>
         </section>
@@ -332,6 +385,7 @@
         <div class="lightbox-content-wrapper">
             <img class="lightbox-img" id="lightboxImg" src="" alt="Vista ampliada">
             <h3 class="lightbox-title" id="lightboxTitle">Figura</h3>
+            <div id="lightboxDetails" class="lightbox-details" style="display: none;"></div>
         </div>
     </div>
 

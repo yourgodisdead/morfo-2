@@ -1,21 +1,797 @@
+/**
+ * Morfofisiología Humana II - Base de Datos Estructurada de Páginas Estáticas
+ * Contenido adaptado con formato visual pedagógico, tarjetas interactivas,
+ * llamadas de atención (callouts) y jerarquía visual optimizada para estudiantes de medicina.
+ */
+
 var STATIC_PAGES_DATA = {
-  "objetivos": "<div class=Section1> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>El sistema de objetivos</b></font></p> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Objetivos Educativos</b></font></p> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">1. Desarrollar una concepci&oacute;n cient&iacute;fica del mundo y de la medicina, a partir del conocimiento de los principios y regularidades del desarrollo y de la organizaci&oacute;n morfofuncional del sistema nervioso, y su integraci&oacute;n en el individuo como ser biopsicosocial en estado de salud o enfermedad. </font></p> <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">2. Desarrollar una conducta profesional de elevado nivel &eacute;tico y humanista, acorde a los mejores valores de su &eacute;poca y tomando como modelo profesional al m&eacute;dico de la atenci&oacute;n primaria de salud. </font></p> <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">3. Desarrollar la independencia cognoscitiva del estudiante mediante la aplicaci&oacute;n de los conocimientos y habilidades adquiridos en el estudio de las caracter&iacute;sticas morfofuncionales del sistema nervioso en situaciones de salud del individuo, la familia, la comunidad y el medio ambiente.<br> <br> 4. Comprender a la salud como situaci&oacute;n de equilibrio arm&oacute;nico y din&aacute;mico entre el individuo, la familia, la comunidad y el medio ambiente, que posee dimensiones sociales, psicol&oacute;gicas y biol&oacute;gicas; y la enfermedad como la expresi&oacute;n general de la ruptura de dicho equilibrio.</font></p> <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">5. Desarrollar actividades encaminadas a identificar aspectos socioecon&oacute;micos, comunitarios, psicol&oacute;gicos y biol&oacute;gicos que puedan influir negativamente en el proceso salud enfermedad y actuar en correspondencia con ellos.</font></p> <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">6. Demostrar con su conducta y comprensi&oacute;n, el valor de la pr&aacute;ctica sistem&aacute;tica de deportes y actividades f&iacute;sicas en la conservaci&oacute;n y mantenimiento del estado de salud de la poblaci&oacute;n.</font></p> <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Objetivos Instructivos</b></font></p> <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><br> 1. Explicar las caracter&iacute;sticas morfofuncionales del sistema nervioso teniendo en cuenta su origen y desarrollo, las particularidades macro y microsc&oacute;picas de sus componentes y sus interrelaciones, as&iacute; como los mecanismos que regulan sus funciones; utilizando la bibliograf&iacute;a b&aacute;sica y complementaria correspondiente, en funci&oacute;n de la formaci&oacute;n del m&eacute;dico integral comunitario. <br> </font></p> <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">2. Interpretar las manifestaciones que se producen en el organismo a consecuencia de las desviaciones del desarrollo o del funcionamiento normal de las estructuras del sistema nervioso sobre la base de la relaci&oacute;n dial&eacute;ctica estructura-funci&oacute;n, en situaciones reales o modeladas, vincul&aacute;ndolos con los principales problemas de salud de la comunidad, auxili&aacute;ndose de la bibliograf&iacute;a b&aacute;sica y complementaria en funci&oacute;n de la formaci&oacute;n del m&eacute;dico integral comunitario.</font></p> <p align=\"justify\"></p> </div>",
-  "clases": "<p align=\"justify\" class=\"texto\"> <font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b><font size=\"3\">El sistema de clases</font></b><br> </font></p> <p align=\"justify\">Las formas de organizaci&oacute;n de la ense&ntilde;anza a utilizar durante el proceso de formaci&oacute;n ser&aacute;n las siguientes: </p> <ul> <li> Encuentro docente (Orientaci&oacute;n de contenidos, consolidaci&oacute;n y evaluaci&oacute;n)</li> <li> Consulta docente o estudio colectivo dirigido.</li> <li> Pr&aacute;ctica Docente.</li> <li> Trabajo independiente.</li> <li> Actividad cient&iacute;fico estudiantil.<br> </li> </ul> <p align=\"justify\"><b>Actividades orientadoras</b>. En ellas el profesor expone los aspectos significativos del contenido tratando de motivar la actividad intelectual del estudiante, no se emplean para repetir el contenido que aparece en el libro de texto, sino para presentar situaciones probl&eacute;micas, hacer enfoques diferentes, organizar y actualizar los conocimientos sobre el tema, de modo tal que el estudiante tenga una gu&iacute;a para su estudio y aprendizaje independientes.<br> </p> <p align=\"justify\"><b>La consolidaci&oacute;n y ejercitaci&oacute;n</b> servir&aacute;n para comprobar que el estudiante ha desarrollado de forma independiente los ejercicios que le fueron orientados, as&iacute; como la calidad con la que se han efectuado los mismos; pudiendo tambi&eacute;n servir para aclarar dudas y enmendar posibles errores. En esta actividad se pueden incorporar otros ejercicios adem&aacute;s de los que contiene el CD, siendo factible realizar discusiones sobre situaciones reales o modeladas relacionadas con el tema en estudio y que han sido planificadas por los profesores o constatadas en la pr&aacute;ctica por los estudiantes en la comunidad.<br> Se tendr&aacute; especial cuidado en atender las particularidades de los estudiantes, relacionadas con la asimilaci&oacute;n de los contenidos. Podr&aacute;n auxiliarse del libro de texto y otros medios de ense&ntilde;anza (galer&iacute;a de im&aacute;genes, laminario virtual, maquetas, radiografias) e interactuar con el profesor, lo cual contribuir&aacute; a consolidar sus conocimientos y desarrollar habilidades para enfrentar las evaluaciones.</p> <p align=\"justify\"><b><font size=\"3\">La evaluaci&oacute;n</font></b> tiene entre sus prop&oacute;sitos fundamentales comprobar el logro de los objetivos docentes, a la vez que contribuye al perfeccionamiento y la consolidaci&oacute;n del aprendizaje de los estudiantes y sirve de retroalimentaci&oacute;n a los profesores sobre la marcha del proceso docente educativo.</p> <p align=\"justify\">Se pueden asumir diferentes modalidades evaluativas; que de acuerdo al tema est&aacute;n sugeridas en el presente documento, siempre tratando de lograr un nivel de interactividad alumno profesor que permita corregir los errores en el aprendizaje y consolidar los conocimientos y habilidades. Los ejercicios a evaluar pueden tener car&aacute;cter te&oacute;rico y/o pr&aacute;ctico, ya sea mediante el uso de:</p> <ul> <li> La galer&iacute;a de im&aacute;genes del CD. </li> <li> Modelos artificiales o naturales.</li> <li> Simulaciones o situaciones reales tomadas de la comunidad.</li> <li> Situaciones tomadas del CD de Neuroanatom&iacute;a Cl&iacute;nica.</li> <li> Radiograf&iacute;as u otros medios imagenol&oacute;gicos.</li> <li> L&aacute;minas histol&oacute;gicas y otros.</li> </ul> <p align=\"justify\">Deben predominar los ejercicios similares a los que contiene el CD de los estudiantes, pero pueden incorporarse otros de acuerdo a las necesidades del grupo y del contexto. Debe utilizarse la ense&ntilde;anza probl&eacute;mica; elaboraci&oacute;n del problema, planteamiento de las posibles hip&oacute;tesis y an&aacute;lisis y discusi&oacute;n de las posibles soluciones hasta llegar a la m&aacute;s acertada, logrando la integraci&oacute;n de los conocimientos te&oacute;ricos y pr&aacute;cticos del tema estudiado. Se debe evaluar a todos los estudiantes, si esto no se lograra durante el desarrollo de la actividad docente, puede realizarse una evaluaci&oacute;n final escrita a aquellos no evaluados.</p> <p align=\"justify\">Se propone realizar la mayor parte de las actividades evaluativas en forma de clase taller, donde puedes utilizar los tipos de preguntas que aparecen en la ejercitaci&oacute;n utilizando adem&aacute;s la galer&iacute;a de im&aacute;genes, modelos anat&oacute;micos etc. Esta actividad debe garantizar el debate, donde los estudiantes puedan defender sus puntos de vista acerca del tema tratado. Otra modalidad puede ser el seminario.</p> <p align=\"justify\"><b>La pr&aacute;ctica docente </b>podr&aacute; ser utilizada con &eacute;xito para la ense&ntilde;anza de la Morfofisiolog&iacute;a Humana, s&oacute;lo si el profesor planifica cuidadosamente las acciones did&aacute;cticas en correspondencia con el programa de la asignatura y la actividad atencional que desarrolla. Durante la misma no se trata de ense&ntilde;ar a los estudiantes las patolog&iacute;as que presentan los pacientes, sino mostrarles sus expresiones morfofuncionales en individuos sanos o enfermos que tienen en su comunidad, lo que es &uacute;til para la motivaci&oacute;n, familiarizaci&oacute;n y formaci&oacute;n de h&aacute;bitos de trabajo. Debe tenerse en cuenta que el estudiante se va a familiarizar con el examen f&iacute;sico del sistema nervioso, por lo que deben tener presente aspectos &eacute;ticos tales como el consentimiento informado del paciente y el secreto profesional.<br> </p> <p align=\"justify\"><b>Encuentros de estudio colectivo dirigido</b>. Tienen como objetivo profundizar en el an&aacute;lisis de los contenidos, generalizar y consolidar conocimientos particulares, desarrollar el di&aacute;logo y la pol&eacute;mica. <br> </p> <p align=\"justify\"><b>Trabajo independiente.</b> Es una de las formas fundamentales de organizaci&oacute;n del trabajo docente. Es planificado por el profesor y se desarrolla con o sin su presencia, dentro del per&iacute;odo lectivo o fuera de &eacute;l. Tiene como objetivo que el estudiante adquiera de forma activa, habilidades, h&aacute;bitos de trabajo y de b&uacute;squeda de informaci&oacute;n, que le permitan la soluci&oacute;n activa de los diferentes problemas de salud y el cumplimiento de los objetivos de la asignatura. Constituye uno de los principios del aprendizaje centrado en el estudiante (ACE), siendo en los primeros a&ntilde;os del programa, la autopreparaci&oacute;n la modalidad m&aacute;s empleada. El profesor orienta la organizaci&oacute;n de esta forma de trabajo docente y le brinda al estudiante la gu&iacute;a para su desarrollo as&iacute; como los medios para llevarla a efecto.<br> </p> <p align=\"justify\"><b>Actividad cient&iacute;fica estudiantil</b>. Es una forma del proceso docente que tiene como objetivo contribuir a formar habilidades y h&aacute;bitos del trabajo t&eacute;cnico y cient&iacute;fico investigativo de los estudiantes. </p> <p align=\"justify\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">.</font><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><br> </font>",
-  "evaluacion": "<font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b><font size=\"3\">El sistema de evaluaci&oacute;n</font></b></font><br> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">La asignatura contempla evaluaciones <b>frecuentes, parciales y final</b>. Las frecuentes comprueban objetivos espec&iacute;ficos en el curso de las conferencias y en las actividades de consolidaci&oacute;n. Las parciales eval&uacute;an objetivos tem&aacute;ticos y la final eval&uacute;a los objetivos generales de la asignatura. <br> </font></p> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Las evaluaciones frecuentes pueden desarrollarse de diferentes formas, ya sea en las actividades de consolidaci&oacute;n, pr&aacute;ctica docente y estudio colectivo dirigido, teniendo su n&uacute;cleo central al inicio de la semana una vez terminado el estudio del contenido de la semana anterior lo que te permite conocer el logro de los objetivos y el grado de asimilaci&oacute;n de los contenidos y/o la adquisici&oacute;n de habilidades.<br> </font></p> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Uno de los prop&oacute;sitos de la evaluaci&oacute;n es dar cumplimiento a los objetivos educativos e instructivos, contribuyendo al desarrollo de la cultura, de la expresi&oacute;n oral, la redacci&oacute;n, interpretaci&oacute;n, an&aacute;lisis y s&iacute;ntesis lo que facilita el grado de desempe&ntilde;o en cada una de las situaciones que puedan presentarse en la comunidad.<br> </font></p> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">La evaluaci&oacute;n final se realiza mediante un examen te&oacute;rico-pr&aacute;ctico, con cuatro horas de duraci&oacute;n donde se exploran los objetivos generales de la asignatura.<br> </font></p> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">La calificaci&oacute;n final se emite mediante un an&aacute;lisis de las evaluaciones frecuentes del trimestre y el examen final, una vez que &eacute;ste haya sido aprobado. </font></p> <p align=\"justify\" class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Las calificaciones se otorgan seg&uacute;n la escala adoptada en la Educaci&oacute;n Superior.<br> En caso de reprobar o desaprobar la asignatura debes informarte de lo establecido en el reglamento docente para estos casos.<br> </font><font face=\"Arial, Helvetica, sans-serif\"> </font> </p> <font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><br> </font>",
-  "estudio": "<p align=\"justify\"><b><font size=\"3\" face=\"Arial, Helvetica, sans-serif\">Recomendaciones para el estudio</font></b><font size=\"3\" face=\"Arial, Helvetica, sans-serif\"><br> </font><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><br> A continuaci&oacute;n te ofrecemos unas orientaciones que te pueden ayudar a enfrentar el estudio de esta asignatura:</font></p> <ul> <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Acost&uacute;mbrate a estudiar siempre por los materiales orientados. Considera que tus notas de clases, por muy bien que las hayas tomado, nunca podr&aacute;n sustituirlo, por lo escuetas que pueden ser.</font></li> <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Cuando estudies evita repetir al pie de la letra el texto; trata primero de captar los conceptos correctamente y despu&eacute;s expresarlos con tus propias palabras.</font></li> <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">No estudies nunca un tema considerando que lo tienes que examinar, sino como un medio de adquirir conocimientos para la carrera que estudias y que te ser&aacute;n tanto m&aacute;s &uacute;tiles cuanto con mayor amplitud y profundidad los asimiles.</font></li> <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">En el estudio la memoria pura tiene poco valor, junto a ella es necesario ejercitar el an&aacute;lisis, el razonamiento y la integraci&oacute;n de los conocimientos de una manera que resulte natural y no forzada.</font></li> <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Al estudiar cada aspecto de un tema, no debes hacerlo como cosa aislada, sino tratando siempre de relacionarlo con los dem&aacute;s del mismo tema y de otros temas ya estudiados.</font></li> <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Cuando en el material que estudias aparece un concepto, un vocablo, etc., cuyo significado no tengas claro, no debes seguir adelante sin investigarlo y aclararlo.</font></li> </ul> <p align=\"justify\">&iquest;C&oacute;mo estudiar y aprender la Asignatura?<br> Atenci&oacute;n estudiante, utilizando la gu&iacute;a y la bibliograf&iacute;a b&aacute;sica, puedes realizar una serie de acciones que, ejecutadas de manera consciente e intencional, pueden contribuir a que tu aprendizaje sea eficiente. </p> <p>Por ello te recomendamos que: <br> </p> <p><b>1. Realices una lectura de estudio de los ac&aacute;pites relacionados en el contenido. </b><br> Si no recuerdas qu&eacute; es y c&oacute;mo se hace una lectura de estudio, te sugerimos leer el p&aacute;rrafo que se brinda a continuaci&oacute;n. <br> </p> <p>La lectura de estudio es un tipo de lectura que te permite profundizar en aquellos contenidos espec&iacute;ficos que debes aprender de la informaci&oacute;n brindada en el material a consultar. Para ello debes, en primer lugar, leer cuidadosamente cada p&aacute;rrafo para identificar las ideas clave empleando el m&eacute;todo de comprensi&oacute;n de lectura (sujeto l&oacute;gico, predicado l&oacute;gico). </p> <p>Esto no quiere decir que tengas que memorizar lo que lees, sino que vas a interactuar con esa informaci&oacute;n a trav&eacute;s de las preguntas &iquest;de qu&eacute;, qui&eacute;n o qui&eacute;nes se habla? y &iquest;qu&eacute; se dice de aquello que se habla? <br> Recuerda que una idea clave puede identificarse entre otras cosas porque: </p> <ul> <li> Identifica o define un objeto, fen&oacute;meno o proceso.</li> <li> Explica las causas que lo originan.</li> <li> Compara o contrasta ideas, objetos, fen&oacute;menos o procesos. </li> <li> Indica el procedimiento para obtener un resultado o para elaborar y/o ejecutar una metodolog&iacute;a.</li> <li> Jerarquiza los hechos por su importancia o por su sucesi&oacute;n temporal. </li> </ul> <p align=\"justify\"><b>&iquest;C&oacute;mo identificar las ideas clave? </b>Para ello puedes auxiliarte de un procedimiento que consiste en preguntarte acerca de lo que se habla. Las preguntas &iquest;Qu&eacute; es?, &iquest;C&oacute;mo es?, &iquest;Por qu&eacute; es? son algunas de las que pueden guiarte en la b&uacute;squeda de esas ideas. </p> <p align=\"justify\"><br> <b>2. Confecciones un resumen de cada uno de estos ac&aacute;pites, incluyendo esquemas, gr&aacute;ficos o representaciones observadas en los materiales utilizados o creados por ti, ya que</b>: <br> Los res&uacute;menes constituyen un elemento importante durante la actividad de estudio, ya que te permiten sintetizar grandes vol&uacute;menes de informaci&oacute;n y porque constituyen una forma breve y precisa de expresar con tus propias palabras los aspectos fundamentales de lo estudiado. Te ayuda a ampliar la capacidad para memorizar ya que te exige reestructurar todo el material de estudio en un esquema l&oacute;gico sobre la base de las relaciones que es posible establecer entre las ideas que se brindan en la informaci&oacute;n que se desea resumir, de manera que s&oacute;lo tengan que recordar una estructura l&oacute;gicamente organizada de palabras y frases claves. <br> &iquest;Sabes c&oacute;mo elaborar res&uacute;menes?, Si a&uacute;n presentas dificultad, a continuaci&oacute;n te recomendamos un conjunto de acciones que puedes tener en cuenta durante su elaboraci&oacute;n. </p> <ul> <li> Realiza una lectura de estudio de todo el material. </li> <li> Selecciona las ideas claves y establece relaciones entre ellas. </li> <li> Expresa en pocas palabras pero con fluidez y precisi&oacute;n, el contenido de la informaci&oacute;n contenida en el material de estudio. <br> Utilizar esta v&iacute;a para fijar la informaci&oacute;n es un valioso medio auxiliar para el estudio independiente que repercute favorablemente en tu aprendizaje, ya que tu participaci&oacute;n reflexiva durante su confecci&oacute;n disminuye la necesidad de repasar varias veces esa informaci&oacute;n, con el consiguiente ahorro de tiempo. Por otra parte, constituye una de las actividades que como profesional desarrollar&aacute;s, ya que los res&uacute;menes son requisitos indispensables para la presentaci&oacute;n y divulgaci&oacute;n de los resultados de la actividad cient&iacute;fico-t&eacute;cnica.<br> 2. Intentes responder las preguntas y solucionar las actividades pr&aacute;cticas que se orientan a medida que vayas estudiando para esta actividad. </li> </ul> <p>A continuaci&oacute;n te presentamos otras formas de fijar la informaci&oacute;n y de estimular la productividad del proceso de aprendizaje que desarrollas, las cuales pueden ser utilizadas para exponer un resumen. Su empleo organizado y consciente puede mejorar tu eficiencia acad&eacute;mica: </p> <ul> <li> Esquema de llaves. Este procedimiento permite expresar la relaci&oacute;n de pertenencia entre los diferentes aspectos de la informaci&oacute;n desde lo m&aacute;s general hasta lo particular. Se representa de izquierda a derecha de manera que se evidencie la relaci&oacute;n de subordinaci&oacute;n que determinan la pertenencia o no de un objeto, proceso o fen&oacute;meno a un tema.</li> <li> Esquemas. Son tambi&eacute;n esquemas de subordinaci&oacute;n. Desde las acciones m&aacute;s generales hasta las espec&iacute;ficas. Constituyen &quot;representaciones gr&aacute;ficas que permiten mostrar la organizaci&oacute;n, estructuraci&oacute;n y jerarquizaci&oacute;n de las acciones que se llevan a cabo durante la realizaci&oacute;n de una tarea&quot;, utilizando para ello la representaci&oacute;n gr&aacute;fica a fin de esquematizar el recorrido mental a seguir para procesar la informaci&oacute;n. En dependencia del uso que de ellos se haga, pueden considerarse como una t&eacute;cnica, recurso, medio, m&eacute;todo y/o estrategia. <br> </li> </ul> <p align=\"justify\">&iquest;Qu&eacute; elementos lo integran? <br> Estos esquemas tienen como componentes b&aacute;sicos: </p> <ul> <li> Las acciones generales a desarrollar durante la orientaci&oacute;n. </li> <li> Las propiedades o caracter&iacute;sticas que conllevan a la toma de decisiones expresada en t&eacute;rminos de interrogantes sobre la(s) cu&aacute;l(es) fundamentar la decisi&oacute;n que se tomar&aacute;. </li> <li> Las acciones espec&iacute;ficas o conclusivas. </li> <li> Los m&eacute;todos y t&eacute;cnicas a emplear para arribar a la soluci&oacute;n o al final del proceso. </li> <li> Se utiliza el rect&aacute;ngulo redondeado para las acciones generales, el hex&aacute;gono para la toma de decisiones y el rect&aacute;ngulo para las acciones espec&iacute;ficas y/o conclusivas. <br> </li> </ul> <p align=\"justify\">Para el abordaje de esta asignatura es muy importante que aprendas a comparar, a plantear suposiciones, a buscar argumentos y que aprendas a valorar, en correspondencia con la situaci&oacute;n planteada. Te preguntar&aacute;s en que consisten estos procedimientos, a continuaci&oacute;n brindaremos una s&iacute;ntesis de sus aspectos cruciales y te recomendamos que consultes el material &iquest;c&oacute;mo estudiar y aprender la asignatura Morfofisiolog&iacute;a?, en el cual encontraras una explicaci&oacute;n detallada de los mismos, as&iacute; como un ejemplo aplicativo y relacionado espec&iacute;ficamente con esta tem&aacute;tica. <br> </p> <p align=\"justify\"><b>&iquest;Qu&eacute; significa aprender a comparar? </b><br> Este procedimiento te permite realizar la acci&oacute;n de comparar teniendo en cuenta los criterios establecidos como base de comparaci&oacute;n y consiste en el establecimiento de semejanzas y diferencias de objetos, hechos, fen&oacute;menos o procesos, sobre la base de las caracter&iacute;sticas comunes y diferentes. Estas semejanzas y diferencias se fundamentan en los criterios de comparaci&oacute;n correspondientes. </p> <p align=\"justify\"><b>&iquest;Qu&eacute; significa plantear suposiciones? </b><br> Mediante este procedimiento puedes, a partir del an&aacute;lisis, plantear posibles respuestas a lo que observas o a las problem&aacute;ticas que puedan surgir durante cualquier actividad que realices. Contribuye a que te entrenes en el planteamiento y formulaci&oacute;n de hip&oacute;tesis, componente estructural del conocimiento cient&iacute;fico. <br> </p> <p align=\"justify\"><b>&iquest;Qu&eacute; significa buscar argumentos? </b><br> Con este procedimiento puedes buscar, integrar y expresar las ideas, que te permitan fundamentar el valor de verdad acerca de un objeto, proceso o fen&oacute;meno. Esto conlleva a que ampl&iacute;es, profundices en el establecimiento de relaciones, apliques los conocimientos con los cuales argumentar las posiciones que asumas y puedes adoptar una posici&oacute;n ante un juicio formulado por ti mismo o por otra persona. <br> </p> <p align=\"justify\"><b>&iquest;Qu&eacute; significa aprender a valorar? </b><br> El procedimiento &quot; aprendo a valorar &quot; consiste en contraponer el objeto de estudio con otros puntos de vista, con sus patrones de conducta y valores morales (s&iacute; algo es bueno o malo, correcto e incorrecto). Pretende que el estudiante aprenda a tomar una posici&oacute;n cr&iacute;tica ante un objeto, hecho o fen&oacute;meno, proceso natural o social, incluso de personalidades, de manera que el desarrollo de estas acciones valorativas se convierta en modos de actuaci&oacute;n del individuo en la sociedad.<br> Este procedimiento promueve que tu aprendizaje sea consciente, s&oacute;lido, ya que cuando valoras es necesario que analice los objetos, hechos o fen&oacute;menos, proceso natural o social en su origen, desarrollo, relaciones y trascendencia. </p> <p>Autocontrola tu actividad de estudio y discutas con otros estudiantes los contenidos. Que anotes en hojas aparte las conclusiones de esta discusi&oacute;n y las dudas que se produzcan en el transcurso de la misma, para aclararlas con el profesor en la consulta docente o en la propia actividad. </p> <p align=\"justify\">&nbsp;</p>",
-  "bibliografia": "<p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b><font size=\"3\">Bibliograf&iacute;a</font></b></font></p> <p><b>Textos B&aacute;sicos:</b></p> <ul> <li> Histolog&iacute;a B&aacute;sica de Junqueira y Carneiro. 6ta edici&oacute;n. </li> <li> Embriolog&iacute;a M&eacute;dica con orientaci&oacute;n cl&iacute;nica de Langman Sadler. 9na edici&oacute;n. </li> <li> Anatom&iacute;a Humana de Garc&iacute;a Porrero y Hurl&eacute;. 4ta edici&oacute;n.</li> <li> Tratado de Fisiolog&iacute;a M&eacute;dica Guyton 10ma edici&oacute;n. </li> <li> Bioqu&iacute;mica M&eacute;dica de Cardell&aacute; L. y colaboradores</li> </ul> <p><b>Textos Complementarios:</b></p> <ul> <li> Anatom&iacute;a con orientaci&oacute;n cl&iacute;nica Keith L. Moore. </li> <li> Histolog&iacute;a, texto y atlas. Ross, Kaye y Pawlina. 4ta edici&oacute;n.</li> <li> Morfolog&iacute;a humana Rosell, Dovale y &Aacute;lvarez Tomo II. </li> <li> Embriolog&iacute;a cl&iacute;nica de Moore Persaud. 7ta edici&oacute;n.</li> <li> Texto de Histolog&iacute;a del colectivo de autores cubanos</li> </ul> <p><b>Materiales Complementarios:</b></p> <ul> <li> Cap&iacute;tulos 8 y 9 del texto de Histolog&iacute;a del colectivo de autores cubanos.</li> <li> Los Trastornos del movimiento. </li> <li> Material complementario Funciones motoras de la m&eacute;dula espinal.</li> <li> Material complementario Sistema nervioso aut&oacute;nomo.</li> <li> Material complementario Sue&ntilde;o y vigilia. Funciones corticales superiores.</li> <li> Material complementario audici&oacute;n.</li> <li> Folleto complementario Fisiolog&iacute;a.</li> <li> Folleto complementario de Anatom&iacute;a II.</li> <li> Miniglosario trastornos celebelares.</li> <li> Material complementario Sistema nervioso central.</li> <li> Material complementario Sistema nervioso perif&eacute;rico.</li> <li> Material complementario Sistema sensoriales especiales.</li> <li> Material did&aacute;ctico Sistema nervioso central y sistema nervioso perif&eacute;rico.</li> <li> Material did&aacute;ctico &oacute;rganos de los sentidos.</li> <li> Material complementario 4ta a 8va semana del desarrollo embrionario.</li> <li> Material complementario embriolog&iacute;a Sistema nervioso.</li> <li> Material complementario. Nervioso, bases moleculares.</li> <li> Material complementario. Nervioso, evaluaci&oacute;n neurol&oacute;gica.</li> <li> CD Neuroanatom&iacute;a cl&iacute;nica.</li> <li> Web de Anatom&iacute;a II.</li> <li> Web de Embriolog&iacute;a. </li> </ul> <p><b>Galer&iacute;a de Im&aacute;genes:</b></p> <ul> <li> Galer&iacute;a Anat&oacute;mica. </li> <li> Laminario Virtual de Histolog&iacute;a. </li> <li> Animaci&oacute;n: Placa neural.</li> <li> Animaci&oacute;n:Tubo neural. </li> <li> Modelos Anat&oacute;micos.</li> </ul> <p>",
-  "ayuda": "<p class=\"titulo\"><font color=\"#000000\" face=\"Arial, Helvetica, sans-serif\">Instrucciones para los usuarios </font></p> <p class=\"textonegro\"><font face=\"Arial, Helvetica, sans-serif\">Navegaci&oacute;n </font></p> <font size=\"2\" face=\"Arial, Helvetica, sans-serif\">La pantalla principal aparece cuando se accede a trav&eacute;s de la p&aacute;gina de presentaci&oacute;n donde podr&aacute; acceder a los 8 subtemas de la Asignatura Morfofisiolog&iacute;a Humana II y a la introducci&oacute;n de la misma. </font> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Siempre se muestra un men&uacute; flotante a la derecha de todas las pantallas donde podr&aacute;s encontrar las informaciones generales de la asignatura.</font></p> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Una vez ubicado dentro de un subtema puedes acceder a las diferentes secciones que se ofrecen en el men&uacute; superior, que incluye los objetivos, los contenidos y su orientaci&oacute;n para el estudio, la orientaci&oacute;n para la pr&aacute;ctica docente y los ejercicios de consolidaci&oacute;n.</font></p> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Los v&iacute;nculos a los contenidos, pr&aacute;ctica docente y consolidaci&oacute;n abren ficheros en formato .PDF que son le&iacute;dos por el Acrobat Reader lo que permite su impresi&oacute;n y extracci&oacute;n del CD.</font></p> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Los hiperv&iacute;nculos dentro de los documentos en PDF permiten revisar diversos recursos, ya sea informaci&oacute;n adicional en texto, galer&iacute;as de im&aacute;genes u otros sitios web incluidos dentro del CD.</font></p> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Puede acceder a cada uno de los temas a trav&eacute;s del men&uacute; izquierdo superior. Este nos permite conocer en que tema se encuentra, pues queda marcado en cada p&aacute;gina la unidad a la que pertenece.<br> </font><font size=\"2\"></font> </p> <p class=\"textonegro\">Visualizaci&oacute;n </p> <font face=\"Arial, Helvetica, sans-serif\" size=\"2\">El presente curso ha sido programado para Internet Explorer 4 o Superiores a una resoluci&oacute;n de 800x600 pixel. </font> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Si presenta problemas con la visualizaci&oacute;n de la pantalla principal, puedes seguir las acciones que te orientamos en la p&aacute;gina <a href=\"activar.htm\"><b>activar</b></a>.</font></p> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Si presenta problema con la visualizaci&oacute;n de los videos o de algunos materiales deber&aacute; ejecutar la instalaci&oacute;n de <b><a href=\"../tools/winmediaplayer/MPSetup.exe\">Windows Media Player 9</a></b> que se encuentra en el directorio de <b>herramientas</b>. A su vez, si no puedes cargas los materiales en PDF debes instalar el <b><a href=\"../tools/acrobat/AR5.0.exe\">Acrobat Reader</a></b> que se encuentra en el mismo directorio.</font></p> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Si desea abandonar este sitio en la parte superior derecha de la p&aacute;gina se encuentra la opci&oacute;n <b>Cerrar</b> que le permitir&aacute; satisfacer su deseo. </font></p> <p></p> <p class=\"texto\">&nbsp;</p>",
-  "creditos": "<p class=\"texto\"><b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Copyright (c) 2006. </font></b></p> <p align=\"justify\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">El CD Rom de la asignatura Morfofisiolog&iacute;a Humana II, est&aacute;&nbsp;elaborado con fines educativos. Representa el soporte para el desarrollo del Programa Nacional de Formaci&oacute;n de Medicos Generales B&aacute;sicos en la Rep&uacute;blica de Cuba. No puede reproducirse con&nbsp;fines comerciales. La reproducci&oacute;n de los materiales est&aacute; permitida siempre y cuando no se modifique su contenido y deje clara constancia del origen del mismo. </font></p> <p class=\"textonegro\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Rep&uacute;blica Bolivariana de Venezuela.<br> Julio 2006.</font></p> <p class=\"textonegro\">&nbsp;</p> <p align=\"justify\" style=\"margin-top: 24px; border-top: 1px dashed var(--border-color); padding-top: 16px;\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Nota de reconstrucci&oacute;n (2026):</b> En 2026 comenz&oacute; el proyecto de reconstrucci&oacute;n de la estructura interna de este CD educativo por parte de <b>@cluster_lg</b> sin fines de lucro, solo con la intenci&oacute;n de reactivar y mejorar esta herramienta que tantos profesionales le ha brindado a Venezuela.</font></p>",
+  "objetivos": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">🎯</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Sistema de Objetivos Formativos de Morfofisiología Humana II</h3>
+          <p class="banner-desc">La asignatura integra los conocimientos embriológicos, histológicos, anatómicos, fisiológicos y bioquímicos del sistema nervioso, los órganos sensoriales y el sistema endocrino, orientados a la formación del Médico Integral Comunitario.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group">
+        <span class="section-subtitle-tag">Dimensión Ética, Humanista y Social</span>
+        <h3 class="section-main-heading">1. Objetivos Educativos</h3>
+        <p class="section-lead-text">Valores, actitudes y principios humanistas que guían la práctica y formación del futuro profesional de la salud:</p>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">1</div>
+            <div class="learning-card-icon">🌍</div>
+          </div>
+          <h4 class="learning-card-title">Concepción Científica y Biopsicosocial</h4>
+          <p class="learning-card-text">Desarrollar una concepción científica del mundo y de la medicina, a partir del conocimiento de los principios y regularidades del desarrollo y de la organización morfofuncional del sistema nervioso, y su integración en el individuo como <strong>ser biopsicosocial</strong> en estado de salud o enfermedad.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">2</div>
+            <div class="learning-card-icon">🩺</div>
+          </div>
+          <h4 class="learning-card-title">Ética y Humanismo en Atención Primaria</h4>
+          <p class="learning-card-text">Desarrollar una conducta profesional de elevado nivel ético y humanista, acorde a los mejores valores de su época y tomando como modelo profesional al médico de la <strong>atención primaria de salud (APS)</strong>.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">3</div>
+            <div class="learning-card-icon">🧠</div>
+          </div>
+          <h4 class="learning-card-title">Independencia Cognoscitiva</h4>
+          <p class="learning-card-text">Desarrollar la independencia cognoscitiva del estudiante mediante la aplicación de los conocimientos y habilidades adquiridos en el estudio de las características morfofuncionales del sistema nervioso en situaciones reales de salud del <strong>individuo, la familia, la comunidad y el medio ambiente</strong>.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">4</div>
+            <div class="learning-card-icon">⚖️</div>
+          </div>
+          <h4 class="learning-card-title">Salud como Equilibrio Dinámico</h4>
+          <p class="learning-card-text">Comprender a la salud como una situación de <strong>equilibrio armónico y dinámico</strong> entre el individuo, la familia, la comunidad y el medio ambiente (con dimensiones sociales, psicológicas y biológicas); y la enfermedad como la expresión de la ruptura de dicho equilibrio.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">5</div>
+            <div class="learning-card-icon">👥</div>
+          </div>
+          <h4 class="learning-card-title">Acción sobre Determinantes Sociales</h4>
+          <p class="learning-card-text">Desarrollar actividades encaminadas a identificar aspectos <strong>socioeconómicos, comunitarios, psicológicos y biológicos</strong> que puedan influir negativamente en el proceso salud-enfermedad y actuar en correspondencia con ellos.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">6</div>
+            <div class="learning-card-icon">🏃</div>
+          </div>
+          <h4 class="learning-card-title">Promoción de Estilos de Vida Saludables</h4>
+          <p class="learning-card-text">Demostrar con su conducta y comprensión, el valor de la práctica sistemática de deportes y actividades físicas en la conservación y mantenimiento del estado de salud de la población.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group" style="margin-top: 40px;">
+        <span class="section-subtitle-tag">Dimensión Técnica y Científica</span>
+        <h3 class="section-main-heading">2. Objetivos Instructivos</h3>
+        <p class="section-lead-text">Competencias biomédicas, conocimientos y habilidades que el estudiante dominará al culminar la asignatura:</p>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card featured">
+          <div class="learning-card-header">
+            <div class="card-number-badge">I</div>
+            <div class="learning-card-icon">🔬</div>
+          </div>
+          <h4 class="learning-card-title">Explicación Morfofuncional Integral</h4>
+          <p class="learning-card-text">Explicar las características morfofuncionales del sistema nervioso teniendo en cuenta su <strong>origen y desarrollo ontogenético</strong>, las particularidades macroscópicas y microscópicas de sus componentes, sus interrelaciones y los mecanismos que regulan sus funciones; utilizando la bibliografía básica, complementaria y los laminarios virtuales en función de la formación médica.</p>
+          <div class="card-tag-pill">Conocimiento Teórico-Práctico</div>
+        </div>
+
+        <div class="learning-card featured">
+          <div class="learning-card-header">
+            <div class="card-number-badge">II</div>
+            <div class="learning-card-icon">⚡</div>
+          </div>
+          <h4 class="learning-card-title">Interpretación de Desviaciones y Clínica</h4>
+          <p class="learning-card-text">Interpretar las manifestaciones clínicas que se producen en el organismo a consecuencia de las <strong>desviaciones del desarrollo (malformaciones congénitas)</strong> o del funcionamiento alterado de las estructuras del sistema nervioso sobre la base de la relación dialéctica <em>estructura-función</em>, vinculándolas con los problemas de salud de la comunidad.</p>
+          <div class="card-tag-pill">Aplicación Clínica y Comunitaria</div>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "clases": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">🏛️</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Sistema de Organización de la Enseñanza</h3>
+          <p class="banner-desc">La formación médica en Morfofisiología Humana II se fundamenta en el Aprendizaje Centrado en el Estudiante (ACE), combinando conferencias orientadoras, laboratorios virtuales, trabajo en la comunidad y autoaprendizaje guiado.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group">
+        <span class="section-subtitle-tag">Estructura Curricular</span>
+        <h3 class="section-main-heading">Formas de Organización Docente</h3>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">01</div>
+            <div class="learning-card-icon">🎯</div>
+          </div>
+          <h4 class="learning-card-title">Actividades Orientadoras (AO)</h4>
+          <p class="learning-card-text">En ellas el docente expone los aspectos nucleares del contenido mediante situaciones problémicas y enfoques integradores. <strong>No sustituyen la lectura del libro</strong>, sino que brindan una brújula metodológica y motivacional para el estudio independiente.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">02</div>
+            <div class="learning-card-icon">📝</div>
+          </div>
+          <h4 class="learning-card-title">Consolidación y Ejercitación</h4>
+          <p class="learning-card-text">Actividades semanales para comprobar la asimilación de los contenidos, resolver dudas, analizar láminas histológicas/anatómicas y debatir casos clínicos modelados a partir de la práctica en la comunidad.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">03</div>
+            <div class="learning-card-icon">🩺</div>
+          </div>
+          <h4 class="learning-card-title">Práctica Docente en la Comunidad</h4>
+          <p class="learning-card-text">Espacio en consultorios populares y centros de diagnóstico donde el estudiante observa las expresiones morfofuncionales en individuos sanos y enfermos, ejercitando el <strong>examen físico del sistema nervioso</strong> con consentimiento informado y estricto secreto profesional.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">04</div>
+            <div class="learning-card-icon">👥</div>
+          </div>
+          <h4 class="learning-card-title">Consulta Docente y Estudio Colectivo</h4>
+          <p class="learning-card-text">Encuentros dirigidos a profundizar en tópicos complejos, generalizar conocimientos teóricos, desarrollar el diálogo médico, aclarar dudas y fomentar la polémica constructiva entre pares.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">05</div>
+            <div class="learning-card-icon">📖</div>
+          </div>
+          <h4 class="learning-card-title">Trabajo Independiente (Autopreparación)</h4>
+          <p class="learning-card-text">Pilar fundamental del aprendizaje donde el estudiante investiga en la bibliografía oficial, confecciona esquemas de síntesis y resuelve los cuestionarios de consolidación a su propio ritmo.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">06</div>
+            <div class="learning-card-icon">🧪</div>
+          </div>
+          <h4 class="learning-card-title">Actividad Científico-Estudiantil</h4>
+          <p class="learning-card-text">Incentiva la formación de habilidades de investigación médica, búsqueda bibliográfica en bases de datos científicas y redacción de informes técnicos de salud comunitaria.</p>
+        </div>
+      </div>
+
+      <div class="study-callout-box info" style="margin-top: 32px;">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <h4>Enfoque Problémico en las Clases Taller</h4>
+          <p>Se fomenta la metodología de enseñanza problémica: planteamiento de la situación de salud, formulación de hipótesis diagnósticas o morfofuncionales y discusión argumentada hasta alcanzar la solución más acertada.</p>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "evaluacion": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">📊</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Sistema de Evaluación del Rendimiento Académico</h3>
+          <p class="banner-desc">La evaluación en Morfofisiología Humana II es continua, formativa y certificativa, asegurando que el estudiante adquiera las competencias cognitivas y procedimentales indispensables para la práctica médica.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group">
+        <span class="section-subtitle-tag">Modalidades y Frecuencia</span>
+        <h3 class="section-main-heading">Componentes del Proceso Evaluativo</h3>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">1</div>
+            <div class="learning-card-icon">📅</div>
+          </div>
+          <h4 class="learning-card-title">Evaluaciones Frecuentes (Semanales)</h4>
+          <p class="learning-card-text">Se aplican al inicio de cada semana mediante preguntas orales, escritas o prácticas en las clases de consolidación y práctica docente. Evalúan los objetivos específicos del tema anterior para retroalimentar de inmediato al estudiante.</p>
+          <div class="card-tag-pill">Formativa y Continua</div>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">2</div>
+            <div class="learning-card-icon">📈</div>
+          </div>
+          <h4 class="learning-card-title">Evaluaciones Parciales</h4>
+          <p class="learning-card-text">Comprueban el dominio integral de los núcleos temáticos mayores (Generalidades y SNP, Médula Espinal y Tronco Encefálico, Corteza y Vías de Conducción, Órganos de los Sentidos y Sistema Endocrino).</p>
+          <div class="card-tag-pill">Cortes Temáticos</div>
+        </div>
+
+        <div class="learning-card featured">
+          <div class="learning-card-header">
+            <div class="card-number-badge">3</div>
+            <div class="learning-card-icon">🎓</div>
+          </div>
+          <h4 class="learning-card-title">Examen Final Teórico-Práctico</h4>
+          <p class="learning-card-text">Prueba integral de <strong>4 horas de duración</strong> donde se exploran todos los objetivos generales de la asignatura a través de preguntas de razonamiento morfofuncional, identificación de preparados en atlas y resolución de casos clínicos.</p>
+          <div class="card-tag-pill">Certificación Final</div>
+        </div>
+      </div>
+
+      <div class="study-callout-box warning" style="margin-top: 32px;">
+        <div class="callout-icon">⚖️</div>
+        <div class="callout-content">
+          <h4>Normativa de Calificación Final</h4>
+          <p>La calificación definitiva se otorga ponderando el récord de evaluaciones frecuentes y parciales junto a la nota del examen final aprobado, conforme a la escala oficial de la Educación Superior Médica.</p>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "estudio": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">💡</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Guía de Estrategias y Consejos para el Estudio Eficiente</h3>
+          <p class="banner-desc">Morfofisiología Humana II es una disciplina densa e integradora. Estas recomendaciones metodológicas te permitirán optimizar tu tiempo, fijar los contenidos a largo plazo y razonar con lógica médica.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group">
+        <span class="section-subtitle-tag">Principios Fundamentales</span>
+        <h3 class="section-main-heading">6 Reglas de Oro para Estudiar Morfofisiología</h3>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">1</div>
+            <div class="learning-card-icon">📚</div>
+          </div>
+          <h4 class="learning-card-title">Estudia por Fuentes Oficiales</h4>
+          <p class="learning-card-text">Acostúmbrate a estudiar siempre por los libros de texto y guías recomendadas. Los apuntes de clase son solo una ayuda rápida y nunca sustituyen la profundidad de los textos.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">2</div>
+            <div class="learning-card-icon">🧠</div>
+          </div>
+          <h4 class="learning-card-title">Comprensión sobre Memoria Pura</h4>
+          <p class="learning-card-text">Evita memorizar al pie de la letra sin entender. Primero capta el principio biológico o anatómico y luego exprésalo con tus propias palabras con precisión técnica.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">3</div>
+            <div class="learning-card-icon">🩺</div>
+          </div>
+          <h4 class="learning-card-title">Estudia con Sentido Clínico</h4>
+          <p class="learning-card-text">No estudies pensando solo en aprobar el examen, sino en cómo ese conocimiento te servirá para diagnosticar y salvar vidas en tu futura práctica comunitaria.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">4</div>
+            <div class="learning-card-icon">🔄</div>
+          </div>
+          <h4 class="learning-card-title">Integración Relacional</h4>
+          <p class="learning-card-text">Nunca veas un órgano o vía nerviosa de forma aislada. Relaciona permanentemente el origen embriológico, la estructura celular microscópica y su función fisiológica.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">5</div>
+            <div class="learning-card-icon">🔍</div>
+          </div>
+          <h4 class="learning-card-title">Aclara cada Vocablo Desconocido</h4>
+          <p class="learning-card-text">Si encuentras un término anatómico, signo clínico o concepto que no domines, no avances sin investigarlo y aclararlo en un glosario o diccionario médico.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <div class="card-number-badge">6</div>
+            <div class="learning-card-icon">📊</div>
+          </div>
+          <h4 class="learning-card-title">Elabora tus Propios Esquemas</h4>
+          <p class="learning-card-text">Sintetiza la información en diagramas de flujo, cuadros sinópticos y esquemas de vías de conducción. La actividad gráfica fija la memoria visual notablemente.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group" style="margin-top: 40px;">
+        <span class="section-subtitle-tag">Técnica de Aprendizaje</span>
+        <h3 class="section-main-heading">Cómo Realizar una Lectura de Estudio Productiva</h3>
+      </div>
+
+      <div class="study-callout-box info">
+        <div class="callout-icon">📖</div>
+        <div class="callout-content">
+          <h4>Método de Interrogación Crítica</h4>
+          <p>Al abordar cada párrafo del texto, hazte 4 preguntas clave para extraer las ideas esenciales:</p>
+          <ul style="margin-top: 10px; margin-left: 20px; line-height: 1.7;">
+            <li><strong>¿Qué es?</strong> &rarr; Define la estructura, núcleo o elemento nervioso.</li>
+            <li><strong>¿Cómo es?</strong> &rarr; Describe su configuración, capas histológicas y relaciones anatómicas.</li>
+            <li><strong>¿Por qué y para qué funciona?</strong> &rarr; Explica el mecanismo fisiológico y la neurotransmisión.</li>
+            <li><strong>¿Qué ocurre si se lesiona?</strong> &rarr; Deduce la manifestación clínica o signo semiológico.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "bibliografia": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">📚</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Bibliografía Básica, Complementaria y Recursos Digitales</h3>
+          <p class="banner-desc">Fuentes bibliográficas oficiales de referencia para el estudio de Morfofisiología Humana II, disponibles en los textos distribuidos en el programa y en este portal interactivo.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group">
+        <span class="section-subtitle-tag">Literatura Obligatoria</span>
+        <h3 class="section-main-heading">1. Textos Básicos</h3>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="ao-badge">Histología</span>
+            <div class="learning-card-icon">🔬</div>
+          </div>
+          <h4 class="learning-card-title">Histología Básica</h4>
+          <p class="learning-card-text"><strong>Autores:</strong> L. C. Junqueira & J. Carneiro.<br><strong>Edición:</strong> 6ta Edición.<br><strong>Temas clave:</strong> Tejido nervioso, neuronas, neuroglias, mielinización y receptores sensoriales.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="ao-badge">Embriología</span>
+            <div class="learning-card-icon">🧬</div>
+          </div>
+          <h4 class="learning-card-title">Embriología Médica con Orientación Clínica</h4>
+          <p class="learning-card-text"><strong>Autor:</strong> T. W. Sadler (Langman).<br><strong>Edición:</strong> 9na Edición.<br><strong>Temas clave:</strong> Desarrollo del tubo neural, vesículas cerebrales y malformaciones congénitas.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="ao-badge">Anatomía</span>
+            <div class="learning-card-icon">📐</div>
+          </div>
+          <h4 class="learning-card-title">Anatomía Humana</h4>
+          <p class="learning-card-text"><strong>Autores:</strong> J. A. García-Porrero & J. M. Hurlé.<br><strong>Edición:</strong> 4ta Edición.<br><strong>Temas clave:</strong> Sistema nervioso central, tronco encefálico, médula espinal y vías de conducción.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="ao-badge">Fisiología</span>
+            <div class="learning-card-icon">⚡</div>
+          </div>
+          <h4 class="learning-card-title">Tratado de Fisiología Médica</h4>
+          <p class="learning-card-text"><strong>Autores:</strong> A. C. Guyton & J. E. Hall.<br><strong>Edición:</strong> 10ma Edición.<br><strong>Temas clave:</strong> Potenciales de membrana, sinapsis, transducción de receptores y control motor.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="ao-badge">Bioquímica</span>
+            <div class="learning-card-icon">🧪</div>
+          </div>
+          <h4 class="learning-card-title">Bioquímica Médica</h4>
+          <p class="learning-card-text"><strong>Autores:</strong> L. Cardellá & colaboradores.<br><strong>Tomo:</strong> Tomo IV.<br><strong>Temas clave:</strong> Metabolismo intermediario cerebral, neurotransmisores y bases iónicas.</p>
+        </div>
+      </div>
+
+      <div class="section-title-group" style="margin-top: 40px;">
+        <span class="section-subtitle-tag">Lecturas de Consulta</span>
+        <h3 class="section-main-heading">2. Textos Complementarios y Folletos Especiales</h3>
+      </div>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="mag-badge">Atlas</span>
+            <div class="learning-card-icon">📖</div>
+          </div>
+          <h4 class="learning-card-title">Histología: Texto y Atlas Color</h4>
+          <p class="learning-card-text">Ross, Kaye & Pawlina (4ta Edición). Preparados con biología celular y molecular de la sinapsis y neuroglia.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="mag-badge">Clínica</span>
+            <div class="learning-card-icon">📖</div>
+          </div>
+          <h4 class="learning-card-title">Embriología Clínica</h4>
+          <p class="learning-card-text">Keith L. Moore & T. V. N. Persaud (7ma Edición). Teratología, defectos del tubo neural y correlaciones perinatales.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="mag-badge">Morfología</span>
+            <div class="learning-card-icon">📖</div>
+          </div>
+          <h4 class="learning-card-title">Morfología Humana (Tomo II)</h4>
+          <p class="learning-card-text">Rosell, Dovale & Álvarez. Integración macro y microscópica de los sistemas nervioso y endocrino.</p>
+        </div>
+
+        <div class="learning-card">
+          <div class="learning-card-header">
+            <span class="mag-badge">Folleto</span>
+            <div class="learning-card-icon">📂</div>
+          </div>
+          <h4 class="learning-card-title">Folletos y Materiales Especiales del CD</h4>
+          <p class="learning-card-text">Folleto de Anatomía II, Folleto de Fisiología I, Neuroanatomía Clínica, Trastornos del Movimiento, Vías Aferentes y Eferentes, Sueño y Vigilia.</p>
+        </div>
+      </div>
+    </div>
+  `,
+
+  "creditos": `
+    <div class="static-content-wrapper">
+      <div class="info-banner-card">
+        <div class="banner-icon-badge">🏛️</div>
+        <div class="banner-text-content">
+          <h3 class="banner-title">Créditos Institucionales y Académicos</h3>
+          <p class="banner-desc">Programa Nacional de Formación de Médicos Integrales Comunitarios de la República Bolivariana de Venezuela en cooperación con la República de Cuba.</p>
+        </div>
+      </div>
+
+      <div class="learning-card" style="padding: 32px; gap: 16px; margin-top: 24px;">
+        <h4 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--text-primary);">Aviso de Propiedad Intelectual y Fines Educativos</h4>
+        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+          El material didáctico de la asignatura <strong>Morfofisiología Humana II</strong> ha sido concebido y estructurado exclusivamente con fines docentes y de formación médica comunitaria. No persigue ningún fin de lucro comercial. Se autoriza su consulta y estudio individual siempre que se preserve la fidelidad de sus contenidos científicos y se reconozca su origen formativo.
+        </p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;">
+          <span class="ao-badge">Caracas / La Habana</span>
+          <span class="mag-badge">Edición Docente Oficial</span>
+          <span class="system-badge">Medicina Integral Comunitaria</span>
+        </div>
+      </div>
+
+      <div class="study-callout-box info" style="margin-top: 24px;">
+        <div class="callout-icon">✨</div>
+        <div class="callout-content">
+          <h4>Reconstrucción y Modernización de Plataforma (2026)</h4>
+          <p>Adaptación a plataforma web interactiva de alto rendimiento con interfaz moderna, diseño adaptable, modo oscuro/claro, base de datos local optimizada, atlas en alta resolución y compatibilidad multiplataforma sin fines de lucro.</p>
+        </div>
+      </div>
+    </div>
+  `,
+
   "habilidades": {
-    "Analizar": "<p class=\"titulo\"><strong><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Analizar. </font></strong></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Definir el objeto, fen&oacute;meno o proceso a analizar. </font></p> <p align=\"justify\" class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Identificar los componentes estructurales del sistema (objeto, fen&oacute;meno o proceso). </font></p> <p align=\"justify\" class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Identificar las propiedades y funciones correspondientes a cada uno de los componentes estructurales. </font></p> <p align=\"justify\" class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Establecer las relaciones entre la estructura, propiedades y funciones de cada uno de los componentes. </font></p> <p align=\"justify\" class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Describir la forma en que se relacionan los diferentes componentes del sistema. </font></p> <div align=\"justify\"> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Determinar la manera en que la estructura, la funci&oacute;n y la forma de relaci&oacute;n de los componentes contribuyen a la estructura y funci&oacute;n del sistema (objeto, fen&oacute;meno o proceso). </font></p> <p class=\"texto\">&nbsp;</p> </div>",
-    "Clasificar": "<p class=\"titulo\"><strong><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Clasificar. </font></strong></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Elegir un fundamento de clasificaci&oacute;n. </font></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Distinguir el conjunto de objetos en todos los grupos o subclases teniendo en cuenta el fundamento elegido. </font></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Elaborar un sistema jer&aacute;rquico de clasificaci&oacute;n. </font></p> <p>&nbsp; </p>",
-    "Comparar": "<p class=\"texto\"><span class=\"titulo\"><strong><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Comparar.</font></strong></span></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Determinar las caracter&iacute;sticas esenciales y no esenciales de los objetos de estudio. </font></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Precisar las caracter&iacute;sticas generales y esenciales. </font></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Establecer el fundamento de la comparaci&oacute;n. </font></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Contraponer los objetos por dicho fundamento. </font></p> <p>&nbsp; </p>",
-    "Definir": "<p class=\"titulo\"><strong><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Definir. </font></strong></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Precisar las caracter&iacute;sticas necesarias y suficientes del objeto de estudio. </font></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Considerar las relaciones de g&eacute;nero y especie. </font></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Distinguir lo espec&iacute;fico de la clase o subclase. </font></p> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Expresar la definici&oacute;n en una forma gramaticalmente correcta. </font></p>",
-    "Describir": "<span class=\"titulo\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Describir</b></font></span><b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">. </font></b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"> </font> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><span class=\"texto\">Definir el objeto, fen&oacute;meno o proceso.<br> Si es conveniente dividir el objeto en sus componentes, el fen&oacute;meno en fases, el proceso en etapas.<br> Destacar las caracter&iacute;sticas fundamentales de cada componente, fase o etapa.<br> Expresar las caracter&iacute;sticas del objeto, el comportamiento del fen&oacute;meno, el funcionamiento del proceso, de acuerdo con sus componentes, fases o etapas.</span><br> </font><font size=\"2\"> </font> </p> <p class=\"texto\">&nbsp;</p>",
-    "Enumerar": "<p class=\"texto\"><span class=\"titulo\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"><b>Enumerar</b></font></span><b><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">.</font></b></p> <p class=\"texto\"><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Identificar los objetos (biomol&eacute;culas, procesos, etc.) que pertenecen a la clase de referencia.<br> Establecer un principio enumerador.<br> Relacionar los objetos seg&uacute;n el principio seleccionado.</font></p> <p></p>",
-    "Explicar": "<span class=\"titulo\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Explicar</b></font></span><b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">. </font></b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"> </font> <p><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><span class=\"texto\">Definir el objeto, fen&oacute;meno o proceso.<br> Clasificar.<br> Enumerar las manifestaciones externas del objeto, proceso o fen&oacute;meno.<br> Describir los eventos internos (esenciales) del objeto, fen&oacute;meno o proceso.<br> Precisar las situaciones que condicionan, limitan o favorecen la existencia del objeto, fen&oacute;meno o proceso.<br> Establecer la secuencia de relaciones causa efecto (esencia-fen&oacute;meno, forma-contenido, necesidad-casualidad) entre los eventos internos y las manifestaciones externas.</span><br> </font></p> <p class=\"texto\">&nbsp;</p>",
-    "Identificar": "<span class=\"titulo\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Identificar</b></font></span><b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">. </font></b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"> </font> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Destacar el concepto de referencia.<br> Establecer el sistema de caracter&iacute;sticas necesarias y suficientes.<br> Verificar si el objeto de estudio (biomol&eacute;cula, proceso, etc.) posee todas las caracter&iacute;sticas necesarias y suficientes.<br> </font><font size=\"2\"> </font> </p>",
-    "Interpretar": "<b><span class=\"titulo\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Interpretar</font></span><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">. </font></b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"> </font> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Analizar el sistema (objeto, proceso o fen&oacute;meno).<br> Identificar los puntos que pueden hacer variar la estructura o el funcionamiento del sistema.<br> Determinar el comportamiento del sistema al producirse variaciones de &eacute;l o del ambiente.<br> Determinar las caracter&iacute;sticas del sistema relacionadas con el concepto de referencia.<br> Determinar las relaciones positivas y negativas entre el sistema y el concepto de referencia.<br> Describir esas relaciones.</font></p> <p></p> <p class=\"texto\">&nbsp;</p>",
-    "Predecir": "<span class=\"titulo\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"><b>Predecir</b></font></span><b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">. </font></b><font size=\"2\" face=\"Arial, Helvetica, sans-serif\"> </font> <p align=\"justify\" class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">Prever fen&oacute;menos de la naturaleza y la sociedad no observados ni establecidos a&uacute;n experimentalmente. La predicci&oacute;n cient&iacute;fica se basa en la generalizaci&oacute;n de datos te&oacute;ricos y experimentales y en la consideraci&oacute;n de las leyes objetivas del desarrollo. Puede ser de 2 tipos fundamentales.</font> <ul> <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Relativa a fen&oacute;menos desconocidos o no registrados en experimentaci&oacute;n pero existentes.</font></li> <li><font face=\"Arial, Helvetica, sans-serif\" size=\"2\"> Relativa a fen&oacute;menos que pueden ocurrir en el futuro si se dan determinadas condiciones.</font></li> </ul> <font face=\"Arial, Helvetica, sans-serif\" size=\"2\">Predecir implica:</font> <font face=\"Arial, Helvetica, sans-serif\" size=\"2\">* Interpretar los objetos, fen&oacute;menos o procesos mediante la determinaci&oacute;n del todo, a partir del significado de sus partes, propiedades, relaciones y leyes de su desarrollo.<br> * Determinar sus componentes, funciones, propiedades, relaciones o regularidades esenciales que est&eacute;n implicados en la situaci&oacute;n antes planteada.<br> * Tener en cuenta las condiciones en las que tienen o no lugar el objeto fen&oacute;meno o proceso que se analiza.<br> * Precisar los datos, te&oacute;ricos experimentales y las leyes objetivas del desarrollo que deben ser consideradas en la soluci&oacute;n del problema planteado.<br> * Inferir las consecuencias, a partir de los hechos analizados, sobre el comportamiento de objetos, fen&oacute;menos o procesos, sus relaciones y las causas que provocan su manifestaci&oacute;n o existencia.</font><br> <p class=\"texto\"><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">.</font></p> <p></p> <p class=\"texto\">&nbsp;</p>"
+    "Analizar": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-01</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Analizar</h3>
+        <p class="habilidad-lead">Consiste en descomponer mentalmente un sistema biológico complejo (órgano, vía nerviosa, reflejo o caso clínico) en sus partes constitutivas para comprender sus propiedades y funciones:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Definir el objeto o proceso a analizar:</strong> Delimitar con claridad la estructura o fenómeno morfofuncional (ej: el arco reflejo rotuliano o la corteza cerebelosa).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Identificar los componentes estructurales:</strong> Reconocer cada una de las partes anatómicas e histológicas que integran el sistema.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Determinar propiedades y funciones de cada parte:</strong> Precisar qué rol desempeña cada componente individual (aferencia, procesamiento, eferencia).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">4</div>
+            <div class="roadmap-body">
+              <strong>Establecer las relaciones funcionales:</strong> Describir cómo interactúan los componentes entre sí para generar la respuesta integrada del organismo.
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Clasificar": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-02</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Clasificar</h3>
+        <p class="habilidad-lead">Permite agrupar elementos biológicos (receptores, neuronas, fibras, pares craneales) en clases homogéneas según un criterio rector:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Elegir el fundamento o criterio de clasificación:</strong> Seleccionar la base lógica (ej: según morfología, según presencia de mielina, según función motora/sensitiva o según origen embriológico).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Distribuir el conjunto de elementos en grupos:</strong> Asignar cada elemento al grupo correspondiente sin solapamientos ni omisiones.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Elaborar el sistema jerárquico:</strong> Ordenar las clases de lo general a lo específico en cuadros sinópticos o taxonomías claras.
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Comparar": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-03</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Comparar</h3>
+        <p class="habilidad-lead">Establece semejanzas y diferencias esenciales entre dos o más entidades anatómicas o fisiológicas bajo los mismos parámetros:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Determinar las características de los objetos de estudio:</strong> Analizar por separado cada elemento a contrastar (ej: Sistema Simpático vs Sistema Parasimpático).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Establecer los criterios de comparación:</strong> Definir los ejes de análisis (origen topográfico, neurotransmisor preganglionar, neurotransmisor posganglionar, efectos viscerales).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Contraponer semejanzas y diferencias:</strong> Confeccionar un cuadro comparativo exhaustivo destacando las particularidades distintivas.
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Definir": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-04</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Definir</h3>
+        <p class="habilidad-lead">Expresa de forma concisa, rigurosa y suficiente la esencia de un concepto científico biomédico:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Identificar el género próximo:</strong> Indicar la categoría general a la que pertenece el concepto (ej: <em>"La neurona es la célula fundamental..."</em>).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Precisar la diferencia específica:</strong> Señalar los rasgos únicos y distintivos que la diferencian de todas las demás (ej: <em>"...altamente especializada en la excitabilidad y conductibilidad del impulso nervioso"</em>).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Redactar con corrección gramatical y concisión:</strong> Formular una proposición clara sin redundancias ni explicaciones accesorias.
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Describir": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-05</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Describir</h3>
+        <p class="habilidad-lead">Relata ordenadamente la morfología externa, interna y relaciones topográficas de un órgano o estructura:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Definir la estructura y su situación anatómica:</strong> Precisar qué es, dónde se ubica y cuáles son sus límites anatómicos.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Detallar la morfología externa:</strong> Caras, bordes, polos, surcos, fisuras y emergencias de nervios.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Detallar la configuración interna:</strong> Disposición de la sustancia gris (núcleos/corteza) y sustancia blanca (tractos/fascículos).
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Enumerar": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-06</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Enumerar</h3>
+        <p class="habilidad-lead">Menciona de forma secuencial y exhaustiva los elementos que integran una categoría científica:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Identificar el conjunto de referencia:</strong> Delimitar la lista a enunciar (ej: los 12 pares de nervios craneales o las 10 capas de la retina).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Establecer el principio de ordenamiento:</strong> Seguir un orden anatómico riguroso (cráneo-caudal, de superficie a profundidad o según orden numérico romano).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Listar con exactitud de nomenclatura:</strong> Enunciar cada elemento empleando la terminología médica internacional aprobada.
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Explicar": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-07</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Explicar</h3>
+        <p class="habilidad-lead">Demuestra las relaciones de causa-efecto que sustentan un mecanismo fisiológico o proceso biológico:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Definir el fenómeno o proceso:</strong> Establecer con precisión qué evento se va a fundamentar (ej: la génesis del potencial de acción o la visión en penumbra).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Describir los eventos internos esenciales:</strong> Detallar los cambios iónicos, moleculares o celulares subyacentes.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Vincular causa y efecto:</strong> Argumentar lógicamente por qué las causas internas producen las manifestaciones observables externas.
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Identificar": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-08</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Identificar</h3>
+        <p class="habilidad-lead">Reconoce la presencia de un elemento o estructura específica en una imagen diagnóstica, lámina histológica o preparado anatómico:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Evocar los rasgos diagnósticos del concepto:</strong> Recordar qué características visuales definen a la estructura (forma celular, tinción, capas).
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Explorar el campo visual o preparado:</strong> Examinar la fotomicrografía o corte anatómico buscando dichos rasgos característicos.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Confirmar y rotular:</strong> Validar la presencia de todas las características necesarias y suficientes para nombrar inequívocamente la estructura.
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Interpretar": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-09</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Interpretar</h3>
+        <p class="habilidad-lead">Atribuye significado clínico y morfofuncional a datos, síntomas, signos semiológicos o resultados de pruebas diagnósticas:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Analizar el cuadro clínico o dato presentado:</strong> Examinar los hallazgos semiológicos del paciente o las alteraciones del preparado.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Localizar el nivel de la lesión (Diagnóstico Topográfico):</strong> Determinar si el compromiso se ubica en nervio periférico, raíz, médula espinal, tronco, cerebelo o corteza.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Fundamentar el mecanismo fisiopatológico:</strong> Explicar cómo la lesión de la estructura anatómica genera las alteraciones funcionales observadas.
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    "Predecir": `
+      <div class="habilidad-detail-box">
+        <div class="habilidad-header-badge">
+          <span class="card-number-badge">H-10</span>
+          <span class="ao-badge">Procedimiento Intelectual</span>
+        </div>
+        <h3 class="habilidad-title">Habilidad Médica: Predecir</h3>
+        <p class="habilidad-lead">Anticipa las consecuencias biológicas, clínicas o epidemiológicas que ocurrirán ante una alteración morfofuncional determinada:</p>
+        
+        <div class="roadmap-container">
+          <div class="roadmap-item">
+            <div class="roadmap-num">1</div>
+            <div class="roadmap-body">
+              <strong>Evaluar las condiciones iniciales:</strong> Conocer el estado basal del sistema nervioso o endocrino y la noxa o lesión aplicada.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">2</div>
+            <div class="roadmap-body">
+              <strong>Aplicar las leyes del desarrollo y la fisiología:</strong> Proyectar la secuencia de eventos que se desencadenarán conforme a los principios biológicos.
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-num">3</div>
+            <div class="roadmap-body">
+              <strong>Deducir el desenlace y evolución clínica:</strong> Formular el pronóstico, posibles complicaciones y conductas preventivas pertinentes.
+            </div>
+          </div>
+        </div>
+      </div>
+    `
   }
 };

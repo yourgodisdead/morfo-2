@@ -41,6 +41,11 @@ document.addEventListener("DOMContentLoaded", function() {
         currentSection: "inicio",
         currentWeek: 1,
         currentWeekTab: "orientacion",
+        currentAO: 1,
+        aoSearch: "",
+        currentLaminarioTab: "histologico",
+        laminarioSearch: "",
+        currentLaminarioFilter: "todos",
         currentAtlasPage: 1,
         atlasSearch: "",
         theme: localStorage.getItem("morfo2_theme") || "dark",
@@ -59,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const lightbox = document.getElementById("lightbox");
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxTitle = document.getElementById("lightboxTitle");
+    const lightboxDetails = document.getElementById("lightboxDetails");
     const lightboxClose = document.getElementById("lightboxClose");
 
     // Authentication DOM Elements
@@ -86,8 +92,9 @@ document.addEventListener("DOMContentLoaded", function() {
     initThemeToggle();
     initInicioTabs();
     initWeekSelector();
+    initOrientadoras();
+    initLaminarios();
     initHabilidades();
-    initAtlas();
     initLightbox();
     initProfile();
     initAdmin();
@@ -132,8 +139,10 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         // Trigger section specific initializations if needed
-        if (sectionId === "atlas") {
-            renderAtlas();
+        if (sectionId === "orientadoras") {
+            renderOrientadoras();
+        } else if (sectionId === "laminarios" || sectionId === "atlas") {
+            renderLaminarios();
         } else if (sectionId === "perfil") {
             renderProfile();
         } else if (sectionId === "admin") {
@@ -287,44 +296,33 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if (tab === "orientacion") {
             if (weekObj.orientaciones && weekObj.orientaciones.length > 0) {
-                // Orientación might span multiple documents or pages.
-                // We combine all pages of the first orientacion doc.
-                let html = `<h2>Guía de Orientación al Contenido</h2>`;
-                weekObj.orientaciones[0].pages.forEach((pageText, idx) => {
-                    html += `<div class="reading-pane" style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: ${idx < weekObj.orientaciones[0].pages.length - 1 ? '1px dashed var(--border-color)' : 'none'}">`;
-                    html += pageText.split("\n").map(line => line.trim() ? `<p>${line}</p>` : "").join("");
-                    html += `</div>`;
-                });
-                contentContainer.innerHTML = html;
+                const combinedPages = weekObj.orientaciones.map(o => o.pages.join("\n\n")).join("\n\n");
+                contentContainer.innerHTML = formatPedagogicalReading(combinedPages, `Guía de Orientación al Contenido - Semana ${state.currentWeek}`, "🧭");
             } else {
                 contentContainer.innerHTML = `<p class="text-muted">No se encontró texto de orientación para esta semana.</p>`;
             }
         } 
         else if (tab === "practica") {
             if (weekObj.practicas && weekObj.practicas.length > 0) {
-                let html = `<h2>Guía de Práctica Docente</h2>`;
-                weekObj.practicas[0].pages.forEach((pageText, idx) => {
-                    html += `<div class="reading-pane" style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: ${idx < weekObj.practicas[0].pages.length - 1 ? '1px dashed var(--border-color)' : 'none'}">`;
-                    html += pageText.split("\n").map(line => line.trim() ? `<p>${line}</p>` : "").join("");
-                    html += `</div>`;
-                });
-                contentContainer.innerHTML = html;
+                const combinedPages = weekObj.practicas.map(p => p.pages.join("\n\n")).join("\n\n");
+                contentContainer.innerHTML = formatPedagogicalReading(combinedPages, `Guía de Práctica Docente y Comunitaria - Semana ${state.currentWeek}`, "🩺");
             } else {
                 contentContainer.innerHTML = `<p class="text-muted">No se encontró texto de práctica docente para esta semana.</p>`;
             }
         } 
         else if (tab === "consolidacion") {
             if (weekObj.consolidaciones && weekObj.consolidaciones.length > 0) {
-                // Extract questions. Since they are formatted inside pages, let's list pages of exercises
-                // and give the student an interactive response block.
-                let html = `<h2>Ejercicios de Consolidación</h2><p class="text-muted" style="margin-bottom: 20px;">Utiliza los cuadros de abajo para escribir tus apuntes y respuestas. Se guardan automáticamente.</p>`;
+                let html = `
+                    <div class="info-banner-card" style="margin-bottom: 24px;">
+                        <div class="banner-icon-badge">📝</div>
+                        <div class="banner-text-content">
+                            <h3 class="banner-title">Ejercicios de Consolidación y Autoaprendizaje - Semana ${state.currentWeek}</h3>
+                            <p class="banner-desc">Resuelve las siguientes preguntas de razonamiento morfofuncional y casos clínicos. Tus respuestas y apuntes se guardan automáticamente en tu navegador.</p>
+                        </div>
+                    </div>
+                `;
                 
                 let combinedText = weekObj.consolidaciones[0].pages.join("\n");
-                
-                // Let's split by numbered questions: e.g., "1.", "2.", "3.", etc.
-                // We'll look for lines starting with "1. ", "2. ", "3. ", "4. ", "5. ", "6. ", "7. ", "8. "
-                // To keep it simple and preserve formatting, we can split by numbered patterns or just list pages with editable notes.
-                // A very neat way is to extract the paragraphs that look like questions, or split by lines that start with numbers.
                 let lines = combinedText.split("\n");
                 let questions = [];
                 let currentQuestion = "";
@@ -332,11 +330,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 lines.forEach(line => {
                     line = line.trim();
                     if (/^\d+\.\s+/.test(line)) {
-                        // Starts a new question
                         if (currentQuestion) questions.push(currentQuestion);
                         currentQuestion = line;
                     } else if (currentQuestion && line) {
-                        // Append to current question
                         currentQuestion += " " + line;
                     }
                 });
@@ -348,21 +344,29 @@ document.addEventListener("DOMContentLoaded", function() {
                         const savedNote = localStorage.getItem(localStorageKey) || "";
                         
                         html += `
-                            <div class="question-block">
-                                <div class="question-text">${qText}</div>
-                                <textarea class="notes-area" data-key="${localStorageKey}" placeholder="Escribe tu respuesta o apuntes de estudio aquí...">${savedNote}</textarea>
+                            <div class="learning-card" style="margin-bottom: 20px;">
+                                <div class="learning-card-header">
+                                    <span class="ao-badge">Pregunta ${index + 1}</span>
+                                    <span class="mag-badge">Autoevaluación</span>
+                                </div>
+                                <div class="learning-card-title" style="font-size: 1.05rem; line-height: 1.5; color: var(--text-primary);">
+                                    ${qText}
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+                                    <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Tus apuntes y respuesta razonada:</label>
+                                    <textarea class="notes-area" data-key="${localStorageKey}" placeholder="Escribe tu razonamiento médico o conclusiones aquí...">${savedNote}</textarea>
+                                </div>
                             </div>
                         `;
                     });
                 } else {
-                    // Fallback to text blocks
                     html += `<div class="reading-pane">${combinedText.split("\n").map(l => l.trim() ? `<p>${l}</p>` : "").join("")}</div>`;
                     
                     const localStorageKey = `morfo2_notes_w${state.currentWeek}_general`;
                     const savedNote = localStorage.getItem(localStorageKey) || "";
                     html += `
-                        <div class="question-block">
-                            <div class="question-text">Cuaderno de Estudio de la Semana</div>
+                        <div class="learning-card">
+                            <div class="learning-card-title">Cuaderno de Estudio de la Semana ${state.currentWeek}</div>
                             <textarea class="notes-area" data-key="${localStorageKey}" placeholder="Anota tus conclusiones o respuestas para esta semana...">${savedNote}</textarea>
                         </div>
                     `;
@@ -385,9 +389,22 @@ document.addEventListener("DOMContentLoaded", function() {
         else if (tab === "pdf") {
             let html = `
                 <h2>Materiales Oficiales de Descarga</h2>
-                <p style="margin-bottom: 24px;">Descarga los documentos originales en formato PDF que venían en el CD de estudio de medicina de segundo año:</p>
+                <p style="margin-bottom: 24px;">Descarga los documentos oficiales de la asignatura: Clases Orientadoras de la semana y Guías de Estudio del CD de Medicina de segundo año:</p>
                 <div class="downloads-container">
             `;
+
+            // Add corresponding Clases Orientadoras (AO) for this week
+            if (typeof CLASES_ORIENTADORAS_DATA !== "undefined") {
+                const weekAos = CLASES_ORIENTADORAS_DATA.filter(ao => ao.week === state.currentWeek);
+                weekAos.forEach(ao => {
+                    html += `
+                        <a href="${ao.pdfFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(168, 85, 247, 0.22)); border-color: var(--accent-color); color: var(--accent-hover);">
+                            <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+                            <span>${ao.ao}: ${ao.title} (Clase Orientadora)</span>
+                        </a>
+                    `;
+                });
+            }
             
             // Add Orientación files
             if (weekObj.orientaciones) {
@@ -396,7 +413,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     html += `
                         <a href="${url}" target="_blank" class="download-btn">
                             <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
-                            <span>${doc.filename} (Orientación)</span>
+                            <span>${doc.filename} (Guía de Orientación)</span>
                         </a>
                     `;
                 });
@@ -433,105 +450,562 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // ==========================================
-    // ANATOMICAL ATLAS / IMAGES GALLERY
-    // ==========================================
+    function formatPedagogicalReading(rawText, title, icon) {
+        if (!rawText) return `<p class="text-muted">Sin contenido disponible.</p>`;
 
-    function initAtlas() {
-        const searchInput = document.getElementById("atlasSearchInput");
-        const pageSelector = document.getElementById("atlasPageSelector");
+        // Clean up repeated OCR header strings
+        let clean = rawText
+            .replace(/MORFOFISIOLOGÍA HUMANA II, ORIENTACIONES AL CONTENIDO/gi, "")
+            .replace(/MORFOFISIOLOGÍA HUMANA II/gi, "")
+            .replace(/Semana \d+\.?\s*Actividad orientadora \d+\.?/gi, "")
+            .replace(/Tema \d+:?[^\n]*/gi, "");
 
-        // Set up search listener
-        searchInput.addEventListener("input", function() {
-            state.atlasSearch = searchInput.value.trim().toLowerCase();
-            renderAtlas();
+        // Split text into paragraphs
+        const paragraphs = clean.split("\n\n").map(p => p.trim()).filter(p => p.length > 0);
+
+        let html = `
+            <div class="static-content-wrapper">
+                <div class="info-banner-card">
+                    <div class="banner-icon-badge">${icon || "📖"}</div>
+                    <div class="banner-text-content">
+                        <h3 class="banner-title">${title}</h3>
+                        <p class="banner-desc">Material formativo oficial estructurado para el aprendizaje activo del estudiante de medicina.</p>
+                    </div>
+                </div>
+        `;
+
+        paragraphs.forEach(p => {
+            let text = p.replace(/\n\s*/g, " ").trim();
+            if (!text) return;
+
+            // Check if paragraph is Objectives section
+            if (/^objetivos/i.test(text)) {
+                html += `
+                    <div class="section-title-group" style="margin-top: 24px;">
+                        <span class="section-subtitle-tag">Guía de Aprendizaje</span>
+                        <h3 class="section-main-heading">🎯 Objetivos de la Semana</h3>
+                    </div>
+                `;
+                return;
+            }
+
+            // Check if paragraph is Contents section
+            if (/^contenidos/i.test(text)) {
+                html += `
+                    <div class="section-title-group" style="margin-top: 24px;">
+                        <span class="section-subtitle-tag">Estructura Temática</span>
+                        <h3 class="section-main-heading">📑 Contenidos Nucleares</h3>
+                    </div>
+                `;
+                return;
+            }
+
+            // Check if paragraph is Orientaciones al contenido
+            if (/^orientaciones al contenido/i.test(text)) {
+                html += `
+                    <div class="section-title-group" style="margin-top: 24px;">
+                        <span class="section-subtitle-tag">Desarrollo Teórico-Práctico</span>
+                        <h3 class="section-main-heading">🧠 Orientaciones al Contenido</h3>
+                    </div>
+                `;
+                return;
+            }
+
+            // Check if numbered objective / point: "1. Describir...", "2. Explicar..."
+            if (/^\d+\.\s+/.test(text)) {
+                const match = text.match(/^(\d+)\.\s+(.*)/);
+                if (match) {
+                    html += `
+                        <div class="roadmap-item">
+                            <div class="roadmap-num">${match[1]}</div>
+                            <div class="roadmap-body">${match[2]}</div>
+                        </div>
+                    `;
+                    return;
+                }
+            }
+
+            // Check if bullet point with bullet symbol (• or 9 or -)
+            if (/^[•\-9]\s+/.test(text) || text.includes("•")) {
+                let bulletLines = text.split(/[•]\s*/).filter(b => b.trim().length > 0);
+                bulletLines.forEach(bLine => {
+                    let cleanedB = bLine.replace(/^[9\-]\s+/, "").trim();
+                    if (cleanedB) {
+                        if (cleanedB.toLowerCase().includes("laminario virtual") || cleanedB.toLowerCase().includes("te recomendamos") || cleanedB.toLowerCase().includes("consulta el texto")) {
+                            html += `
+                                <div class="study-callout-box info" style="margin-bottom: 12px;">
+                                    <div class="callout-icon">💡</div>
+                                    <div class="callout-content">
+                                        <p>${cleanedB}</p>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            html += `
+                                <div class="weekly-bullet-card">
+                                    📌 ${cleanedB}
+                                </div>
+                            `;
+                        }
+                    }
+                });
+                return;
+            }
+
+            // If it's a study recommendation / callout
+            if (text.toLowerCase().includes("te sugerimos") || text.toLowerCase().includes("profundiza") || text.toLowerCase().includes("para facilitar tu estudio")) {
+                html += `
+                    <div class="study-callout-box info" style="margin-bottom: 16px;">
+                        <div class="callout-icon">🔍</div>
+                        <div class="callout-content">
+                            <p>${text}</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Check if section heading: like "Desarrollo embrionario del sistema nervioso.", "Tejido nervioso.", "Arco Reflejo."
+            if (/^[A-ZÁÉÍÓÚ][a-zA-ZáéíóúÁÉÍÓÚñÑ\s,]{3,60}\.$/.test(text) && text.length < 70) {
+                html += `
+                    <div class="weekly-topic-header" style="margin-top: 28px; margin-bottom: 12px;">
+                        <span class="weekly-topic-icon">🧬</span>
+                        <h4 class="weekly-topic-heading">${text.replace(/\.$/, '')}</h4>
+                    </div>
+                `;
+                return;
+            }
+
+            // Regular paragraph inside reading pane
+            html += `<p class="reading-pane" style="font-size: 1.05rem; line-height: 1.75; margin-bottom: 1.25rem; text-align: justify;">${text}</p>`;
         });
 
-        // Set up page buttons (1 to 28)
+        html += `</div>`;
+        return html;
+    }
+
+    // ==========================================
+    // CLASES ORIENTADORAS (AO 01 - AO 14) MODULE
+    // ==========================================
+
+    function initOrientadoras() {
+        const searchInput = document.getElementById("aoSearchInput");
+        if (searchInput) {
+            searchInput.addEventListener("input", function() {
+                state.aoSearch = searchInput.value.trim().toLowerCase();
+                renderOrientadoras(state.currentAO);
+            });
+        }
+    }
+
+    function renderOrientadoras(selectedAoId = 1) {
+        if (typeof CLASES_ORIENTADORAS_DATA === "undefined") return;
+
+        state.currentAO = selectedAoId;
+        const listContainer = document.getElementById("aoListContainer");
+        const viewerContainer = document.getElementById("aoViewerContainer");
+        if (!listContainer || !viewerContainer) return;
+
+        listContainer.innerHTML = "";
+
+        let filteredAos = CLASES_ORIENTADORAS_DATA;
+        if (state.aoSearch) {
+            filteredAos = CLASES_ORIENTADORAS_DATA.filter(ao => 
+                ao.title.toLowerCase().includes(state.aoSearch) ||
+                ao.ao.toLowerCase().includes(state.aoSearch) ||
+                ao.theme.toLowerCase().includes(state.aoSearch) ||
+                ao.description.toLowerCase().includes(state.aoSearch) ||
+                ao.topics.some(t => t.toLowerCase().includes(state.aoSearch))
+            );
+        }
+
+        if (filteredAos.length === 0) {
+            listContainer.innerHTML = `<p class="text-muted" style="padding: 20px; text-align: center;">No se encontraron clases con "${state.aoSearch}".</p>`;
+        } else {
+            filteredAos.forEach(ao => {
+                const card = document.createElement("div");
+                card.className = `ao-card ${ao.id === state.currentAO ? 'active' : ''}`;
+                card.innerHTML = `
+                    <div class="ao-card-top">
+                        <span class="ao-badge">${ao.ao}</span>
+                        <span class="ao-week-tag">Semana ${ao.week}</span>
+                    </div>
+                    <div class="ao-card-title">${ao.title}</div>
+                    <div class="ao-card-theme">${ao.theme}</div>
+                `;
+
+                card.addEventListener("click", () => {
+                    state.currentAO = ao.id;
+                    renderOrientadoras(ao.id);
+                });
+
+                listContainer.appendChild(card);
+            });
+        }
+
+        // Render current selected AO in viewer
+        const currentAoObj = CLASES_ORIENTADORAS_DATA.find(a => a.id === state.currentAO) || CLASES_ORIENTADORAS_DATA[0];
+        if (currentAoObj) {
+            let topicsHtml = currentAoObj.topics.map(t => `<span class="ao-topic-pill">📌 ${t}</span>`).join("");
+
+            viewerContainer.innerHTML = `
+                <div class="ao-viewer-header">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                        <span class="ao-badge" style="font-size: 0.9rem; padding: 4px 12px;">${currentAoObj.ao} &bull; ${currentAoObj.theme}</span>
+                        <span class="hero-tag" style="margin-bottom: 0;">Plan Semana ${currentAoObj.week}</span>
+                    </div>
+                    <h2 style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700; color: var(--text-primary); line-height: 1.3;">
+                        ${currentAoObj.title}
+                    </h2>
+                    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;">
+                        ${currentAoObj.description}
+                    </p>
+                    <div class="ao-topics-container">
+                        ${topicsHtml}
+                    </div>
+                    <div class="ao-viewer-actions">
+                        <a href="${currentAoObj.pdfFile}" target="_blank" class="download-btn" style="background: var(--accent-gradient); color: white;">
+                            <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                            <span>Abrir Documento en Pantalla Completa</span>
+                        </a>
+                        <a href="${currentAoObj.pdfFile}" download class="download-btn">
+                            <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
+                            <span>Descargar PDF</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ao-pdf-frame-wrapper">
+                    <iframe class="ao-pdf-frame" src="${currentAoObj.pdfFile}#toolbar=1&navpanes=0"></iframe>
+                </div>
+            `;
+        }
+    }
+
+    // ==========================================
+    // LAMINARIOS MÉDICOS & ATLAS (ENHANCED MODULE)
+    // ==========================================
+
+    function initLaminarios() {
+        const tabBtns = document.querySelectorAll("[data-lam-tab]");
+        const searchInput = document.getElementById("laminariosSearchInput");
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const targetTab = btn.getAttribute("data-lam-tab");
+                state.currentLaminarioTab = targetTab;
+                state.currentLaminarioFilter = "todos";
+                state.laminarioSearch = "";
+                if (searchInput) searchInput.value = "";
+
+                tabBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                renderLaminarios();
+            });
+        });
+
+        if (searchInput) {
+            searchInput.addEventListener("input", function() {
+                state.laminarioSearch = searchInput.value.trim().toLowerCase();
+                renderLaminarios();
+            });
+        }
+    }
+
+    function renderLaminarios() {
+        const grid = document.getElementById("laminariosGrid");
+        const categoryFilters = document.getElementById("laminariosCategoryFilters");
+        const pageSelector = document.getElementById("atlasPageSelector");
+        if (!grid) return;
+
+        grid.innerHTML = "";
+        const tab = state.currentLaminarioTab;
+
+        // Toggle pagination visibility
+        if (tab === "atlas") {
+            if (pageSelector) {
+                pageSelector.style.display = "flex";
+                renderAtlasPageSelector();
+            }
+            if (categoryFilters) categoryFilters.innerHTML = "";
+        } else {
+            if (pageSelector) pageSelector.style.display = "none";
+        }
+
+        // 1. LAMINARIO HISTOLÓGICO (44 Preparados)
+        if (tab === "histologico") {
+            if (typeof LAMINARIO_HISTOLOGICO_DATA === "undefined") {
+                grid.innerHTML = `<p class="text-muted">Datos histológicos no cargados.</p>`;
+                return;
+            }
+
+            // Build dynamic categories
+            const rawCategories = Array.from(new Set(LAMINARIO_HISTOLOGICO_DATA.map(item => item.category)));
+            renderCategoryFilters(["Todos", ...rawCategories]);
+
+            let items = LAMINARIO_HISTOLOGICO_DATA;
+            if (state.currentLaminarioFilter !== "todos") {
+                items = items.filter(i => i.category.toLowerCase() === state.currentLaminarioFilter.toLowerCase());
+            }
+            if (state.laminarioSearch) {
+                items = items.filter(i => 
+                    i.title.toLowerCase().includes(state.laminarioSearch) ||
+                    i.stain.toLowerCase().includes(state.laminarioSearch) ||
+                    i.magnification.toLowerCase().includes(state.laminarioSearch) ||
+                    i.category.toLowerCase().includes(state.laminarioSearch) ||
+                    i.description.toLowerCase().includes(state.laminarioSearch)
+                );
+            }
+
+            if (items.length === 0) {
+                grid.innerHTML = `<p class="text-muted" style="grid-column: 1/-1; text-align: center; padding: 40px;">No se encontraron láminas histológicas con los criterios de búsqueda.</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "atlas-card";
+                card.innerHTML = `
+                    <div class="atlas-card-img-container">
+                        <img class="atlas-card-img" src="${item.src}" alt="${item.title}" loading="lazy">
+                        <div class="badge-tag-overlay">
+                            <span class="mag-badge">${item.magnification}</span>
+                            <span class="stain-badge">${item.stain}</span>
+                        </div>
+                    </div>
+                    <div class="atlas-card-body">
+                        <span class="atlas-card-category">${item.category} &bull; Lámina ${item.num}</span>
+                        <h4 class="atlas-card-title">${item.title}</h4>
+                        <p class="atlas-card-desc">${item.description}</p>
+                    </div>
+                `;
+
+                card.addEventListener("click", () => {
+                    openLightbox(item.src, item.title, {
+                        badge1: item.magnification,
+                        badge2: item.stain,
+                        category: item.category,
+                        description: item.description
+                    });
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // 2. LAMINARIO DE MALFORMACIONES CONGÉNITAS (61 Casos)
+        else if (tab === "malformaciones") {
+            if (typeof LAMINARIO_MALFORMACIONES_DATA === "undefined") {
+                grid.innerHTML = `<p class="text-muted">Datos de malformaciones no cargados.</p>`;
+                return;
+            }
+
+            const rawSystems = Array.from(new Set(LAMINARIO_MALFORMACIONES_DATA.map(item => item.system)));
+            renderCategoryFilters(["Todos", ...rawSystems]);
+
+            let items = LAMINARIO_MALFORMACIONES_DATA;
+            if (state.currentLaminarioFilter !== "todos") {
+                items = items.filter(i => i.system.toLowerCase() === state.currentLaminarioFilter.toLowerCase());
+            }
+            if (state.laminarioSearch) {
+                items = items.filter(i => 
+                    i.title.toLowerCase().includes(state.laminarioSearch) ||
+                    i.system.toLowerCase().includes(state.laminarioSearch) ||
+                    i.description.toLowerCase().includes(state.laminarioSearch)
+                );
+            }
+
+            if (items.length === 0) {
+                grid.innerHTML = `<p class="text-muted" style="grid-column: 1/-1; text-align: center; padding: 40px;">No se encontraron láminas teratológicas con los criterios de búsqueda.</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "atlas-card";
+                card.innerHTML = `
+                    <div class="atlas-card-img-container">
+                        <img class="atlas-card-img" src="${item.src}" alt="${item.title}" loading="lazy">
+                        <div class="badge-tag-overlay">
+                            <span class="system-badge">Teratología</span>
+                        </div>
+                    </div>
+                    <div class="atlas-card-body">
+                        <span class="atlas-card-category" style="color: #fbbf24;">${item.system}</span>
+                        <h4 class="atlas-card-title">${item.title}</h4>
+                        <p class="atlas-card-desc">${item.description}</p>
+                    </div>
+                `;
+
+                card.addEventListener("click", () => {
+                    openLightbox(item.src, item.title, {
+                        badge1: "Embriopatía / Teratología",
+                        badge2: item.system,
+                        category: "Malformación Congénita",
+                        description: item.description
+                    });
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // 3. ATLAS ANATÓMICO (346 Figuras con Paginación)
+        else if (tab === "atlas") {
+            if (typeof GALLERY_DATA === "undefined") {
+                grid.innerHTML = `<p class="text-muted">Datos del atlas anatómico no cargados.</p>`;
+                return;
+            }
+
+            let figuresToShow = [];
+            if (state.laminarioSearch !== "") {
+                GALLERY_DATA.forEach(p => {
+                    p.figures.forEach(fig => {
+                        if (fig.label.toLowerCase().includes(state.laminarioSearch)) {
+                            figuresToShow.push({
+                                page: p.page,
+                                label: fig.label,
+                                src: fig.src
+                            });
+                        }
+                    });
+                });
+            } else {
+                const pageData = GALLERY_DATA.find(p => p.page === state.currentAtlasPage);
+                if (pageData && pageData.figures) {
+                    pageData.figures.forEach(fig => {
+                        figuresToShow.push({
+                            page: pageData.page,
+                            label: fig.label,
+                            src: fig.src
+                        });
+                    });
+                }
+            }
+
+            if (figuresToShow.length === 0) {
+                grid.innerHTML = `<p class="text-muted" style="grid-column: 1/-1; text-align: center; padding: 40px;">Ninguna figura coincide con "${state.laminarioSearch}".</p>`;
+                return;
+            }
+
+            figuresToShow.forEach(fig => {
+                const card = document.createElement("div");
+                card.className = "atlas-card";
+                const displayLabel = isNaN(fig.label) ? fig.label : `Figura ${fig.label}`;
+
+                card.innerHTML = `
+                    <div class="atlas-card-img-container">
+                        <img class="atlas-card-img" src="${fig.src}" alt="${displayLabel}" loading="lazy">
+                        <div class="badge-tag-overlay">
+                            <span class="mag-badge">Pág. ${fig.page}</span>
+                        </div>
+                    </div>
+                    <div class="atlas-card-body">
+                        <span class="atlas-card-category">Atlas Anatómico &bull; Sistema Nervioso</span>
+                        <h4 class="atlas-card-title">${displayLabel}</h4>
+                        <p class="atlas-card-desc">Corte y esquema anatómico/embriológico oficial del CD de Morfofisiología II.</p>
+                    </div>
+                `;
+
+                card.addEventListener("click", () => {
+                    openLightbox(fig.src, displayLabel, {
+                        badge1: `Página ${fig.page}`,
+                        badge2: "Atlas Anatómico",
+                        category: "Esquema Anatómico / Disección",
+                        description: `Figura anatómica ${displayLabel} correspondiente al compendio del Atlas de Morfofisiología Humana II.`
+                    });
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // 4. PRESENTACIONES PPT & DIAPOSITIVAS (3 Compendios)
+        else if (tab === "ppt") {
+            if (typeof LAMINARIOS_PPT_DATA === "undefined") {
+                grid.innerHTML = `<p class="text-muted">Presentaciones no encontradas.</p>`;
+                return;
+            }
+
+            if (categoryFilters) categoryFilters.innerHTML = "";
+
+            LAMINARIOS_PPT_DATA.forEach(ppt => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.style.padding = "32px";
+                card.style.display = "flex";
+                card.style.flexDirection = "column";
+                card.style.justifyContent = "space-between";
+                card.style.gap = "16px";
+
+                card.innerHTML = `
+                    <div style="display: flex; align-items: flex-start; gap: 16px;">
+                        <div class="card-icon" style="font-size: 2.5rem; width: 64px; height: 64px; flex-shrink: 0; background: rgba(239, 68, 68, 0.12); color: #f87171;">📊</div>
+                        <div>
+                            <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
+                                <span class="ao-badge">${ppt.format}</span>
+                                <span class="mag-badge">${ppt.size}</span>
+                            </div>
+                            <h3 style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">${ppt.title}</h3>
+                            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">${ppt.description}</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+                        <a href="${ppt.file}" download class="download-btn" style="width: 100%; justify-content: center;">
+                            <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
+                            <span>Descargar Presentación (${ppt.size})</span>
+                        </a>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+    }
+
+    function renderCategoryFilters(categories) {
+        const container = document.getElementById("laminariosCategoryFilters");
+        if (!container) return;
+        container.innerHTML = "";
+
+        categories.forEach(cat => {
+            const pill = document.createElement("button");
+            const isSelected = (cat.toLowerCase() === state.currentLaminarioFilter.toLowerCase()) || 
+                               (cat === "Todos" && state.currentLaminarioFilter === "todos");
+            pill.className = `cat-pill ${isSelected ? 'active' : ''}`;
+            pill.textContent = cat;
+
+            pill.addEventListener("click", () => {
+                state.currentLaminarioFilter = (cat === "Todos") ? "todos" : cat;
+                renderLaminarios();
+            });
+
+            container.appendChild(pill);
+        });
+    }
+
+    function renderAtlasPageSelector() {
+        const pageSelector = document.getElementById("atlasPageSelector");
+        if (!pageSelector) return;
         pageSelector.innerHTML = "";
+
         for (let p = 1; p <= 28; p++) {
             const btn = document.createElement("button");
             btn.className = `page-num-btn ${p === state.currentAtlasPage ? 'active' : ''}`;
             btn.textContent = `Pág. ${p}`;
             btn.addEventListener("click", () => {
                 state.currentAtlasPage = p;
-                state.atlasSearch = ""; // Clear search on page change
-                searchInput.value = "";
+                state.laminarioSearch = "";
+                const searchInput = document.getElementById("laminariosSearchInput");
+                if (searchInput) searchInput.value = "";
                 
                 document.querySelectorAll(".page-num-btn").forEach(el => el.classList.remove("active"));
                 btn.classList.add("active");
-                renderAtlas();
+                renderLaminarios();
             });
             pageSelector.appendChild(btn);
         }
-    }
-
-    function renderAtlas() {
-        const grid = document.getElementById("atlasGrid");
-        grid.innerHTML = "";
-
-        if (typeof GALLERY_DATA === "undefined") {
-            grid.innerHTML = `<p class="text-muted">Datos del atlas no cargados. Revisa gallery_data.js</p>`;
-            return;
-        }
-
-        let figuresToShow = [];
-
-        if (state.atlasSearch !== "") {
-            // Search across ALL pages
-            GALLERY_DATA.forEach(p => {
-                p.figures.forEach(fig => {
-                    if (fig.label.toLowerCase().includes(state.atlasSearch)) {
-                        figuresToShow.push({
-                            page: p.page,
-                            label: fig.label,
-                            src: fig.src
-                        });
-                    }
-                });
-            });
-        } else {
-            // Just show current page
-            const pageData = GALLERY_DATA.find(p => p.page === state.currentAtlasPage);
-            if (pageData && pageData.figures) {
-                pageData.figures.forEach(fig => {
-                    figuresToShow.push({
-                        page: pageData.page,
-                        label: fig.label,
-                        src: fig.src
-                    });
-                });
-            }
-        }
-
-        if (figuresToShow.length === 0) {
-            grid.innerHTML = `<p class="text-muted" style="grid-column: 1/-1; text-align: center; padding: 40px;">Ninguna figura coincide con la búsqueda "${state.atlasSearch}".</p>`;
-            return;
-        }
-
-        figuresToShow.forEach(fig => {
-            const card = document.createElement("div");
-            card.className = "atlas-card";
-            
-            // Format labels like "Figura 721"
-            const displayLabel = isNaN(fig.label) ? fig.label : `Fig. ${fig.label}`;
-            
-            card.innerHTML = `
-                <div class="atlas-img-wrapper">
-                    <img class="atlas-img" src="${fig.src}" alt="${displayLabel}" loading="lazy">
-                </div>
-                <div class="atlas-card-info">
-                    <span class="atlas-card-title">${displayLabel}</span>
-                    <span class="atlas-card-badge">Pág. ${fig.page}</span>
-                </div>
-            `;
-            
-            card.addEventListener("click", () => {
-                openLightbox(fig.src, displayLabel);
-            });
-            
-            grid.appendChild(card);
-        });
     }
 
     // ==========================================
@@ -575,16 +1049,7 @@ document.addEventListener("DOMContentLoaded", function() {
             `;
 
             card.addEventListener("click", () => {
-                let html = `
-                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-                        <span style="font-size: 3rem;">${iconMap[name] || "📚"}</span>
-                        <h2 style="font-size: 2rem; font-family: var(--font-heading); font-weight: 800;">Habilidad: ${name}</h2>
-                    </div>
-                    <div class="reading-pane" style="background: var(--bg-card); padding: 32px; border-radius: var(--border-radius-lg); border: 1px solid var(--border-color);">
-                        ${habs[name]}
-                    </div>
-                `;
-                detailsContainer.innerHTML = html;
+                detailsContainer.innerHTML = habs[name];
                 detailsContainer.scrollIntoView({ behavior: 'smooth' });
             });
 
@@ -593,15 +1058,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Load Analizar as default detail
         if (habs["Analizar"]) {
-            detailsContainer.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-                    <span style="font-size: 3rem;">🔍</span>
-                    <h2 style="font-size: 2rem; font-family: var(--font-heading); font-weight: 800;">Habilidad: Analizar</h2>
-                </div>
-                <div class="reading-pane" style="background: var(--bg-card); padding: 32px; border-radius: var(--border-radius-lg); border: 1px solid var(--border-color);">
-                    ${habs["Analizar"]}
-                </div>
-            `;
+            detailsContainer.innerHTML = habs["Analizar"];
         }
     }
 
@@ -625,15 +1082,37 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function openLightbox(src, title) {
+    function openLightbox(src, title, details = null) {
         lightboxImg.src = src;
         lightboxTitle.textContent = title;
+
+        if (details && lightboxDetails) {
+            let tagsHtml = "";
+            if (details.badge1) tagsHtml += `<span class="mag-badge">${details.badge1}</span>`;
+            if (details.badge2) tagsHtml += `<span class="stain-badge">${details.badge2}</span>`;
+            if (details.category) tagsHtml += `<span class="system-badge">${details.category}</span>`;
+
+            lightboxDetails.innerHTML = `
+                <div class="lightbox-tags">${tagsHtml}</div>
+                <h4 style="margin-top: 10px;">${title}</h4>
+                <p>${details.description || ''}</p>
+            `;
+            lightboxDetails.style.display = "block";
+        } else if (lightboxDetails) {
+            lightboxDetails.style.display = "none";
+            lightboxDetails.innerHTML = "";
+        }
+
         lightbox.classList.add("active");
     }
 
     function closeLightbox() {
         lightbox.classList.remove("active");
         lightboxImg.src = "";
+        if (lightboxDetails) {
+            lightboxDetails.style.display = "none";
+            lightboxDetails.innerHTML = "";
+        }
     }
 
     // ==========================================

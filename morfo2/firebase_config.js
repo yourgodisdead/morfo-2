@@ -1,15 +1,13 @@
 ﻿// ============================================================
-//  MORFO II – Firebase Configuration
-//  INSTRUCCIONES: Reemplaza los valores de abajo con los datos
-//  de tu proyecto Firebase (los encontrarás en:
-//  Firebase Console -> Configuracion del proyecto -> General -> Tus apps -> SDK snippet)
+//  MORFO II - Firebase Configuration
+//  Proyecto: morfo2-portal
 // ============================================================
 
 const FIREBASE_CONFIG = {
-    apiKey: "REEMPLAZA_CON_TU_apiKey",
-    authDomain: "REEMPLAZA_CON_TU_authDomain",
-    projectId: "REEMPLAZA_CON_TU_projectId",
-    storageBucket: "REEMPLAZA_CON_TU_storageBucket",
-    messagingSenderId: "REEMPLAZA_CON_TU_messagingSenderId",
-    appId: "REEMPLAZA_CON_TU_appId"
+    apiKey: "AIzaSyAR9Uw2yTzeFC3ldqQLu5CFBzzY_3vAXMI",
+    authDomain: "morfo2-portal.firebaseapp.com",
+    projectId: "morfo2-portal",
+    storageBucket: "morfo2-portal.firebasestorage.app",
+    messagingSenderId: "940380390237",
+    appId: "1:940380390237:web:40b149e0f9aa521d4f5eb4"
 };

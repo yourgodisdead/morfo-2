@@ -109,6 +109,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     const btnCourseM2 = document.getElementById("btnCourseM2");
     const btnCourseM3 = document.getElementById("btnCourseM3");
 
+    // Deep Info / Audit Modal DOM
+    const deepInfoModal = document.getElementById("deepInfoModal");
+    const deepInfoCloseBtn = document.getElementById("deepInfoCloseBtn");
+
     // Initialize App Modules
     updateThemeToggleUI();
     initCourseSelector();
@@ -1958,39 +1962,42 @@ document.addEventListener("DOMContentLoaded", async function() {
     // ==========================================
     // DEEP INFO / AUDIT LOG MODAL (ADMIN ONLY)
     // ==========================================
-    const deepInfoModal = document.getElementById("deepInfoModal");
-    const deepInfoCloseBtn = document.getElementById("deepInfoCloseBtn");
-
     function initDeepInfoModal() {
-        if (deepInfoCloseBtn) {
-            deepInfoCloseBtn.addEventListener("click", () => {
-                deepInfoModal.classList.remove("active");
+        const modal = deepInfoModal || document.getElementById("deepInfoModal");
+        const closeBtn = deepInfoCloseBtn || document.getElementById("deepInfoCloseBtn");
+
+        if (closeBtn && modal) {
+            closeBtn.addEventListener("click", () => {
+                modal.classList.remove("active");
             });
         }
         
-        // Deep tab button logic
-        const deepTabs = deepInfoModal.querySelectorAll(".tab-headers .tab-btn");
-        const deepPanels = deepInfoModal.querySelectorAll(".deep-info-body .deep-tab-panel");
-        
-        deepTabs.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const targetPanelId = btn.getAttribute("data-deep-tab");
-                deepTabs.forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-                
-                deepPanels.forEach(p => {
-                    if (p.id === "deepPanel" + targetPanelId.charAt(0).toUpperCase() + targetPanelId.slice(1)) {
-                        p.style.display = "block";
-                    } else {
-                        p.style.display = "none";
-                    }
+        if (modal) {
+            // Deep tab button logic
+            const deepTabs = modal.querySelectorAll(".tab-headers .tab-btn");
+            const deepPanels = modal.querySelectorAll(".deep-info-body .deep-tab-panel");
+            
+            deepTabs.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const targetPanelId = btn.getAttribute("data-deep-tab");
+                    deepTabs.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    
+                    deepPanels.forEach(p => {
+                        if (p.id === "deepPanel" + targetPanelId.charAt(0).toUpperCase() + targetPanelId.slice(1)) {
+                            p.style.display = "block";
+                        } else {
+                            p.style.display = "none";
+                        }
+                    });
                 });
             });
-        });
+        }
     }
 
     async function openDeepInfoModal(email) {
-        if (!deepInfoModal) return;
+        const modal = deepInfoModal || document.getElementById("deepInfoModal");
+        if (!modal) return;
 
         try {
             const u = await db_getUserByEmail(email);
@@ -1999,19 +2006,37 @@ document.addEventListener("DOMContentLoaded", async function() {
             state.currentDeepUser = u;
 
             // Load Header data
-            document.getElementById("deepInfoAvatar").src = u.photo || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
-            document.getElementById("deepInfoName").textContent = u.name || "Sin nombre registrado";
-            document.getElementById("deepInfoEmail").textContent = u.email;
-            document.getElementById("deepInfoPhone").textContent = u.phone || "Sin teléfono";
-            document.getElementById("deepInfoEnrollment").textContent = u.enrollmentYear || "N/A";
-            document.getElementById("deepInfoYearBadge").textContent = u.currentYear || "N/A";
-            document.getElementById("deepInfoStateBadge").textContent = u.stateOrigin || "Sin Estado";
+            const avatar = document.getElementById("deepInfoAvatar");
+            if (avatar) avatar.src = u.photo || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+            
+            const nameEl = document.getElementById("deepInfoName");
+            if (nameEl) nameEl.textContent = u.name || "Sin nombre registrado";
+            
+            const emailEl = document.getElementById("deepInfoEmail");
+            if (emailEl) emailEl.textContent = u.email;
+            
+            const phoneEl = document.getElementById("deepInfoPhone");
+            if (phoneEl) phoneEl.textContent = u.phone || "Sin teléfono";
+            
+            const enrollEl = document.getElementById("deepInfoEnrollment");
+            if (enrollEl) enrollEl.textContent = u.enrollmentYear || "N/A";
+            
+            const yearBadge = document.getElementById("deepInfoYearBadge");
+            if (yearBadge) yearBadge.textContent = u.currentYear || "N/A";
+            
+            const stateBadge = document.getElementById("deepInfoStateBadge");
+            if (stateBadge) stateBadge.textContent = u.stateOrigin || "Sin Estado";
 
             // Update Log counts
             const log = u.activityLog || {};
-            document.getElementById("deepCountAi").textContent = (log.aiChats || []).length;
-            document.getElementById("deepCountDownloads").textContent = (log.downloads || []).length;
-            document.getElementById("deepCountNav").textContent = (log.navigation || []).length;
+            const countAi = document.getElementById("deepCountAi");
+            if (countAi) countAi.textContent = (log.aiChats || []).length;
+            
+            const countDl = document.getElementById("deepCountDownloads");
+            if (countDl) countDl.textContent = (log.downloads || []).length;
+            
+            const countNav = document.getElementById("deepCountNav");
+            if (countNav) countNav.textContent = (log.navigation || []).length;
 
             // Render deep panels contents
             renderDeepCredentialsPanel(u);
@@ -2020,10 +2045,11 @@ document.addEventListener("DOMContentLoaded", async function() {
             renderDeepNavigationPanel(log.navigation || []);
             renderDeepNotesPanel(u);
 
-            deepInfoModal.classList.add("active");
+            modal.classList.add("active");
             
             // Set tab 1 active by default
-            deepInfoModal.querySelector(".tab-headers .tab-btn").click();
+            const firstTab = modal.querySelector(".tab-headers .tab-btn");
+            if (firstTab) firstTab.click();
 
         } catch (err) {
             console.error("Open deep info modal fail:", err);

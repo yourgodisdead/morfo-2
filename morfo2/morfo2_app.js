@@ -1,6 +1,95 @@
 // Morfofisiología Humana II - Application Logic (Single Page Application Controller)
+// Firebase-powered: Firestore replaces localStorage for user management
 
-document.addEventListener("DOMContentLoaded", function() {
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+    collection,
+    getDocs,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Initialize Firebase using config from firebase_config.js (loaded before this module)
+const _fbApp = initializeApp(FIREBASE_CONFIG);
+const _db = getFirestore(_fbApp);
+
+// ============================================================
+//  FIREBASE DATABASE HELPERS  (replace all localStorage calls)
+// ============================================================
+
+async function db_getAllUsers() {
+    const snap = await getDocs(collection(_db, "users"));
+    const users = [];
+    snap.forEach(ds => users.push({ _id: ds.id, ...ds.data() }));
+    return users;
+}
+
+async function db_getUserByEmail(email) {
+    const ds = await getDoc(doc(_db, "users", email.toLowerCase()));
+    return ds.exists() ? { _id: ds.id, ...ds.data() } : null;
+}
+
+async function db_createUser(u) {
+    const safeRole = u.email === "lams210488@gmail.com" ? "superuser" : "usuario";
+    const data = {
+        name: u.name || "",
+        phone: u.phone || "",
+        email: u.email.toLowerCase(),
+        stateOrigin: u.stateOrigin || "",
+        enrollmentYear: u.enrollmentYear || "",
+        currentYear: u.currentYear || "",
+        password: u.password || "",
+        role: safeRole,
+        photo: u.photo || "",
+        activeSessionToken: null,
+        activityLog: {
+            aiChats: [],
+            downloads: [],
+            navigation: [{ section: "inicio", name: "Inicio", timestamp: new Date().toISOString() }],
+            notes: []
+        },
+        createdAt: serverTimestamp()
+    };
+    await setDoc(doc(_db, "users", u.email.toLowerCase()), data);
+    return data;
+}
+
+async function db_updateUser(email, updates) {
+    await updateDoc(doc(_db, "users", email.toLowerCase()), updates);
+}
+
+async function db_deleteUser(email) {
+    await deleteDoc(doc(_db, "users", email.toLowerCase()));
+}
+
+async function db_ensureSuperuser() {
+    const superEmail = "lams210488@gmail.com";
+    const existing = await db_getUserByEmail(superEmail);
+    if (!existing) {
+        await db_createUser({
+            name: "Leonardo Morales",
+            email: superEmail,
+            password: "bazzinga123",
+            phone: "+584129031966",
+            stateOrigin: "Distrito Capital",
+            enrollmentYear: "2020",
+            currentYear: "Docente / Superusuario",
+            role: "superuser",
+            photo: ""
+        });
+        console.log("[Morfo2] Superusuario creado en Firestore.");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", async function() {
+    // Ensure superuser exists in Firestore on first load
+    try { await db_ensureSuperuser(); } catch(e) { console.warn("db_ensureSuperuser:", e); }
+
     // Venezuela 24 Federal Entities Geographic Data
     const VENEZUELA_STATES_DATA = {
         "Amazonas": { lat: 5.6639, lng: -67.6236, capital: "Puerto Ayacucho" },
@@ -30,166 +119,10 @@ document.addEventListener("DOMContentLoaded", function() {
         "Dependencias Federales": { lat: 11.8575, lng: -66.7583, capital: "Los Roques" }
     };
 
-    // Initialize Local Database of Users
-    if (!localStorage.getItem("morfo2_users")) {
-        const defaultUsers = [
-            {
-                name: "Leonardo Morales",
-                email: "lams210488@gmail.com",
-                password: "bazzinga123",
-                phone: "+584129031966",
-                stateOrigin: "Distrito Capital",
-                enrollmentYear: "2020",
-                currentYear: "Docente / Superusuario",
-                role: "superuser",
-                photo: "",
-                activityLog: {
-                    aiChats: [],
-                    downloads: [],
-                    navigation: [{ section: "admin", name: "Panel de Administración", timestamp: new Date().toISOString() }],
-                    notes: []
-                }
-            },
-            {
-                name: "Ana Gabriela Rivas",
-                email: "ana.rivas@estudiante.morfo.edu.ve",
-                password: "estudiante123",
-                phone: "+584146123456",
-                stateOrigin: "Zulia",
-                enrollmentYear: "2024",
-                currentYear: "2do Año",
-                role: "usuario",
-                photo: "",
-                activityLog: {
-                    aiChats: [
-                        {
-                            query: "¿Cuál es la función del haz corticoespinal lateral en los movimientos finos?",
-                            reply: "El haz corticoespinal lateral (o vía piramidal cruzada) transporta las órdenes motoras voluntarias desde la corteza motora primaria hacia las motoneuronas del asta anterior medular, encargándose con precisión milimétrica de los movimientos finos y distales (como la destreza de los dedos de las manos).",
-                            topic: "orientadoras",
-                            timestamp: new Date(Date.now() - 3600000 * 5).toISOString()
-                        }
-                    ],
-                    downloads: [
-                        { filename: "MFH II - AO 01.pdf", type: "Clase Orientadora", count: 3, lastDate: new Date(Date.now() - 3600000 * 24).toISOString() },
-                        { filename: "Laminario-Basico.ppt", type: "Diapositivas", count: 1, lastDate: new Date(Date.now() - 3600000 * 48).toISOString() }
-                    ],
-                    navigation: [
-                        { section: "inicio", name: "Inicio", timestamp: new Date(Date.now() - 3600000 * 24).toISOString() },
-                        { section: "orientadoras", name: "Clases Orientadoras", timestamp: new Date(Date.now() - 3600000 * 20).toISOString() },
-                        { section: "temario", name: "Semana 1 - Temario", timestamp: new Date(Date.now() - 3600000 * 5).toISOString() }
-                    ],
-                    notes: []
-                }
-            },
-            {
-                name: "Carlos Mendoza",
-                email: "carlos.mendoza@estudiante.morfo.edu.ve",
-                password: "estudiante123",
-                phone: "+584247654321",
-                stateOrigin: "Carabobo",
-                enrollmentYear: "2025",
-                currentYear: "2do Año",
-                role: "usuario",
-                photo: "",
-                activityLog: {
-                    aiChats: [
-                        {
-                            query: "¿Cómo diferenciar una neurona pseudounipolar de una multipolar en el preparado histológico?",
-                            reply: "En el preparado histológico: la neurona pseudounipolar (típica del ganglio espinal sensitivo) presenta un soma esférico u ovoide con núcleo central y una sola prolongación que se bifurca en T, mientras que la neurona multipolar (como las motoneuronas del asta anterior o las células piramidales) exhibe múltiples dendritas ramificadas y un soma poligonal.",
-                            topic: "laminarios",
-                            timestamp: new Date(Date.now() - 3600000 * 2).toISOString()
-                        }
-                    ],
-                    downloads: [
-                        { filename: "MFH II - AO 02.pdf", type: "Clase Orientadora", count: 2, lastDate: new Date(Date.now() - 3600000 * 12).toISOString() }
-                    ],
-                    navigation: [
-                        { section: "laminarios", name: "Laminarios y Atlas", timestamp: new Date(Date.now() - 3600000 * 2).toISOString() }
-                    ],
-                    notes: []
-                }
-            },
-            {
-                name: "Valeria Sofía Blanco",
-                email: "valeria.blanco@estudiante.morfo.edu.ve",
-                password: "estudiante123",
-                phone: "+584165551234",
-                stateOrigin: "Lara",
-                enrollmentYear: "2024",
-                currentYear: "2do Año",
-                role: "usuario",
-                photo: "",
-                activityLog: {
-                    aiChats: [],
-                    downloads: [
-                        { filename: "MFH II - AO 04.pdf", type: "Clase Orientadora", count: 1, lastDate: new Date(Date.now() - 3600000 * 30).toISOString() }
-                    ],
-                    navigation: [
-                        { section: "habilidades", name: "Habilidades", timestamp: new Date(Date.now() - 3600000 * 30).toISOString() }
-                    ],
-                    notes: []
-                }
-            },
-            {
-                name: "José Alejandro Castillo",
-                email: "jose.castillo@estudiante.morfo.edu.ve",
-                password: "estudiante123",
-                phone: "+584128889900",
-                stateOrigin: "Mérida",
-                enrollmentYear: "2025",
-                currentYear: "2do Año",
-                role: "usuario",
-                photo: "",
-                activityLog: {
-                    aiChats: [],
-                    downloads: [],
-                    navigation: [{ section: "inicio", name: "Inicio", timestamp: new Date().toISOString() }],
-                    notes: []
-                }
-            }
-        ];
-        localStorage.setItem("morfo2_users", JSON.stringify(defaultUsers));
-    } else {
-        // Migration: Ensure all existing users have stateOrigin and activityLog
-        try {
-            const users = JSON.parse(localStorage.getItem("morfo2_users"));
-            let modified = false;
-            users.forEach(u => {
-                if (!u.stateOrigin) {
-                    u.stateOrigin = (u.role === "superuser") ? "Distrito Capital" : "Zulia";
-                    modified = true;
-                }
-                if (!u.phone) {
-                    u.phone = "+584129031966";
-                    modified = true;
-                }
-                if (!u.enrollmentYear) {
-                    u.enrollmentYear = "2026";
-                    modified = true;
-                }
-                if (!u.currentYear) {
-                    u.currentYear = "2do Año";
-                    modified = true;
-                }
-                if (!u.activityLog) {
-                    u.activityLog = { aiChats: [], downloads: [], navigation: [], notes: [] };
-                    modified = true;
-                }
-                // Ensure only Leonardo is superuser, all others are usuario
-                if (u.email === "lams210488@gmail.com") {
-                    u.role = "superuser";
-                } else if (u.role !== "usuario") {
-                    u.role = "usuario";
-                    modified = true;
-                }
-            });
-            if (modified) {
-                localStorage.setItem("morfo2_users", JSON.stringify(users));
-            }
-        } catch (e) {
-            console.error("Migration error:", e);
-        }
-    }
+    // Nota: La base de datos de usuarios vive en Firebase Firestore.
+    // Las funciones db_* (db_getAllUsers, db_getUserByEmail, etc.) gestionan
+    // todas las operaciones de lectura y escritura de usuarios de forma asíncrona.
+
 
     // Current application state
     const state = {
@@ -1340,15 +1273,9 @@ document.addEventListener("DOMContentLoaded", function() {
     function createAndSaveSessionToken(user) {
         const token = "sess_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
         localStorage.setItem("morfo2_session_token", token);
-        
-        // Save token into user's database record
-        const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-        const idx = users.findIndex(u => u.email === user.email);
-        if (idx !== -1) {
-            users[idx].activeSessionToken = token;
-            localStorage.setItem("morfo2_users", JSON.stringify(users));
-            user.activeSessionToken = token;
-        }
+        // Save token to Firestore (async, fire-and-forget)
+        db_updateUser(user.email, { activeSessionToken: token }).catch(e => console.warn("session token save:", e));
+        user.activeSessionToken = token;
         state.currentUser = user;
         return token;
     }
@@ -1356,29 +1283,20 @@ document.addEventListener("DOMContentLoaded", function() {
     function startSessionWatcher() {
         if (sessionWatcherInterval) clearInterval(sessionWatcherInterval);
 
-        function checkActiveSession() {
+        async function checkActiveSession() {
             if (!state.currentUser) return;
             const localToken = localStorage.getItem("morfo2_session_token");
             if (!localToken) return;
-
-            const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-            const freshUser = users.find(u => u.email === state.currentUser.email);
-            if (freshUser && freshUser.activeSessionToken && freshUser.activeSessionToken !== localToken) {
-                // Another device or browser window logged in with this account
-                terminateConcurrentSession();
-            }
+            try {
+                const freshUser = await db_getUserByEmail(state.currentUser.email);
+                if (freshUser && freshUser.activeSessionToken && freshUser.activeSessionToken !== localToken) {
+                    terminateConcurrentSession();
+                }
+            } catch(e) { /* network hiccup, skip */ }
         }
 
-        // Storage event listener triggers instantly across tabs/windows
-        window.addEventListener("storage", function(e) {
-            if (e.key === "morfo2_users" || e.key === "morfo2_session_token") {
-                checkActiveSession();
-            }
-        });
-
-        // Window focus and heartbeat every 2.5s
         window.addEventListener("focus", checkActiveSession);
-        sessionWatcherInterval = setInterval(checkActiveSession, 2500);
+        sessionWatcherInterval = setInterval(checkActiveSession, 5000);
     }
 
     function terminateConcurrentSession() {
@@ -1392,7 +1310,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function checkProfileCompleteness(user) {
-        if (!user || user.role === "superuser") return; // Superuser bypasses check
+        if (!user || user.role === "superuser") return;
 
         const isComplete = (
             user.name && user.name.trim().length >= 3 &&
@@ -1404,7 +1322,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const modal = document.getElementById("completeProfileModal");
         if (!isComplete && modal) {
-            // Populate Venezuelan States dropdown if not populated
             const compStateOrigin = document.getElementById("compStateOrigin");
             if (compStateOrigin && compStateOrigin.children.length <= 1) {
                 compStateOrigin.innerHTML = `<option value="" disabled selected>Selecciona tu Estado...</option>`;
@@ -1416,7 +1333,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
 
-            // Prefill any existing fields
             const compName = document.getElementById("compName");
             const compPhone = document.getElementById("compPhone");
             const compEnrollmentYear = document.getElementById("compEnrollmentYear");
@@ -1441,13 +1357,11 @@ document.addEventListener("DOMContentLoaded", function() {
         const reloginBtn = document.getElementById("reloginBtn");
 
         if (reloginBtn) {
-            reloginBtn.addEventListener("click", () => {
-                window.location.reload();
-            });
+            reloginBtn.addEventListener("click", () => { window.location.reload(); });
         }
 
         if (form) {
-            form.addEventListener("submit", function(e) {
+            form.addEventListener("submit", async function(e) {
                 e.preventDefault();
                 if (!state.currentUser) return;
 
@@ -1462,27 +1376,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
 
-                // Update user in localStorage
-                const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-                const idx = users.findIndex(u => u.email === state.currentUser.email);
-                if (idx !== -1) {
-                    users[idx].name = nameVal;
-                    users[idx].phone = phoneVal;
-                    users[idx].stateOrigin = stateVal;
-                    users[idx].enrollmentYear = enrollVal;
-                    users[idx].currentYear = curYearVal;
-                    localStorage.setItem("morfo2_users", JSON.stringify(users));
-
-                    state.currentUser = users[idx];
+                const updates = { name: nameVal, phone: phoneVal, stateOrigin: stateVal, enrollmentYear: enrollVal, currentYear: curYearVal };
+                try {
+                    await db_updateUser(state.currentUser.email, updates);
+                    Object.assign(state.currentUser, updates);
                     setupUserUI();
                     renderProfile();
                     renderAdmin();
                     renderGisMap();
-
-                    trackUserActivity("navigation", {
-                        section: "perfil_actualizado",
-                        name: "Datos de Estudiante Completados"
-                    });
+                    trackUserActivity("navigation", { section: "perfil_actualizado", name: "Datos de Estudiante Completados" });
+                } catch(err) {
+                    console.warn("Profile completeness update error:", err);
                 }
 
                 if (modal) modal.classList.remove("active");
@@ -1493,71 +1397,79 @@ document.addEventListener("DOMContentLoaded", function() {
     function initAuth() {
         const sessionEmail = localStorage.getItem("morfo2_session");
         const sessionToken = localStorage.getItem("morfo2_session_token");
-        
-        if (sessionEmail) {
-            const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-            const user = users.find(u => u.email === sessionEmail);
-            if (user) {
-                // If user doesn't have an active token or tokens match, restore session
-                if (!user.activeSessionToken || user.activeSessionToken === sessionToken) {
-                    if (!user.activeSessionToken) {
-                        createAndSaveSessionToken(user);
-                    } else {
-                        state.currentUser = user;
+
+        async function tryRestoreSession() {
+            if (sessionEmail) {
+                try {
+                    const user = await db_getUserByEmail(sessionEmail);
+                    if (user) {
+                        if (!user.activeSessionToken || user.activeSessionToken === sessionToken) {
+                            if (!user.activeSessionToken) {
+                                createAndSaveSessionToken(user);
+                            } else {
+                                state.currentUser = user;
+                            }
+                            loginOverlay.classList.remove("active");
+                            setupUserUI();
+                            startSessionWatcher();
+                            checkProfileCompleteness(user);
+                            return;
+                        } else {
+                            terminateConcurrentSession();
+                            return;
+                        }
                     }
-                    loginOverlay.classList.remove("active");
-                    setupUserUI();
-                    startSessionWatcher();
-                    checkProfileCompleteness(user);
-                    return;
-                } else {
-                    // Stale / concurrent session from another device
-                    terminateConcurrentSession();
-                    return;
+                } catch(e) {
+                    console.warn("Session restore error:", e);
                 }
             }
+            // No session or user not found — show login
+            loginOverlay.classList.add("active");
+            userSidebarProfile.style.display = "none";
+            logoutBtn.style.display = "none";
+            navProfile.style.display = "none";
+            navAdmin.style.display = "none";
         }
-        
-        // If not logged in, show overlay and lock sidebar
-        loginOverlay.classList.add("active");
-        userSidebarProfile.style.display = "none";
-        logoutBtn.style.display = "none";
-        navProfile.style.display = "none";
-        navAdmin.style.display = "none";
-        
+
+        tryRestoreSession();
+
         // Handle login form submission
-        loginForm.addEventListener("submit", function(e) {
+        loginForm.addEventListener("submit", async function(e) {
             e.preventDefault();
             const emailVal = loginEmail.value.trim().toLowerCase();
             const passVal = loginPassword.value;
-            
-            const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-            const user = users.find(u => u.email === emailVal && u.password === passVal);
-            
-            if (user) {
-                loginError.style.display = "none";
-                state.currentUser = user;
-                localStorage.setItem("morfo2_session", user.email);
-                
-                // Generate and enforce unique active session token
-                createAndSaveSessionToken(user);
-                
-                loginOverlay.classList.remove("active");
-                
-                // Reset to home section
-                showSection("inicio");
-                setupUserUI();
-                startSessionWatcher();
-                checkProfileCompleteness(user);
-                
-                // Clear form
-                loginEmail.value = "";
-                loginPassword.value = "";
-            } else {
+
+            loginError.style.display = "none";
+            const submitBtn = loginForm.querySelector("button[type='submit']");
+            const originalText = submitBtn ? submitBtn.textContent : "";
+            if (submitBtn) { submitBtn.textContent = "Verificando..."; submitBtn.disabled = true; }
+
+            try {
+                const user = await db_getUserByEmail(emailVal);
+                if (user && user.password === passVal) {
+                    state.currentUser = user;
+                    localStorage.setItem("morfo2_session", user.email);
+                    createAndSaveSessionToken(user);
+                    loginOverlay.classList.remove("active");
+                    showSection("inicio");
+                    setupUserUI();
+                    startSessionWatcher();
+                    checkProfileCompleteness(user);
+                    loginEmail.value = "";
+                    loginPassword.value = "";
+                } else {
+                    loginError.style.display = "block";
+                }
+            } catch(err) {
+                console.error("Login error:", err);
+                loginError.textContent = "Error de conexión. Intenta de nuevo.";
                 loginError.style.display = "block";
+            } finally {
+                if (submitBtn) { submitBtn.textContent = originalText; submitBtn.disabled = false; }
             }
         });
     }
+
 
     function setupUserUI() {
         if (!state.currentUser) return;
@@ -1597,70 +1509,38 @@ document.addEventListener("DOMContentLoaded", function() {
     // TELEMETRY & USER ACTIVITY TRACKING
     // ==========================================
 
-    function trackUserActivity(type, data) {
+    async function trackUserActivity(type, data) {
         if (!state.currentUser) return;
-        
         try {
-            const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-            const userIdx = users.findIndex(u => u.email === state.currentUser.email);
-            if (userIdx === -1) return;
-            
-            const user = users[userIdx];
-            if (!user.activityLog) {
-                user.activityLog = { aiChats: [], downloads: [], navigation: [], notes: [] };
-            }
-            
+            const email = state.currentUser.email;
+            const userDoc = await db_getUserByEmail(email);
+            if (!userDoc) return;
+            const log = userDoc.activityLog || { aiChats: [], downloads: [], navigation: [], notes: [] };
             const now = new Date().toISOString();
-            
+
             if (type === "navigation") {
-                user.activityLog.navigation.unshift({
-                    section: data.section,
-                    name: data.name || data.section,
-                    timestamp: now
-                });
-                if (user.activityLog.navigation.length > 60) user.activityLog.navigation.pop();
-            } 
-            else if (type === "download") {
-                const existing = user.activityLog.downloads.find(d => d.filename === data.filename);
-                if (existing) {
-                    existing.count = (existing.count || 1) + 1;
-                    existing.lastDate = now;
-                } else {
-                    user.activityLog.downloads.unshift({
-                        filename: data.filename,
-                        type: data.type || "Documento PDF",
-                        count: 1,
-                        lastDate: now
-                    });
-                }
+                log.navigation.unshift({ section: data.section, name: data.name || data.section, timestamp: now });
+                if (log.navigation.length > 60) log.navigation.pop();
+            } else if (type === "download") {
+                const existing = log.downloads.find(d => d.filename === data.filename);
+                if (existing) { existing.count = (existing.count || 1) + 1; existing.lastDate = now; }
+                else log.downloads.unshift({ filename: data.filename, type: data.type || "Documento PDF", count: 1, lastDate: now });
+            } else if (type === "ai_chat") {
+                log.aiChats.unshift({ query: data.query, reply: data.reply, topic: data.topic || state.currentSection, timestamp: now });
+                if (log.aiChats.length > 100) log.aiChats.pop();
+            } else if (type === "notes_saved") {
+                const existingNote = log.notes.find(n => n.week === data.week);
+                if (existingNote) { existingNote.lastUpdated = now; }
+                else log.notes.unshift({ week: data.week, lastUpdated: now });
             }
-            else if (type === "ai_chat") {
-                user.activityLog.aiChats.unshift({
-                    query: data.query,
-                    reply: data.reply,
-                    topic: data.topic || state.currentSection,
-                    timestamp: now
-                });
-                if (user.activityLog.aiChats.length > 100) user.activityLog.aiChats.pop();
-            }
-            else if (type === "notes_saved") {
-                const existingNote = user.activityLog.notes.find(n => n.week === data.week);
-                if (existingNote) {
-                    existingNote.lastUpdated = now;
-                } else {
-                    user.activityLog.notes.unshift({
-                        week: data.week,
-                        lastUpdated: now
-                    });
-                }
-            }
-            
-            localStorage.setItem("morfo2_users", JSON.stringify(users));
-            state.currentUser = user;
+
+            await db_updateUser(email, { activityLog: log });
+            state.currentUser.activityLog = log;
         } catch (e) {
-            console.error("Tracking error:", e);
+            console.warn("trackUserActivity error:", e);
         }
     }
+
 
     // ==========================================
     // USER PROFILE PANEL LOGIC
@@ -1676,20 +1556,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const base64Data = event.target.result;
-                    
-                    // Update active user in localStorage
-                    const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-                    const userIdx = users.findIndex(u => u.email === state.currentUser.email);
-                    
-                    if (userIdx !== -1) {
-                        users[userIdx].photo = base64Data;
-                        localStorage.setItem("morfo2_users", JSON.stringify(users));
-                        
-                        // Update state and UI
-                        state.currentUser.photo = base64Data;
-                        setupUserUI();
-                        renderProfile();
-                    }
+                    // Update active user in Firestore
+                    db_updateUser(state.currentUser.email, { photo: base64Data }).catch(e => console.warn("photo update:", e));
+                    state.currentUser.photo = base64Data;
+                    setupUserUI();
+                    renderProfile();
                 };
                 reader.readAsDataURL(file);
             });
@@ -1707,7 +1578,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const editProfileSuccess = document.getElementById("editProfileSuccess");
 
         if (editProfileForm) {
-            editProfileForm.addEventListener("submit", function(e) {
+            editProfileForm.addEventListener("submit", async function(e) {
                 e.preventDefault();
                 if (!state.currentUser) return;
 
@@ -1724,56 +1595,47 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
 
-                const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
                 const currentEmail = state.currentUser.email;
-                const userIdx = users.findIndex(u => u.email === currentEmail);
 
-                if (userIdx === -1) {
-                    alert("Error: usuario no encontrado en la base de datos.");
-                    return;
-                }
-
-                // If user changed email, verify it's not occupied by another registered user
-                if (emailVal !== currentEmail && users.some((u, idx) => idx !== userIdx && u.email === emailVal)) {
-                    alert("El correo electrónico ingresado ya está en uso por otro usuario.");
-                    return;
-                }
-
-                // Update current user record (preserve role and activity log)
-                users[userIdx].name = nameVal;
-                users[userIdx].phone = phoneVal;
-                users[userIdx].email = emailVal;
-                users[userIdx].password = passVal;
-                users[userIdx].stateOrigin = stateVal;
-                users[userIdx].enrollmentYear = enrollVal;
-                users[userIdx].currentYear = curYearVal;
-
-                localStorage.setItem("morfo2_users", JSON.stringify(users));
-
-                // Update session if email changed
+                // Check email conflict
                 if (emailVal !== currentEmail) {
-                    localStorage.setItem("morfo2_session", emailVal);
+                    const existing = await db_getUserByEmail(emailVal);
+                    if (existing) {
+                        alert("El correo electrónico ingresado ya está en uso por otro usuario.");
+                        return;
+                    }
                 }
 
-                // Update state
-                state.currentUser = users[userIdx];
+                const updates = { name: nameVal, phone: phoneVal, email: emailVal, password: passVal, stateOrigin: stateVal, enrollmentYear: enrollVal, currentYear: curYearVal };
 
-                // Refresh UI components
-                setupUserUI();
-                renderProfile();
-                renderAdmin();
-                renderGisMap();
+                try {
+                    if (emailVal !== currentEmail) {
+                        // Email changed: create new doc with new email, delete old
+                        const freshUser = await db_getUserByEmail(currentEmail);
+                        await db_createUser({ ...freshUser, ...updates });
+                        await db_deleteUser(currentEmail);
+                        localStorage.setItem("morfo2_session", emailVal);
+                    } else {
+                        await db_updateUser(currentEmail, updates);
+                    }
 
-                // Show success notification
-                if (editProfileSuccess) {
-                    editProfileSuccess.style.display = "block";
-                    setTimeout(() => {
-                        editProfileSuccess.style.display = "none";
-                    }, 4000);
+                    Object.assign(state.currentUser, updates);
+                    setupUserUI();
+                    renderProfile();
+                    renderAdmin();
+                    renderGisMap();
+
+                    if (editProfileSuccess) {
+                        editProfileSuccess.style.display = "block";
+                        setTimeout(() => { editProfileSuccess.style.display = "none"; }, 4000);
+                    }
+                } catch(err) {
+                    alert("Error al guardar cambios: " + err.message);
                 }
             });
         }
     }
+
 
     function renderProfile() {
         if (!state.currentUser) return;
@@ -1857,7 +1719,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         if (registerUserForm) {
-            registerUserForm.addEventListener("submit", function(e) {
+            registerUserForm.addEventListener("submit", async function(e) {
                 e.preventDefault();
                 const nameVal = regName.value.trim();
                 const phoneVal = regPhone.value.trim();
@@ -1872,53 +1734,39 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
 
-                const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-                
-                // Check if user already exists
-                if (users.some(u => u.email === emailVal)) {
+                // Check if user already exists in Firestore
+                const existing = await db_getUserByEmail(emailVal);
+                if (existing) {
                     alert("Este correo electrónico ya está registrado en el sistema.");
                     return;
                 }
-                
-                // Strict Rule: Every new registered user is ALWAYS assigned role: "usuario"
-                users.push({
-                    name: nameVal,
-                    phone: phoneVal,
-                    email: emailVal,
-                    stateOrigin: stateVal,
-                    enrollmentYear: enrollVal,
-                    currentYear: curYearVal,
-                    password: passVal,
-                    role: "usuario",
-                    photo: "",
-                    activityLog: {
-                        aiChats: [],
-                        downloads: [],
-                        navigation: [{ section: "inicio", name: "Inicio", timestamp: new Date().toISOString() }],
-                        notes: []
+
+                try {
+                    await db_createUser({
+                        name: nameVal, phone: phoneVal, email: emailVal, stateOrigin: stateVal,
+                        enrollmentYear: enrollVal, currentYear: curYearVal, password: passVal,
+                        role: "usuario", photo: ""
+                    });
+
+                    if (regSuccess) {
+                        regSuccess.style.display = "block";
+                        setTimeout(() => { regSuccess.style.display = "none"; }, 4000);
                     }
-                });
-                
-                localStorage.setItem("morfo2_users", JSON.stringify(users));
-                
-                // Success status
-                if (regSuccess) {
-                    regSuccess.style.display = "block";
-                    setTimeout(() => { regSuccess.style.display = "none"; }, 4000);
+
+                    regName.value = "";
+                    regPhone.value = "";
+                    regEmail.value = "";
+                    regStateOrigin.selectedIndex = 0;
+                    regPassword.value = "";
+
+                    renderAdmin();
+                    renderGisMap();
+                } catch(err) {
+                    alert("Error al registrar usuario: " + err.message);
                 }
-                
-                // Clear inputs
-                regName.value = "";
-                regPhone.value = "";
-                regEmail.value = "";
-                regStateOrigin.selectedIndex = 0;
-                regPassword.value = "";
-                
-                // Refresh counts, tables, and GIS map
-                renderAdmin();
-                renderGisMap();
             });
         }
+
 
         // Live search in users table
         if (adminUsersTableSearch) {
@@ -1952,15 +1800,21 @@ document.addEventListener("DOMContentLoaded", function() {
         initStudentFullInfoModal();
     }
 
-    function renderAdmin(searchQuery = "") {
+    async function renderAdmin(searchQuery = "") {
         const adminUserCount = document.getElementById("adminUserCount");
         const adminMappedStatesCount = document.getElementById("adminMappedStatesCount");
         const adminAiQueriesCount = document.getElementById("adminAiQueriesCount");
         const adminTotalDownloadsCount = document.getElementById("adminTotalDownloadsCount");
         const usersTableBody = document.getElementById("usersTableBody");
         if (!usersTableBody) return;
-        
-        const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+
+        let users;
+        try {
+            users = await db_getAllUsers();
+        } catch(e) {
+            console.warn("renderAdmin: error loading from Firestore", e);
+            users = [];
+        }
         
         // Compute Metrics
         const mappedStates = new Set(users.filter(u => u.stateOrigin).map(u => u.stateOrigin));
@@ -2095,7 +1949,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function handleDeleteUser(userEmail, userName) {
+    async function handleDeleteUser(userEmail, userName) {
         if (!userEmail) return;
         if (userEmail === "lams210488@gmail.com") {
             alert("El superusuario principal del sistema no puede ser eliminado.");
@@ -2105,9 +1959,12 @@ document.addEventListener("DOMContentLoaded", function() {
         const confirmed = confirm(`⚠️ ¿Estás seguro de que deseas eliminar permanentemente de la plataforma a:\n\n👤 ${userName || "Estudiante"} (${userEmail})?\n\nEsta acción borrará todas sus credenciales, descargas registradas y consultas al Tutor IA.`);
         if (!confirmed) return;
 
-        let users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-        users = users.filter(u => u.email !== userEmail);
-        localStorage.setItem("morfo2_users", JSON.stringify(users));
+        try {
+            await db_deleteUser(userEmail);
+        } catch(e) {
+            alert("Error al eliminar usuario: " + e.message);
+            return;
+        }
 
         // Close modals if open
         const studentFullInfoModal = document.getElementById("studentFullInfoModal");
@@ -2115,8 +1972,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const deepInfoModal = document.getElementById("deepInfoModal");
         if (deepInfoModal) deepInfoModal.classList.remove("active");
 
-        // Refresh admin dashboard, table and GIS Map
-        renderAdmin();
+        await renderAdmin();
         renderGisMap();
 
         alert(`✅ El estudiante "${userName || userEmail}" ha sido eliminado exitosamente.`);
@@ -2178,14 +2034,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    function renderGisMap() {
+    async function renderGisMap() {
         if (!state.gisMap || !state.gisMarkersLayer) return;
 
         // Invalidate map size so it renders smoothly even if container was hidden
         setTimeout(() => { state.gisMap.invalidateSize(); }, 200);
 
         state.gisMarkersLayer.clearLayers();
-        const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+
+        let users;
+        try {
+            users = await db_getAllUsers();
+        } catch(e) {
+            console.warn("renderGisMap: error loading users", e);
+            users = [];
+        }
 
         let filtered = users;
         if (state.gisFilterState !== "todos") {
@@ -2510,12 +2373,16 @@ En el estudio médico del sistema nervioso, te sugiero analizar este tema bajo 3
         });
     }
 
-    function openDeepInfoModal(userEmail) {
+    async function openDeepInfoModal(userEmail) {
         const modal = document.getElementById("deepInfoModal");
         if (!modal) return;
 
-        const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-        const user = users.find(u => u.email === userEmail);
+        let user;
+        try {
+            user = await db_getUserByEmail(userEmail);
+        } catch(e) {
+            console.warn("openDeepInfoModal:", e);
+        }
         if (!user) {
             alert("Estudiante no encontrado.");
             return;
@@ -2523,6 +2390,7 @@ En el estudio médico del sistema nervioso, te sugiero analizar este tema bajo 3
 
         state.currentDeepUser = user;
         const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
+
 
         // Populate Header
         document.getElementById("deepInfoAvatar").src = user.photo || defaultAvatar;
@@ -2739,13 +2607,17 @@ En el estudio médico del sistema nervioso, te sugiero analizar este tema bajo 3
         });
     }
 
-    function openStudentFullInfoModal(userEmail) {
+    async function openStudentFullInfoModal(userEmail) {
         const modal = document.getElementById("studentFullInfoModal");
         const content = document.getElementById("studentFullInfoContent");
         if (!modal || !content) return;
 
-        const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-        const user = users.find(u => u.email === userEmail);
+        let user;
+        try {
+            user = await db_getUserByEmail(userEmail);
+        } catch(e) {
+            console.warn("openStudentFullInfoModal:", e);
+        }
         if (!user) {
             alert("Estudiante no encontrado.");
             return;

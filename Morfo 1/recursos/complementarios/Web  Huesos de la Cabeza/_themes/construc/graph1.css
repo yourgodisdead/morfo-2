@@ -1,0 +1,77 @@
+.mstheme
+{
+	separator-image: url(urbhorsa.gif);
+	list-image-1: url(urbbul1a.gif);
+	list-image-2: url(urbbul2a.gif);
+	list-image-3: url(urbbul3a.gif);
+	nav-banner-image: url(urbbanna.gif);
+	navbutton-horiz-normal: url(urbhbuda.gif);
+	navbutton-horiz-hovered: url(urbhbuha.gif);
+	navbutton-horiz-pushed: url(urbhbusa.gif);
+	navbutton-vert-normal: url(urbvbuda.gif);
+	navbutton-vert-hovered: url(urbvbuha.gif);
+	navbutton-vert-pushed: url(urbvbusa.gif);
+	navbutton-home-normal: url(urbhomda.gif);
+	navbutton-home-hovered: url(urbhomha.gif);
+	navbutton-home-pushed: url(urbhomsa.gif);
+	navbutton-next-normal: url(urbnexda.gif);
+	navbutton-next-hovered: url(urbnexha.gif);
+	navbutton-next-pushed: url(urbnexsa.gif);
+	navbutton-prev-normal: url(urbpreda.gif);
+	navbutton-prev-hovered: url(urbpreha.gif);
+	navbutton-prev-pushed: url(urbpresa.gif);
+	navbutton-up-normal: url(urbupda.gif);
+	navbutton-up-hovered: url(urbupha.gif);
+	navbutton-up-pushed: url(urbupsa.gif);
+}
+.mstheme-bannertxt
+{
+	font-family: Impact, Arial, Helvetica;
+	color: rgb(0,0,0);
+	text-align: center;
+	vertical-align: middle;
+}
+.mstheme-horiz-navtxt
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+}
+.mstheme-vert-navtxt
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+}
+.mstheme-navtxthome
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	text-align: center;
+	vertical-align: middle;
+}
+.mstheme-navtxtnext
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	text-align: center;
+	vertical-align: middle;
+}
+.mstheme-navtxtprev
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	text-align: center;
+	vertical-align: middle;
+}
+.mstheme-navtxtup
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	text-align: center;
+	vertical-align: middle;
+}

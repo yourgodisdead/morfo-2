@@ -1,0 +1,265 @@
+@charset "iso-8859-1";
+.titulo {
+	FONT-WEIGHT: bolder; FONT-SIZE: 12pt; COLOR: #F9EDBD; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+
+.menuderecha {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #F9EDBD;
+	text-decoration: none;
+}
+
+.celdaseleccionada {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	color: #FDF7E2;
+	background-color: #511E26;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	font-weight: bold;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-color: #FDF7E2;
+	border-right-color: #FDF7E2;
+	border-left-color: #FDF7E2;
+	text-decoration: none;
+	border-bottom-color: #FDF7E2;
+	border-bottom-width: 1px;
+}
+
+.titulosuperior {
+	font-family: "Palatino Linotype", "Times New Roman";
+	font-size: 20pt;
+	font-weight: bold;
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+.celdanormal {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #F9EDBD;
+	font-weight: bold;
+	text-decoration: none;
+	border: none;
+}
+
+.celdanormalazul {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #EDD3B5;
+	font-weight: bold;
+	border-bottom-style: solid;
+	border-bottom-color: #511E26;
+	border-bottom-width: 1px;
+	text-decoration: none;
+	background-color: #3366CC;
+}
+
+.menuderechablanco {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: normal;
+	color: #FDF7E2;
+	text-decoration: none;
+	background-color: #993300;
+}
+
+.menuderecharojo {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #F7B67F;
+	text-decoration: none;
+	background-color: #993300;
+}
+.textorojo {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	text-align: left;
+	color: #8E2344;
+	font-weight: bold;
+}
+.celdaseleccionadanegra {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #084A37;
+	background-color: #FDF7E2;
+	font-weight: bold;
+	text-decoration: none;
+	border: none;
+}
+.menuizquierdablanco {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #EDD3B5;
+	text-decoration: none;
+}
+.menuizquierdarojo {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #084A37;
+	text-decoration: none;
+	background-color: #F7B67F;
+}
+.celdatexto {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	border-bottom-style: none;
+	text-decoration: none;
+	color: #FDF7E2;
+}
+
+a {
+	color: #511E26;
+}
+.textonegro {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	text-align: left;
+	font-weight: bold;
+	color: #000000;
+
+}
+.boton {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #EDD3B5;
+	background-color: #084A37;
+	border: none;
+}
+.textoazul {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	text-align: left;
+	color: #344F31;
+	text-decoration: underline;
+}
+.textororect {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	text-align: left;
+	color: #8E2344;
+	text-decoration: underline;
+}
+.caractergraficok {
+	font-size: 11px;
+	font-style: normal;
+	text-align: left;
+	color: #344F31;
+	text-decoration: underline;
+	font-family: Wingdings;
+}
+.caractergraficomal {
+
+	font-family: Wingdings;
+	font-size: 11px;
+	font-style: normal;
+	text-align: left;
+	color: #8E2344;
+	text-decoration: underline;
+}
+.celdaseleccionadanoborde {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	color: #FDF7E2;
+	background-color: #511E26;
+	font-weight: bold;
+	text-decoration: none;
+	border: 0px none #FDF7E2;
+}
+.celdanormalblanca {
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: none;
+	border: none;
+}
+.subtitulo {
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	text-align: left;
+	font-weight: bold;
+	color: #000000;
+}
+.vinculo {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #084A37;
+	text-decoration: none;
+	border: none;
+	font-weight: bold;
+}
+
+.fondoazuloscuro {
+	background-color: #000000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #F7B67F;
+}
+
+.celdanumero {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7pt;
+	font-weight: bold;
+	text-decoration: none;
+	border: 1px solid #FDF7E2;
+	color: #FDF7E2;
+; background-color: #3366CC
+}
+.celdanumeroselecc {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7pt;
+	color: #084A37;
+	background-color: #FFFFCC;
+	font-weight: bold;
+	text-decoration: none;
+	border: 1px none #211E1C;
+}
+.menuderechablancosobre {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: normal;
+	color: ffffff;
+	text-decoration: none;
+	background-color: #993300;
+}
+.celdanumerosinmarco {
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7pt;
+	font-weight: bold;
+	text-decoration: none;
+	border: 1px none #FDF7E2;
+	color: #FDF7E2;
+}
+.vinculo1 {
+	color: #084A37;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+.texto {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	font-weight: normal;
+	color: #000000;
+
+}

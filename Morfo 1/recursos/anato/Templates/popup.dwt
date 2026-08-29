@@ -1,0 +1,26 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>Intermediate English Course</title>
+<!-- TemplateEndEditable --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<script language="JavaScript" src="../scripts/testengine.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="../scripts/ventana.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="../scripts/call.js" type="text/JavaScript"></script>
+<script language="JavaScript"  src="../scripts/fw_menu.js" type="text/JavaScript"></script>
+<link href="../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+body {
+	background-color: #FDF7E2;
+}
+-->
+</style></head>
+
+<body>
+<!-- TemplateBeginEditable name="contenido" -->
+<p class="texto">contenido</p>
+<!-- TemplateEndEditable -->
+</body>
+</html>

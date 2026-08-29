@@ -1,0 +1,11 @@
+ENTRENADOR DE ANATOMIA PARA EL ESTUDIO DEL ESQUELETO DE LA CABEZA (ANA)
+
+Configuración mínima:
+
+ Pentium MMX 200 MHZ con 32 MB de RAM
+ Sistema operativo windows 95
+ 
+Para su ejecución satisfactoria es necesario tener la siguiente configuración de pantalla: 640x480 pixels y paleta de colores de alta densidad (16 bits). 
+Utilice siempre fuentes pequeñas.
+
+Después de instalado el sistema, REINICIE SU PC para actualizar las fuentes.

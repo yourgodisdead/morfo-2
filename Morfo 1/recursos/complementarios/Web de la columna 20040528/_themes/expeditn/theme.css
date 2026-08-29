@@ -1,0 +1,40 @@
+.mstheme
+{
+	top-bar-button: url(expglob.gif);
+	navbutton-background-color: rgb(204,204,153);
+}
+.mstheme-topbar-font
+{
+	font-family: Arial, Helvetica;
+	color: rgb(255,255,204);
+	font-size: 1;
+}
+body
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+	background-image: url(exptextb.jpg);
+}
+h1
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+}
+h2
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+}
+h3
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+}
+h4
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+}
+h5
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+}
+h6
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+}

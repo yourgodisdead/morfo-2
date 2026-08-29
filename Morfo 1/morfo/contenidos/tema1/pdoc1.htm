@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="morfo2/templates/encabezado.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<style type="text/css">
+<!--
+.antes {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-style: normal; font-weight: bold; color: #993300; text-decoration: underline}
+.despues {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-weight: bold; color: #000099; text-decoration: underline}
+-->
+</style>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Tema 1. Pr&aacute;ctica docente</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<SCRIPT language="JavaScript">
+window.onerror = null;
+var topMargin = 89;
+var slideTime = 1200;
+var ns6 = (!document.all && document.getElementById);
+var ie4 = (document.all);
+var ns4 = (document.layers);
+function layerObject(id,left) {
+if (ns6) {
+this.obj = document.getElementById(id).style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ie4) {
+this.obj = document.all[id].style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ns4) {
+this.obj = document.layers[id];
+this.obj.left = left;
+return this.obj;
+   }
+}
+function layerSetup() {
+floatLyr1 = new layerObject('floatLayer1', 0);
+floatLyr2 = new layerObject('floatLayer2', 665);
+window.setInterval("main()", 10)
+}
+function floatObject() {
+if (ns4 || ns6) {
+findHt = window.innerHeight;
+} else if(ie4) {
+findHt = document.body.clientHeight;
+   }
+  
+} 
+function main() {
+if (ns4) {
+this.currentY = document.layers["floatLayer1"].top;
+this.scrollTop = window.pageYOffset;
+mainTrigger();
+}
+else if(ns6) {
+this.currentY = parseInt(document.getElementById('floatLayer1').style.top);
+this.scrollTop = scrollY;
+mainTrigger();
+} else if(ie4) {
+this.currentY = floatLayer1.style.pixelTop;
+if (document.documentElement && document.documentElement.scrollTop)
+	this.scrollTop = document.documentElement.scrollTop;
+else if (document.body)
+	this.scrollTop = document.body.scrollTop;
+mainTrigger();
+   }
+}
+function mainTrigger() {
+var newTargetY = this.scrollTop + this.topMargin;
+if ( this.currentY != newTargetY ) {
+if ( newTargetY != this.targetY ) {
+this.targetY = newTargetY;
+floatStart();
+}
+animator();
+   }
+}
+function floatStart() {
+var now = new Date();
+this.A = this.targetY - this.currentY;
+
+this.B = Math.PI / ( 2 * this.slideTime );
+this.C = now.getTime();
+
+if (Math.abs(this.A) > this.findHt) {
+this.D = this.A > 0 ? this.targetY - this.findHt : this.targetY + this.findHt;
+this.A = this.A > 0 ? this.findHt : -this.findHt;
+}
+else {
+this.D = this.currentY;
+   }
+ 
+}
+function animator() {
+var now = new Date();
+var newY = this.A * Math.sin( this.B * ( now.getTime() - this.C ) ) + this.D;
+newY = Math.round(newY);
+var tope1 = (98+document.all.idmenuderecha.clientHeight)-(newY+floatLayer1.clientHeight);
+
+if (( this.A > 0 && newY > this.currentY ) || ( this.A < 0 && newY < this.currentY )) {
+if (tope1 >0) 
+{
+
+if ( ie4 )document.all.floatLayer1.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer1"].top = newY;
+if ( ns6 )document.getElementById('floatLayer1').style.top = newY + "px";
+if ( ie4 )document.all.floatLayer2.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer2"].top = newY;
+if ( ns6 )document.getElementById('floatLayer2').style.top = newY + "px";
+   }
+   }
+}
+function start() {
+if(ns6||ns4) {
+pageWidth = innerWidth;
+pageHeight = innerHeight;
+layerSetup();
+floatObject();
+}
+else if(ie4) {
+pageWidth = document.body.clientWidth;
+pageHeight = document.body.clientHeight;
+layerSetup();
+floatObject();
+   }
+}
+function movermenu(celda,leccion)
+{
+	FW_startTimeout();
+	var posiciony = floatLayer1.style.pixelTop+3+(22*leccion);
+    eval ('window.FW_showMenu(window.fw_menu_'+leccion+',112,'+posiciony+');');
+    celda.className='menuizquierdarojo';
+}
+//  End -->
+</script>
+<script language="JavaScript" src="../../scripts/testengine.js" type="text/JavaScript"> </script>
+<script language="JavaScript" src="../../scripts/ventana.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="../../scripts/call.js" type="text/JavaScript"></script>
+<script language="JavaScript"  src="../../scripts/fw_menu.js" type="text/JavaScript"></script>
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+// -->
+</script>
+</head>
+
+<body onLoad="start();" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" bgcolor="#FDF7E2">
+<table width="770" height="91%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="1" valign="top" bgcolor="#EDD3B5"> 
+      <table width="100%" height="1"  border="0" align="left" cellpadding="0" cellspacing="0" bgcolor="#3366CC">
+        <tr bgcolor="#3366CC"> 
+          <td background="../../../imagenes/cabezaln01.jpg" valign="top" height="82" bgcolor="#3366CC"> 
+            <div id="Layer1" style="position:absolute; width:124px; height:83px; z-index:101"> 
+              <div align="center"> <br>
+                <b><font face="Verdana, Arial, Helvetica, sans-serif">Temas: <br>
+                <!-- #BeginLibraryItem "../morfo/library/cuadro1.lbi" -->
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<table width="80"  border="0" cellpadding="1" cellspacing="1">
+  <tr align="center" valign="middle">
+    <td width="25%" class="celdanumeroselecc">1 </td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema2/intro2.htm" >2</a></td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema3/intro3.htm" >3</a></td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema4/intro4.htm" >4</a></td>
+</table>
+<!-- #EndLibraryItem --></font></b></div>
+            </div>
+            <script language=JavaScript1.2>fwLoadMenus(); </script>
+            <div id="Layer3" style="position:absolute; width:39px; height:16px; z-index:103; left: 721px; top: 54px"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="../../../indext1.htm" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Inicio</a></strong></font></div>
+            
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="1" valign="top" bgcolor="#3366cc"> 
+      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td height="1" bgcolor="#FFFFFF"></td>
+        </tr>
+        <tr> 
+          <td> 
+            <table width="98%" height="0"  border="0" cellpadding="0" cellspacing="0">
+              <tr> 
+                <td width="116" valign="bottom" class="celdanormal"></td>
+                <td valign="bottom" width="719"> <!-- #BeginLibraryItem "/morfo/library/tema1pdoc.lbi" --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000">
+  <tr> 
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion1" bgcolor="#000000"><a href="intro1.htm" class="celdanormalazul">Introducción</a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="obj1.htm" class="celdanormalazul">Objetivos</a></td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="cont1.htm" class="celdanormalazul">Contenidos</a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdaseleccionadanegra" id="leccion3" bgcolor="#000000">Práctica docente</td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="consol1.htm" class="celdanormalazul">Consolidaci&oacute;n</a></td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="664" valign="top"> 
+      <table width="100%" height="90%"  border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="115" height="667" align="center" valign="top" bgcolor="#3366CC" id=idmenuizquierda>&nbsp;</td>
+          <td height="667" valign="top" bgcolor="#FDF7E2"> 
+            <table width="100%"  cellspacing="3" cellpadding="3" height="552">
+              <tr> 
+                <td height="661" > 
+                  <!-- InstanceBeginEditable name="contenido" -->
+                  <br>
+                  <p><font size="2" face="Arial, Helvetica, sans-serif"><b><font face="Arial, Helvetica, sans-serif" size="2">Tema 
+                    1. C&eacute;lula.</font></b></font><br>
+                    <font size="2" face="Arial, Helvetica, sans-serif"><b><br>
+                    Orientaciones a la pr&aacute;ctica docente.</b></font><br>
+                    <br>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">La 
+                    presente secci&oacute;n tiene como objetivo poner en tus manos 
+                    un conjunto de orientaciones que faciliten tu desempe&ntilde;o 
+                    en los escenarios de la <b>pr&aacute;ctica docente. </b>Este 
+                    tema les permite iniciar el estudio del organismo humano como 
+                    unidad biopsicosocia partiendo de conceptos b&aacute;sicos, 
+                    herramientas metodol&oacute;gicas y la terminolog&iacute;a 
+                    cient&iacute;fica necesaria. Por su parte el estudio de las 
+                    caracter&iacute;sticas morfofuncionales de las c&eacute;lulas 
+                    como unidad estructural y funcional del organismo constituye 
+                    un aspecto de especial importancia, tanto por su complejidad 
+                    estructural y din&aacute;mica molecular, como por su valor 
+                    decisivo en la comprensi&oacute;n de los niveles organizativos 
+                    siguientes y la interpretaci&oacute;n cient&iacute;fica de 
+                    distintas situaciones m&eacute;dicas.</font> </p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">La 
+                    pr&aacute;ctica docente podr&aacute; ser utilizada con &eacute;xito 
+                    para la ense&ntilde;anza de la Morfofisiolog&iacute;a Humana, 
+                    s&oacute;lo si el estudiante realiza con responsabilidad las 
+                    acciones de aprendizaje en correspondencia con el programa 
+                    de la asignatura. Durante la misma no se trata que profundices 
+                    en el conocimiento de las enfermedades que presentan los pacientes; 
+                    sino m&aacute;s bien, que puedas entender los v&iacute;nculos 
+                    existentes entre los contenidos te&oacute;ricos de los temas 
+                    que recibes en tus actividades orientadoras y sus expresiones 
+                    concretas en los individuos sanos o enfermos de tu comunidad, 
+                    a trav&eacute;s de un proceso de familiarizaci&oacute;n y 
+                    formaci&oacute;n de h&aacute;bitos de trabajo. <br>
+                    <br>
+                    En las orientaciones de cada tema encontrar&aacute;s las indicaciones 
+                    espec&iacute;ficas, que puedes realizar en tu actividad pr&aacute;ctica, 
+                    adem&aacute;s de las que te ofrece tu profesor, basado en 
+                    su amplia experiencia profesional, as&iacute; como las diferentes 
+                    situaciones cl&iacute;nicas que aparecen en la gu&iacute;a 
+                    de Morfofisiolog&iacute;a Humana I confeccionada por &eacute;l, 
+                    donde se pone de manifiesto la vinculaci&oacute;n te&oacute;rico 
+                    pr&aacute;ctica de los contenidos de estos temas para ayudarte 
+                    en tu estudio. </font></p>
+                  <table width="99%" border="1">
+                    <tr> 
+                      <td width="11%"> 
+                        <div align="center"><b><font size="1" face="Arial, Helvetica, sans-serif">Semana</font></b></div>
+                      </td>
+                      <td width="16%"> 
+                        <div align="center"><b><font size="1" face="Arial, Helvetica, sans-serif">Pr&aacute;ctica 
+                          Docente</font></b></div>
+                      </td>
+                      <td width="73%"> 
+                        <div align="center"><b><font size="1" face="Arial, Helvetica, sans-serif">Orientaciones</font></b></div>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td width="11%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">1</font></div>
+                      </td>
+                      <td width="16%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">1</font></div>
+                      </td>
+                      <td width="73%"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/Semana%201/pract11.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                        para la pr&aacute;ctica docente de los contenidos del 1.1. al 1.3.1</a></strong></font></td>
+                    </tr>
+                    <tr> 
+                      <td width="11%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">2</font></div>
+                      </td>
+                      <td width="16%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">2</font></div>
+                      </td>
+                      <td width="73%"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/Semana%202/pract12.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                        para la pr&aacute;ctica docente de los contenidos del 1.3.2 al 1.3.2.4.</a></strong></font></td>
+                    </tr>
+                    <tr> 
+                      <td width="11%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">3</font></div>
+                      </td>
+                      <td width="16%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">3</font></div>
+                      </td>
+                      <td width="73%"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/Semana%203/pract13.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                        para la pr&aacute;ctica docente de los contenidos del 1.3.3 al 1.4</a></strong></font></td>
+                    </tr>
+                    <tr> 
+                      <td width="11%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">4</font></div>
+                      </td>
+                      <td width="16%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">4</font></div>
+                      </td>
+                      <td width="73%"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/Semana%204/pract14.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                        para la pr&aacute;ctica docente del contenido 1.5.</a></strong></font></td>
+                    </tr>
+                    <tr> 
+                      <td width="11%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">5</font></div>
+                      </td>
+                      <td width="16%"> 
+                        <div align="center"><font size="2" face="Arial, Helvetica, sans-serif">5</font></div>
+                      </td>
+                      <td width="73%"> 
+                        <div align="left"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/Semana%205/pract15.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                          para la pr&aacute;ctica docente de los contenidos del 1.6. al 1.6.2.</a></strong></font></div>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td width="11%"> 
+                        <div align="center">6</div>
+                      </td>
+                      <td width="16%"> 
+                        <div align="center">6</div>
+                      </td>
+                      <td width="73%"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/Semana%206/pract16.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                        para la pr&aacute;ctica docente del contenido 1.6.3.</a></strong></font></td>
+                    </tr>
+                  </table>
+                  <p>
+                    <!-- InstanceEndEditable -->
+                  </p>
+                </td>
+              </tr>
+            </table>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<DIV id="floatLayer1" style="position: absolute; left:2px; top:83px; z-index: 100; width: 115px;; height: 293px"> 
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+      <td width="82%" align="center" class="fondoazuloscuro">Cerrar</td>
+      <td width="18%" align="center" onClick="window.close();" style="cursor:hand">X</td>
+    </tr>
+  </table>
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+                           
+      <td height="19" align="center"><a   class="celdanormalblanca" href=javascript:MostrarPopup('../../../htm/ayuda.htm',1/2,3)>Ayuda</a></td>    
+    </tr>
+  </table>
+  <b></b> <img src="../../imagenes/derechabiolog.jpg" ><b></b> </div>
+</body>
+<!-- InstanceEnd --></html>

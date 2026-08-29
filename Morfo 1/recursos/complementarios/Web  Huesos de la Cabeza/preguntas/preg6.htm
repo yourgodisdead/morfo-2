@@ -1,0 +1,142 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Pagina nueva 1</title>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+var segundos = 51; // ponga el tiempo que le va a dar al alumno
+var lanota = 0;
+function start(){  
+  document.forma1.tbSeg.value = --segundos;
+  if (document.forma1.tbSeg.value > 0) setTimeout("start()", 1000)
+   else llena()
+}
+
+function llena() {
+var boton = document.forma.ckbResp;
+resp = 1;  // ponga aquí la respuesta correcta 0, 1 ó 2
+lanota = evalua(boton,resp);
+correcta(boton,resp);
+MM_showHideLayers('respuesta','','hide','boton','','hide','tiempo','','hide','correcta','','show')
+alert("Su nota en la pregunta es: " + lanota + ". ¡Arrastre esta ventana y vea la respuesta correcta!. Aceptar para pasar a la siguiente pregunta.");
+parent.respondido(lanota);
+} 
+
+function evalua(control,laResp) {
+ if (control[laResp].checked == true) return 5
+   else return 2   
+}  
+function correcta(botones,laResp) {//establece la respuesta correcta
+ botones[laResp].checked = true;
+ }
+function inicia() { // inicializa los botones en blanco
+var boton = document.forma.ckbResp;
+  for (i=0; i<boton.length; i++){
+    boton[i].checked = false;
+        }  
+}   
+
+function MM_showHideLayers() { //v3.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function MM_findObj(n, d) { //v4.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && document.getElementById) x=document.getElementById(n); return x;
+}
+//-->
+</SCRIPT>
+</head>
+
+<BODY onLoad="start();inicia();MM_showHideLayers('tiempo','','show','respuesta','','show','correcta','','hide','boton','','show')">
+<div id="tiempo" style="position: absolute; left: 213; top: 295; width: 250; height: 63; z-index: 5"> 
+  &nbsp; 
+  <form method="POST" name="forma1" action="../_derived/nortbots.htm" webbot-action="--WEBBOT-SELF--" onSubmit="location.href='../_derived/nortbots.htm';return false;" WEBBOT-onSubmit>
+    <p> Tiempo Restante: 
+      <input type="text" name="tbSeg" size="9">
+    </p>
+  </form>
+</div>
+<div id="respuesta" style="position:absolute; left:10px; top:53px; width:333px; height:40px; z-index:6">&nbsp;</div>
+<h3>Pregunta 6:</h3>
+<form method="POST" action="../_derived/nortbots.htm" name="forma" onSubmit="location.href='../_derived/nortbots.htm';return false;" webbot-action="--WEBBOT-SELF--" WEBBOT-onSubmit>
+  <p><font face="Arial" size="3">De los detalles que se listan a continuación
+  marque el que le corresponda al hueso frontal.</font></p>
+  <table border="0" width="100%" height="46">
+    <tr> 
+      <td width="6%" height="16"> 
+        <input type="radio" value="V1" name="ckbResp">
+      </td>
+      <td width="94%" height="9">Fosa Condilar</td>
+    </tr>
+    <tr> 
+      <td width="6%" height="16"> 
+        <input type="radio" name="ckbResp" value="V2">
+      </td>
+      <td width="94%" height="8"> Arco Superciliar</td>
+    </tr>
+    <tr> 
+      <td width="100%" height="14" colspan="2"> 
+  <table border="0" width="100%" height="46">
+    <tr> 
+      <td width="6%" height="16"> 
+        <input type="radio" name="ckbResp" value="V5">
+      </td>
+      <td width="94%" height="8"> Borde Infraorbital</td>
+    </tr>
+    <tr> 
+      <td width="6%" height="14"> 
+        <input type="radio" name="ckbResp" value="V6">
+      </td>
+      <td width="94%" height="9"> Proceso Yugular.</td>
+    </tr>
+  </table>
+  <table border="0" width="100%" height="46">
+    <tr> 
+      <td width="6%" height="16"> 
+        <input type="radio" name="ckbResp" value="V8">
+      </td>
+      <td width="94%" height="8"> Agujero Infraorbital</td>
+    </tr>
+    <tr> 
+      <td width="100%" height="14" colspan="2"> 
+  <table border="0" width="100%" height="46">
+    <tr> 
+      <td width="6%" height="16"> 
+        <input type="radio" name="ckbResp" value="V9">
+      </td>
+      <td width="94%" height="8"> Surco del Seno Transverso</td>
+    </tr>
+    <tr> 
+      <td width="6%" height="14"> 
+      </td>
+      <td width="94%" height="9">  
+  <input type="button" value="Evaluación" name="cbnOK" onClick="llena()">
+ </td>
+    </tr>
+  </table>
+      </td>
+    </tr>
+  </table>
+        <p>&nbsp;</p>
+      </td>
+    </tr>
+  </table>
+</form>
+<div id="boton" style="position: absolute; left: 22; top: 306; width: 97; height: 25; z-index: 3"> 
+  &nbsp;
+</div>
+<p> 
+  <input type="hidden" name="VTI-GROUP" value="0">
+  <input TYPE="hidden" NAME="VTI-GROUP" VALUE="1">
+</body>
+</html>    

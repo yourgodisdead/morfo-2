@@ -1,0 +1,401 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="morfo2/templates/encabezado.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<style type="text/css">
+<!--
+.antes {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-style: normal; font-weight: bold; color: #993300; text-decoration: underline}
+.despues {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-weight: bold; color: #000099; text-decoration: underline}
+-->
+</style>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Tema 1. Consolidaci&oacute;n</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<SCRIPT language="JavaScript">
+window.onerror = null;
+var topMargin = 89;
+var slideTime = 1200;
+var ns6 = (!document.all && document.getElementById);
+var ie4 = (document.all);
+var ns4 = (document.layers);
+function layerObject(id,left) {
+if (ns6) {
+this.obj = document.getElementById(id).style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ie4) {
+this.obj = document.all[id].style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ns4) {
+this.obj = document.layers[id];
+this.obj.left = left;
+return this.obj;
+   }
+}
+function layerSetup() {
+floatLyr1 = new layerObject('floatLayer1', 0);
+floatLyr2 = new layerObject('floatLayer2', 665);
+window.setInterval("main()", 10)
+}
+function floatObject() {
+if (ns4 || ns6) {
+findHt = window.innerHeight;
+} else if(ie4) {
+findHt = document.body.clientHeight;
+   }
+  
+} 
+function main() {
+if (ns4) {
+this.currentY = document.layers["floatLayer1"].top;
+this.scrollTop = window.pageYOffset;
+mainTrigger();
+}
+else if(ns6) {
+this.currentY = parseInt(document.getElementById('floatLayer1').style.top);
+this.scrollTop = scrollY;
+mainTrigger();
+} else if(ie4) {
+this.currentY = floatLayer1.style.pixelTop;
+if (document.documentElement && document.documentElement.scrollTop)
+	this.scrollTop = document.documentElement.scrollTop;
+else if (document.body)
+	this.scrollTop = document.body.scrollTop;
+mainTrigger();
+   }
+}
+function mainTrigger() {
+var newTargetY = this.scrollTop + this.topMargin;
+if ( this.currentY != newTargetY ) {
+if ( newTargetY != this.targetY ) {
+this.targetY = newTargetY;
+floatStart();
+}
+animator();
+   }
+}
+function floatStart() {
+var now = new Date();
+this.A = this.targetY - this.currentY;
+
+this.B = Math.PI / ( 2 * this.slideTime );
+this.C = now.getTime();
+
+if (Math.abs(this.A) > this.findHt) {
+this.D = this.A > 0 ? this.targetY - this.findHt : this.targetY + this.findHt;
+this.A = this.A > 0 ? this.findHt : -this.findHt;
+}
+else {
+this.D = this.currentY;
+   }
+ 
+}
+function animator() {
+var now = new Date();
+var newY = this.A * Math.sin( this.B * ( now.getTime() - this.C ) ) + this.D;
+newY = Math.round(newY);
+var tope1 = (98+document.all.idmenuderecha.clientHeight)-(newY+floatLayer1.clientHeight);
+
+if (( this.A > 0 && newY > this.currentY ) || ( this.A < 0 && newY < this.currentY )) {
+if (tope1 >0) 
+{
+
+if ( ie4 )document.all.floatLayer1.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer1"].top = newY;
+if ( ns6 )document.getElementById('floatLayer1').style.top = newY + "px";
+if ( ie4 )document.all.floatLayer2.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer2"].top = newY;
+if ( ns6 )document.getElementById('floatLayer2').style.top = newY + "px";
+   }
+   }
+}
+function start() {
+if(ns6||ns4) {
+pageWidth = innerWidth;
+pageHeight = innerHeight;
+layerSetup();
+floatObject();
+}
+else if(ie4) {
+pageWidth = document.body.clientWidth;
+pageHeight = document.body.clientHeight;
+layerSetup();
+floatObject();
+   }
+}
+function movermenu(celda,leccion)
+{
+	FW_startTimeout();
+	var posiciony = floatLayer1.style.pixelTop+3+(22*leccion);
+    eval ('window.FW_showMenu(window.fw_menu_'+leccion+',112,'+posiciony+');');
+    celda.className='menuizquierdarojo';
+}
+//  End -->
+</script>
+<script language="JavaScript" src="../../scripts/testengine.js" type="text/JavaScript"> </script>
+<script language="JavaScript" src="../../scripts/ventana.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="../../scripts/call.js" type="text/JavaScript"></script>
+<script language="JavaScript"  src="../../scripts/fw_menu.js" type="text/JavaScript"></script>
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+// -->
+</script>
+</head>
+
+<body onLoad="start();" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" bgcolor="#FDF7E2">
+<table width="770" height="91%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="1" valign="top" bgcolor="#EDD3B5"> 
+      <table width="100%" height="1"  border="0" align="left" cellpadding="0" cellspacing="0" bgcolor="#3366CC">
+        <tr bgcolor="#3366CC"> 
+          <td background="../../../imagenes/cabezaln01.jpg" valign="top" height="82" bgcolor="#3366CC">
+            <div id="Layer3" style="position:absolute; width:39px; height:16px; z-index:103; left: 721px; top: 54px"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="../../../indext1.htm" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Inicio</a></strong></font></div>
+            <div id="Layer1" style="position:absolute; width:124px; height:83px; z-index:101"> 
+              <div align="center"> <br>
+                <b><font face="Verdana, Arial, Helvetica, sans-serif">Temas: <br>
+                <!-- #BeginLibraryItem "../morfo/library/cuadro1.lbi" -->
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<table width="80"  border="0" cellpadding="1" cellspacing="1">
+  <tr align="center" valign="middle">
+    <td width="25%" class="celdanumeroselecc">1 </td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema2/intro2.htm" >2</a></td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema3/intro3.htm" >3</a></td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema4/intro4.htm" >4</a></td>
+</table>
+<!-- #EndLibraryItem --></font></b></div>
+            </div>
+            <script language=JavaScript1.2>fwLoadMenus(); </script>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="1" valign="top" bgcolor="#3366cc"> 
+      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td height="1" bgcolor="#FFFFFF"></td>
+        </tr>
+        <tr> 
+          <td> 
+            <table width="98%" height="0"  border="0" cellpadding="0" cellspacing="0">
+              <tr> 
+                <td width="116" valign="bottom" class="celdanormal"></td>
+                <td valign="bottom" width="719"> <!-- #BeginLibraryItem "/morfo/library/tema1consolida.lbi" --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000">
+  <tr> 
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion1" bgcolor="#000000"><a href="intro1.htm" class="celdanormalazul">Introducción</a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="obj1.htm" class="celdanormalazul">Objetivos</a></td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="cont1.htm" class="celdanormalazul">Contenidos</a></td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="pdoc1.htm" class="celdanormalazul">Práctica docente</a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdaseleccionadanegra" id="leccion3" bgcolor="#000000">Consolidación</td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="1414" valign="top"> 
+      <table width="100%" height="43%"  border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="115" height="1247" align="center" valign="top" bgcolor="#3366CC" id=idmenuizquierda>&nbsp;</td>
+          <td height="1247" valign="top" bgcolor="#FDF7E2"> 
+            <table width="100%"  cellspacing="3" cellpadding="3" height="1586">
+              <tr> 
+                <td height="1394" > 
+                  <!-- InstanceBeginEditable name="contenido" -->
+                  <p><b><font face="Arial, Helvetica, sans-serif" size="2"><br>
+                    Tema 1. C&eacute;lula.</font></b><font face="Arial, Helvetica, sans-serif" size="2"><br>
+                    </font> </p>
+                  <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    1. Consolidaci&oacute;n 1.</b><br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.1 
+                    Introducci&oacute;n a la Morfofisiolog&iacute;a Humana.</b><br>
+                    Concepto. Objeto y m&eacute;todos de estudio. Relaciones con 
+                    otras ciencias. Bases celulares y moleculares de la vida. 
+                    Niveles de organizaci&oacute;n de la materia. Protoplasma. 
+                    Propiedades funcionales. Integridad morfofuncional del organismo 
+                    humano. Relaciones del organismo con el medio ambiente. Crecimiento 
+                    y desarrollo del organismo. Etapas en las que se subdivide 
+                    el desarrollo humano. El desarrollo como componente de la 
+                    salud. Factores que influyen en el desarrollo. El cuerpo humano. 
+                    Partes y regiones principales. Posici&oacute;n anat&oacute;mica. 
+                    Planos y ejes. T&eacute;rminos generales y relativos. Tipos 
+                    constitucionales.<br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.2 
+                    C&eacute;lula. Estructura y organizaci&oacute;n funcional</b>. 
+                    Concepto de c&eacute;lula. Teor&iacute;a Celular. C&eacute;lulas 
+                    procari&oacute;ticas y eucari&oacute;ticas. Organizaci&oacute;n 
+                    estructural de las c&eacute;lulas eucari&oacute;ticas. Forma 
+                    y Tama&ntilde;o. Constituyentes qu&iacute;micos de la c&eacute;lula. 
+                    Citoplasma. Componentes, Organitos citoplasm&aacute;ticos. 
+                    Clasificaci&oacute;n, estructura, funci&oacute;n e interrelaciones. 
+                    Inclusiones. N&uacute;cleo. Componentes y funciones generales. 
+                    Compartimentaci&oacute;n. Introducci&oacute;n a los modelos 
+                    celulares.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.3 
+                    Componentes moleculares.</b> <br>
+                    1.3.1 Precursores de macromol&eacute;culas. Precursores, de 
+                    polisac&aacute;ridos, de &aacute;cidos nucleicos y de prote&iacute;nas. 
+                    Elementos constantes y variables, clasificaci&oacute;n, funciones 
+                    de cada tipo. Propiedades el&eacute;ctricas de los amino&aacute;cidos. 
+                    Enlace polimerizante entre los precursores de macromol&eacute;culas; 
+                    caracter&iacute;sticas y propiedades.<br>
+                    </font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/Semana%201/conso11.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a la consolidaci&oacute;n de los contenidos 1.1. al 1.3.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    2. Consolidaci&oacute;n 2.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.3.2.1 
+                    Principio de organizaci&oacute;n de las macromol&eacute;culas.</b> 
+                    <br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.3.2.2 
+                    Polisac&aacute;ridos y prote&iacute;nas</b>. Polisac&aacute;ridos: 
+                    Estructura general y funciones. Homopolisac&aacute;ridos: 
+                    gluc&oacute;geno, almid&oacute;n y celulosa. Heteropolisac&aacute;ridos. 
+                    Prote&iacute;nas: Estructura general. Estructura primaria, 
+                    secundaria, terciaria y cuaternaria. Modelos principales de 
+                    estructura secundaria. Desnaturalizaci&oacute;n, propiedades 
+                    &aacute;cido b&aacute;sicas y el&eacute;ctricas. Electroforesis 
+                    de prote&iacute;nas. Car&aacute;cter informacional de las 
+                    prote&iacute;nas.<br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.3.2.3 
+                    &Aacute;cidos nucleico</b>s: Estructura general. Tipos principales: 
+                    ADN y ARN. Funciones. Estructura primaria y secundaria del 
+                    ADN: Modelo de Watson y Crick. ARN: tipos. Caracter&iacute;sticas 
+                    estructurales y funcionales de cada tipo.<br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.3.2.4 
+                    Estudio comparativo de macromol&eacute;culas.</b></font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/Semana%202/conso12.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a la consolidaci&oacute;n de los contenidos 1.3.2.1 al 1.3.2.4.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    3. Consolidaci&oacute;n 3.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.3.3 
+                    Biocatalizadores</b>. Introducci&oacute;n al estudio de los 
+                    biocatalizadores. Teor&iacute;a del centro activo. Cin&eacute;tica 
+                    enzim&aacute;tica. Regulaci&oacute;n de la actividad enzim&aacute;tica. 
+                    Cofactores enzim&aacute;ticos. Vitaminas.<br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.4 
+                    Membrana celular</b>. Estructura y composici&oacute;n. Propiedades 
+                    y funciones. Componentes moleculares. Modelo del mosaico fluido. 
+                    Relaci&oacute;n estructura-funci&oacute;n de los componentes. 
+                    Funciones de la prote&iacute;nas de membrana. Receptores de 
+                    membrana. Poros, canales y bombas. Mecanismos de transporte 
+                    a trav&eacute;s de las membranas. Difusi&oacute;n y &oacute;smosis. 
+                    Transporte pasivo y transporte activo. Caracter&iacute;sticas. 
+                    Concepto de permeabilidad selectiva de la membrana celular. 
+                    Potencial de membrana en reposo. Valores en diferentes c&eacute;lulas. 
+                    G&eacute;nesis y mantenimiento. Modificaciones. Potencial 
+                    de acci&oacute;n. Significaci&oacute;n biol&oacute;gica. Registro. 
+                    Fases. Bases i&oacute;nicas. Caracter&iacute;sticas del proceso 
+                    de excitaci&oacute;n.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/Semana%203/conso13.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a la consolidaci&oacute;n del contenido 1.3.3 al 1.4.</a></strong><a href="material/Semana%203/conso13.pdf"><br>
+                    </a> </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    4. Consolidaci&oacute;n 4.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.5 
+                    Metabolismo y respiraci&oacute;n celula</b>r. Metabolismo 
+                    celular: Concepto. Organizaci&oacute;n general: anabolismo 
+                    y catabolismo. Respiraci&oacute;n celular: Concepto e importancia. 
+                    Procesos que la integran. Localizaci&oacute;n celular. V&iacute;as 
+                    y ciclos metab&oacute;licos. Ciclo de Krebs. Origen del acetil-CoA. 
+                    Conjunto de reacciones del ciclo. Regulaci&oacute;n interna 
+                    del ciclo. Relaci&oacute;n con otras v&iacute;as metab&oacute;licas; 
+                    car&aacute;cter anfib&oacute;lico. Anaplerosis. Transporte 
+                    de electrones. Organizaci&oacute;n estructural y funcional 
+                    de sus componentes. Los complejos respiratorios. Formaci&oacute;n 
+                    del gradiente electroqu&iacute;mico. Fosforilaci&oacute;n 
+                    oxidativa: Caracter&iacute;sticas generales de la ATP sintetasa. 
+                    Teor&iacute;a quimiosm&oacute;tica de la fosforilaci&oacute;n 
+                    oxidativa. Unidad funcional de los procesos que integran la 
+                    respiraci&oacute;n celular. Regulaci&oacute;n de la respiraci&oacute;n 
+                    en su conjunto. Inhibidores del transporte electr&oacute;nico 
+                    y de la fosforilaci&oacute;n. Desacopladores. Balance y regulaci&oacute;n.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><a href="material/Semana%204/conso14.pdf"><br>
+                    </a><strong><a href="material/Semana%204/conso14.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a la consolidaci&oacute;n del contenido 1.5.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    5. Consolidaci&oacute;n 5.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.6.1 
+                    Componentes y ciclo celular</b>. Caracter&iacute;sticas morfofuncionales 
+                    de sus componentes. Relaci&oacute;n cromatina-cromosomas. 
+                    Concepto de cariotipo humano normal. Alteraciones cromos&oacute;micas. 
+                    Organizaci&oacute;n del genoma en eucariontes. Ciclo celular. 
+                    Concepto. Fases. Categor&iacute;as celulares y su relaci&oacute;n 
+                    con el ciclo celular. Mecanismos morfogen&eacute;ticos b&aacute;sicos: 
+                    Inducci&oacute;n, diferenciaci&oacute;n, crecimiento, migraci&oacute;n 
+                    y apoptosis. Especializaci&oacute;n celular.<br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.6.2 
+                    Gen&eacute;tica molecular I</b>. Replicaci&oacute;n del ADN. 
+                    Significaci&oacute;n biol&oacute;gica, desnaturalizaci&oacute;n 
+                    del ADN.. Reparaci&oacute;n y recombinaci&oacute;n. </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/Semana%205/conso15.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a la consolidaci&oacute;n de los contenidos 1.6.1. al 1.6.2</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    6. Consolidaci&oacute;n 6.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>1.6.3. 
+                    Gen&eacute;tica molecular II.</b> Transcripci&oacute;n del 
+                    ADN. Significaci&oacute;n biol&oacute;gica. Cambios postranscripcionales 
+                    del ARN. Traducci&oacute;n gen&eacute;tica. C&oacute;digo 
+                    gen&eacute;tico y s&iacute;ntesis de prote&iacute;na. Principios 
+                    generales de la regulaci&oacute;n de la expresi&oacute;n de 
+                    la informaci&oacute;n gen&eacute;tica, papel de los genes 
+                    y de sus interacciones con el ambiente (pre y posnatal). Enfermedades 
+                    moleculares. Concepto y tipos. C&aacute;ncer. Mecanismo molecular 
+                    de la transformaci&oacute;n cancerosa. Caracter&iacute;sticas 
+                    de las c&eacute;lulas cancerosas. Ingenier&iacute;a gen&eacute;tica. 
+                    Aspectos conceptuales.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/Semana%206/conso16.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a la consolidaci&oacute;n del contenido 1.6.3</a></strong></font></p>
+                  <!-- InstanceEndEditable -->
+                </td>
+              </tr>
+            </table>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<DIV id="floatLayer1" style="position: absolute; left:2px; top:83px; z-index: 100; width: 115px;; height: 293px"> 
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="2" class=fondoazuloscuro>
+    <tr> 
+      <td width="82%" align="center" class="fondoazuloscuro" height="28"> Cerrar</td>
+      <td width="18%" align="center" onClick="window.close();" style="cursor:hand" height="28">X</td>
+    </tr>
+  </table>
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+                           
+      <td height="14" align="center"> 
+        <div align="center"><a   class="celdanormalblanca" href=javascript:MostrarPopup('../../../htm/ayuda.htm',1/2,3)>Ayuda</a><font color="#000000">aa</font></div>
+      </td>    
+    </tr>
+  </table>
+  <b></b> <img src="../../imagenes/derechabiolog.jpg" ><b></b> </div>
+</body>
+<!-- InstanceEnd --></html>

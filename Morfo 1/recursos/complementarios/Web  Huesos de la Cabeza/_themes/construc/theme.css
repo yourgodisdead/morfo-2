@@ -1,0 +1,40 @@
+.mstheme
+{
+	top-bar-button: url(urbglob.gif);
+	navbutton-background-color: rgb(255,255,255);
+}
+.mstheme-topbar-font
+{
+	font-family: Arial, Helvetica;
+	color: rgb(204,204,204);
+	font-size: 1;
+}
+body
+{
+	font-family: Arial, Helvetica;
+	background-image: url(urbtextb.gif);
+}
+h1
+{
+	font-family: Trebuchet MS, Arial, Helvetica;
+}
+h2
+{
+	font-family: Trebuchet MS, Arial, Helvetica;
+}
+h3
+{
+	font-family: Trebuchet MS, Arial, Helvetica;
+}
+h4
+{
+	font-family: Trebuchet MS, Arial, Helvetica;
+}
+h5
+{
+	font-family: Trebuchet MS, Arial, Helvetica;
+}
+h6
+{
+	font-family: Trebuchet MS, Arial, Helvetica;
+}

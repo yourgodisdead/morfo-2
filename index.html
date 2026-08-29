@@ -1,33 +1,44 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es" data-theme="dark" data-course="morfo2">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morfofisiolog&iacute;a Humana II - Portal Educativo M&eacute;dico</title>
+    <title>Portal Educativo de Morfofisiología Humana</title>
     
     <!-- Meta tags for SEO & Metadata -->
-    <meta name="description" content="Portal educativo interactivo de Morfofisiolog&iacute;a Humana II para estudiantes de medicina de segundo a&ntilde;o. Contenidos de clases, atlas anat&oacute;mico interactivo y autoevaluaciones.">
+    <meta name="description" content="Portal educativo interactivo de Morfofisiología Humana I, II y III para estudiantes de medicina. Contenidos de clases, atlas anatómico interactivo y autoevaluaciones.">
     <meta name="author" content="Medicina Integral Comunitaria">
-    <link rel="shortcut icon" href="mic.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="Morfo 2/mic.ico" type="image/x-icon">
 
     <!-- Design System Stylesheet -->
-    <link rel="stylesheet" href="morfo2/morfo2_styles.css">
+    <link rel="stylesheet" href="morfo_styles.css">
 
     <!-- Leaflet GIS Mapping CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <!-- Local Static Databases (classic scripts, loaded before module) -->
-    <script src="morfo2/static_pages_data.js?v=4"></script>
-    <script src="morfo2/gallery_data.js?v=2"></script>
-    <script src="morfo2/laminarios_data.js?v=1"></script>
-    <script src="morfo2/extracted_data.js?v=2"></script>
+    <!-- Morfo 1 databases -->
+    <script src="Morfo 1/static_pages_data_m1.js?v=1"></script>
+    <script src="Morfo 1/laminarios_data_m1.js?v=1"></script>
+    <script src="Morfo 1/extracted_data_m1.js?v=1"></script>
+
+    <!-- Morfo 2 databases -->
+    <script src="Morfo 2/morfo2/static_pages_data.js?v=4"></script>
+    <script src="Morfo 2/morfo2/gallery_data.js?v=2"></script>
+    <script src="Morfo 2/morfo2/laminarios_data.js?v=1"></script>
+    <script src="Morfo 2/morfo2/extracted_data.js?v=2"></script>
+
+    <!-- Morfo 3 databases -->
+    <script src="Morfo 3/static_pages_data_m3.js?v=1"></script>
+    <script src="Morfo 3/laminarios_data_m3.js?v=1"></script>
+    <script src="Morfo 3/extracted_data_m3.js?v=1"></script>
 
     <!-- Firebase Config -->
-    <script src="morfo2/firebase_config.js"></script>
+    <script src="firebase_config.js"></script>
 
     <!-- SPA Logic Controller (ES Module for Firebase imports) -->
-    <script type="module" src="morfo2/morfo2_app.js?v=20260829_2000"></script>
+    <script type="module" src="morfo_app.js?v=1.0.0"></script>
 </head>
 <body>
 
@@ -35,8 +46,8 @@
     <div class="login-overlay active" id="loginOverlay">
         <div class="login-card">
             <div class="brand-section" style="justify-content: center; margin-bottom: 20px;">
-                <div class="brand-logo">MII</div>
-                <h1 class="brand-title">Morfo II</h1>
+                <div class="brand-logo" id="loginBrandLogo">MH</div>
+                <h1 class="brand-title" id="loginBrandTitle">Morfo Portal</h1>
             </div>
             <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 6px;">Iniciar Sesión</h2>
             <p style="text-align: center; color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 20px;">Ingresa tus credenciales para acceder al portal médico</p>
@@ -57,10 +68,10 @@
                 <button type="submit" class="download-btn" style="justify-content: center; margin-top: 6px; width: 100%;">Ingresar</button>
             </form>
 
-            <!-- WHATSAPP ACCESS / HELP BANNER -->
+            <!-- HELP BANNER -->
             <div class="login-whatsapp-banner">
                 <span class="whatsapp-question">¿Quieres entrar?</span>
-                <a href="https://wa.me/584129031966?text=Hola,%20deseo%20acceder%20al%20portal%20educativo%20de%20Morfofisiolog%C3%ADa%20II" target="_blank" rel="noopener noreferrer" class="whatsapp-link-btn" id="loginWhatsAppLink">
+                <a href="https://wa.me/584129031966?text=Hola,%20deseo%20acceder%20al%20portal%20educativo%20de%20Morfofisiolog%C3%ADa" target="_blank" rel="noopener noreferrer" class="whatsapp-link-btn" id="loginWhatsAppLink">
                     <svg viewBox="0 0 24 24" class="whatsapp-svg-icon"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.11 7.17C8.94 7.17 8.66 7.24 8.42 7.5C8.18 7.76 7.5 8.4 7.5 9.72C7.5 11.04 8.46 12.31 8.6 12.5C8.74 12.68 10.48 15.38 13.16 16.54C15.38 17.5 15.83 17.31 16.31 17.27C16.79 17.22 17.86 16.63 18.08 16C18.3 15.37 18.3 14.83 18.23 14.72C18.17 14.61 18.01 14.55 17.75 14.42C17.49 14.29 16.23 13.67 16 13.58C15.77 13.49 15.6 13.45 15.43 13.71C15.26 13.97 14.77 14.55 14.62 14.72C14.47 14.89 14.33 14.91 14.07 14.78C13.81 14.65 12.98 14.38 11.99 13.5C11.22 12.81 10.7 11.96 10.55 11.7C10.4 11.44 10.53 11.3 10.66 11.17C10.78 11.05 10.93 10.86 11.06 10.71C11.19 10.56 11.23 10.45 11.32 10.28C11.41 10.11 11.36 9.96 11.3 9.83C11.24 9.7 10.75 8.5 10.55 8C10.35 7.53 10.15 7.59 9.98 7.58C9.83 7.58 9.66 7.57 9.48 7.57C9.31 7.57 9.11 7.17 9.11 7.17Z"/></svg>
                     <span>Escribe al WhatsApp <strong>+584129031966</strong></span>
                 </a>
@@ -71,8 +82,18 @@
     <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar" id="sidebar">
         <div class="brand-section">
-            <div class="brand-logo">MII</div>
-            <h1 class="brand-title">Morfo II</h1>
+            <div class="brand-logo" id="sidebarBrandLogo">MH</div>
+            <h1 class="brand-title" id="sidebarBrandTitle">Portal Morfo</h1>
+        </div>
+
+        <!-- SUBJECT/COURSE SELECTOR -->
+        <div class="course-selector-wrapper">
+            <span class="course-selector-label">Materia Activa</span>
+            <div class="course-select-btn-group">
+                <button class="course-select-btn" id="btnCourseM1" data-course="morfo1">Morfo I</button>
+                <button class="course-select-btn active" id="btnCourseM2" data-course="morfo2">Morfo II</button>
+                <button class="course-select-btn" id="btnCourseM3" data-course="morfo3">Morfo III</button>
+            </div>
         </div>
 
         <!-- USER SIDEBAR PROFILE HEADER -->
@@ -120,14 +141,14 @@
                 <span class="theme-text">Modo Claro</span>
             </button>
             <!-- Logout button -->
-            <button class="theme-toggle-btn" id="logoutBtn" onclick="localStorage.removeItem('morfo2_session'); window.location.reload();" style="display:none; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger-color); margin-top: 8px;">
+            <button class="theme-toggle-btn" id="logoutBtn" style="display:none; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger-color); margin-top: 8px;">
                 <span class="theme-icon">
                     <svg viewBox="0 0 24 24" style="fill: var(--danger-color); width: 18px; height: 18px;"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
                 </span>
                 <span class="theme-text">Cerrar Sesión</span>
             </button>
             <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.4;">
-                Morfofisiolog&iacute;a II &copy; 2026<br>
+                Portal de Morfofisiología &copy; 2026<br>
                 Fines Educativos
             </div>
         </div>
@@ -138,20 +159,18 @@
 
         <!-- SECTION: INICIO / PORTADA -->
         <section class="content-section active" id="inicioSection">
-            <header class="hero-banner">
-                <span class="hero-tag">Segundo A&ntilde;o de Medicina</span>
-                <h2 class="hero-title">Morfofisiolog&iacute;a Humana II</h2>
-                <p class="hero-subtitle">Portal educativo de estudio para el Programa Nacional de Formaci&oacute;n de M&eacute;dicos Integrales Comunitarios. Explora objetivos, temas de estudio, clases orientadoras y un laminario virtual interactivo completo.</p>
+            <header class="hero-banner" id="inicioHeroBanner">
+                <!-- Javascript will render custom hero tag, title, subtitle based on selected course -->
             </header>
 
             <div class="tab-container">
                 <div class="tab-headers">
                     <button class="tab-btn active" data-tab="objetivos" id="tabObjectives">Objetivos</button>
                     <button class="tab-btn" data-tab="clases" id="tabClasses">Sistema de Clases</button>
-                    <button class="tab-btn" data-tab="evaluacion" id="tabEval">Evaluaci&oacute;n</button>
+                    <button class="tab-btn" data-tab="evaluacion" id="tabEval">Evaluación</button>
                     <button class="tab-btn" data-tab="estudio" id="tabStudy">Consejos de Estudio</button>
-                    <button class="tab-btn" data-tab="bibliografia" id="tabBib">Bibliograf&iacute;a</button>
-                    <button class="tab-btn" data-tab="creditos" id="tabCredits">Cr&eacute;ditos</button>
+                    <button class="tab-btn" data-tab="bibliografia" id="tabBib">Bibliografía</button>
+                    <button class="tab-btn" data-tab="creditos" id="tabCredits">Créditos</button>
                 </div>
                 
                 <div class="tab-panels">
@@ -169,24 +188,24 @@
         <!-- SECTION: TEMARIO SEMANAL -->
         <section class="content-section" id="temarioSection">
             <header class="hero-banner">
-                <span class="hero-tag">Plan Acad&eacute;mico de 12 Semanas</span>
+                <span class="hero-tag" id="workspaceThemeTag">Plan Académico</span>
                 <h2 class="hero-title" id="workspaceTitle">Semana 1 - Recursos de Estudio</h2>
-                <p class="hero-subtitle">Visualiza de manera estructurada las gu&iacute;as orientadoras de contenido, instrucciones de clases pr&aacute;cticas y simulaciones para consolidar tus conocimientos de neurolog&iacute;a y morfolog&iacute;a.</p>
+                <p class="hero-subtitle">Visualiza de manera estructurada las guías orientadoras de contenido, instrucciones de clases prácticas y simulaciones para consolidar tus conocimientos.</p>
             </header>
 
             <div class="week-dashboard">
                 <!-- Vertical selector of weeks -->
                 <div class="week-selector-sidebar" id="weekSelectorSidebar">
-                    <!-- Javascript generated weeks 1-12 -->
+                    <!-- Javascript generated weeks dynamically -->
                 </div>
 
                 <!-- Main workspace of selected week -->
                 <div class="week-workspace" id="weekWorkspace">
                     <div class="tab-container">
                         <div class="tab-headers" style="margin-bottom: 20px;">
-                            <button class="tab-btn active" data-tab="orientacion" id="tabWeekOrien">Orientaci&oacute;n</button>
-                            <button class="tab-btn" data-tab="practica" id="tabWeekPract">Pr&aacute;ctica Docente</button>
-                            <button class="tab-btn" data-tab="consolidacion" id="tabWeekConso">Consolidaci&oacute;n</button>
+                            <button class="tab-btn active" data-tab="orientacion" id="tabWeekOrien">Orientación</button>
+                            <button class="tab-btn" data-tab="practica" id="tabWeekPract">Práctica Docente</button>
+                            <button class="tab-btn" data-tab="consolidacion" id="tabWeekConso">Consolidación</button>
                             <button class="tab-btn" data-tab="pdf" id="tabWeekDownloads">Descargas y Materiales</button>
                         </div>
                         
@@ -199,12 +218,12 @@
             </div>
         </section>
 
-        <!-- SECTION: CLASES ORIENTADORAS (NEW) -->
+        <!-- SECTION: CLASES ORIENTADORAS -->
         <section class="content-section" id="orientadorasSection">
             <header class="hero-banner">
-                <span class="hero-tag">Actividades Orientadoras de Morfofisiología Humana II</span>
-                <h2 class="hero-title">Clases Orientadoras (AO 01 - AO 14)</h2>
-                <p class="hero-subtitle">Accede al compendio completo de las 14 conferencias orientadoras oficiales del programa formativo. Consulta los temas, visualiza los documentos en formato PDF o descárgalos para tu estudio independiente.</p>
+                <span class="hero-tag" id="orientadorasHeroTag">Actividades Orientadoras Oficiales</span>
+                <h2 class="hero-title" id="orientadorasHeroTitle">Clases Orientadoras</h2>
+                <p class="hero-subtitle">Accede al compendio completo de las conferencias orientadoras oficiales del programa formativo. Consulta los temas, visualiza los documentos en formato PDF o descárgalos para tu estudio independiente.</p>
             </header>
 
             <div class="orientadoras-layout">
@@ -214,7 +233,7 @@
                         <input type="text" class="search-input" id="aoSearchInput" placeholder="Buscar por tema o número de AO...">
                     </div>
                     <div class="ao-list" id="aoListContainer">
-                        <!-- Javascript rendered list of 14 AO cards -->
+                        <!-- Javascript rendered list of AO cards -->
                     </div>
                 </div>
 
@@ -224,28 +243,25 @@
             </div>
         </section>
 
-        <!-- SECTION: LAMINARIOS Y ATLAS (ENHANCED) -->
+        <!-- SECTION: LAMINARIOS Y ATLAS -->
         <section class="content-section" id="laminariosSection">
             <header class="hero-banner">
-                <span class="hero-tag">Atlas y Colecciones Microscópicas y Teratológicas</span>
-                <h2 class="hero-title">Laminarios Médicos y Atlas Anatómico</h2>
-                <p class="hero-subtitle">Explora preparados histológicos reales con tinciones diagnósticas, galería teratológica de malformaciones congénitas, atlas anatómico de 346 figuras y presentaciones de diapositivas.</p>
+                <span class="hero-tag" id="laminariosHeroTag">Preparados Clínicos y Colecciones de Anatomía</span>
+                <h2 class="hero-title" id="laminariosHeroTitle">Laminarios y Atlas Virtual</h2>
+                <p class="hero-subtitle">Explora preparados histológicos reales con tinciones diagnósticas, galerías de desarrollo embrionario, atlas anatómico y presentaciones de diapositivas.</p>
             </header>
 
             <!-- Laminarios Sub Tabs -->
             <div class="tab-container" style="margin-bottom: 24px;">
-                <div class="tab-headers">
-                    <button class="tab-btn active" data-lam-tab="histologico" id="tabLamHisto">🔬 Laminario Histológico (44)</button>
-                    <button class="tab-btn" data-lam-tab="malformaciones" id="tabLamMalfor">🧬 Malformaciones Congénitas (61)</button>
-                    <button class="tab-btn" data-lam-tab="atlas" id="tabLamAtlas">📐 Atlas Anatómico (346)</button>
-                    <button class="tab-btn" data-lam-tab="ppt" id="tabLamPpt">📊 Presentaciones PPT / Diapositivas</button>
+                <div class="tab-headers" id="laminariosTabHeaders">
+                    <!-- Javascript will render tabs depending on the active course -->
                 </div>
             </div>
 
             <div class="atlas-control-bar" id="laminariosControlBar">
                 <div class="search-wrapper">
                     <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" class="search-input" id="laminariosSearchInput" placeholder="Buscar láminas por nombre, órgano, tinción o diagnóstico...">
+                    <input type="text" class="search-input" id="laminariosSearchInput" placeholder="Buscar láminas por nombre, tinción o diagnóstico...">
                 </div>
 
                 <div class="category-filters" id="laminariosCategoryFilters">
@@ -253,7 +269,7 @@
                 </div>
                 
                 <div class="page-selector" id="atlasPageSelector" style="display: none;">
-                    <!-- Javascript generated pages 1 to 28 for Atlas tab -->
+                    <!-- Javascript generated pages for Atlas tab -->
                 </div>
             </div>
 
@@ -266,9 +282,9 @@
         <!-- SECTION: HABILIDADES -->
         <section class="content-section" id="habilidadesSection">
             <header class="hero-banner">
-                <span class="hero-tag">Formaci&oacute;n del M&eacute;dico Integral Comunitario</span>
+                <span class="hero-tag">Formación del Médico Integral Comunitario</span>
                 <h2 class="hero-title">Habilidades Clave de Aprendizaje</h2>
-                <p class="hero-subtitle">Gu&iacute;a de procedimientos intelectuales que todo estudiante debe perfeccionar en las ciencias b&aacute;sicas biom&eacute;dicas, desde definir conceptos hasta predecir efectos fisiopatol&oacute;gicos.</p>
+                <p class="hero-subtitle">Guía de procedimientos intelectuales que todo estudiante debe perfeccionar en las ciencias básicas biomédicas, desde definir conceptos hasta predecir efectos fisiopatológicos.</p>
             </header>
 
             <!-- Cards listing abilities -->
@@ -408,9 +424,9 @@
                             <div class="form-group" style="margin-bottom: 0;">
                                 <label for="editProfileCurrentYear" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Año Cursante *</label>
                                 <select id="editProfileCurrentYear" class="auth-input" required>
-                                    <option value="1er Año">1er Año</option>
+                                    <option value="1er Año">1er Año (Morfo I)</option>
                                     <option value="2do Año" selected>2do Año (Morfo II)</option>
-                                    <option value="3er Año">3er Año</option>
+                                    <option value="3er Año">3er Año (Morfo III)</option>
                                     <option value="4to Año">4to Año</option>
                                     <option value="5to Año">5to Año</option>
                                     <option value="6to Año">6to Año</option>
@@ -435,7 +451,7 @@
             </div>
         </section>
 
-        <!-- SECTION: ADMINISTRACIÓN & MAPA GIS (ONLY FOR SUPERUSER) -->
+        <!-- SECTION: ADMINISTRACIÓN & MAPA GIS -->
         <section class="content-section" id="adminSection">
             <header class="hero-banner">
                 <span class="hero-tag">Panel Exclusivo Superusuario</span>
@@ -480,9 +496,9 @@
                         </select>
                         <select id="gisFilterYear" class="search-input" style="padding: 8px 12px; font-size: 0.85rem; min-width: 150px;">
                             <option value="todos">Todos los Años</option>
-                            <option value="1er Año">1er Año</option>
+                            <option value="1er Año">1er Año (Morfo I)</option>
                             <option value="2do Año">2do Año (Morfo II)</option>
-                            <option value="3er Año">3er Año</option>
+                            <option value="3er Año">3er Año (Morfo III)</option>
                             <option value="4to Año">4to Año</option>
                             <option value="5to Año">5to Año</option>
                             <option value="6to Año">6to Año</option>
@@ -527,6 +543,30 @@
                                 <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Estado de Venezuela *</label>
                                 <select id="regStateOrigin" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
                                     <option value="" disabled selected>Selecciona Estado...</option>
+                                    <option value="Amazonas">Amazonas</option>
+                                    <option value="Anzoátegui">Anzoátegui</option>
+                                    <option value="Apure">Apure</option>
+                                    <option value="Aragua">Aragua</option>
+                                    <option value="Barinas">Barinas</option>
+                                    <option value="Bolívar">Bolívar</option>
+                                    <option value="Carabobo">Carabobo</option>
+                                    <option value="Cojedes">Cojedes</option>
+                                    <option value="Delta Amacuro">Delta Amacuro</option>
+                                    <option value="Distrito Capital">Distrito Capital</option>
+                                    <option value="Falcón">Falcón</option>
+                                    <option value="Guárico">Guárico</option>
+                                    <option value="La Guaira">La Guaira (Vargas)</option>
+                                    <option value="Lara">Lara</option>
+                                    <option value="Mérida">Mérida</option>
+                                    <option value="Miranda">Miranda</option>
+                                    <option value="Monagas">Monagas</option>
+                                    <option value="Nueva Esparta">Nueva Esparta</option>
+                                    <option value="Portuguesa">Portuguesa</option>
+                                    <option value="Sucre">Sucre</option>
+                                    <option value="Táchira">Táchira</option>
+                                    <option value="Trujillo">Trujillo</option>
+                                    <option value="Yaracuy">Yaracuy</option>
+                                    <option value="Zulia">Zulia</option>
                                 </select>
                             </div>
                         </div>
@@ -547,9 +587,9 @@
                             <div style="display: flex; flex-direction: column; gap: 4px;">
                                 <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Año Cursante *</label>
                                 <select id="regCurrentYear" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                    <option value="1er Año">1er Año (Morfo I)</option>
                                     <option value="2do Año" selected>2do Año (Morfo II)</option>
-                                    <option value="1er Año">1er Año</option>
-                                    <option value="3er Año">3er Año</option>
+                                    <option value="3er Año">3er Año (Morfo III)</option>
                                     <option value="4to Año">4to Año</option>
                                     <option value="5to Año">5to Año</option>
                                     <option value="6to Año">6to Año</option>
@@ -572,7 +612,7 @@
                 </div>
             </div>
 
-            <!-- Registered users list card with Deep Info Buttons -->
+            <!-- Registered users list card -->
             <div class="card" style="padding: 32px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
                     <div>
@@ -617,7 +657,7 @@
     <div id="aiTutorWidget">
         <button id="aiTutorFab" class="ai-tutor-fab" aria-label="Abrir Tutor IA">
             <span class="ai-fab-icon">🤖</span>
-            <span class="ai-fab-text">Tutor IA Morfo II</span>
+            <span class="ai-fab-text" id="aiTutorFabText">Tutor IA</span>
             <span class="ai-fab-pulse"></span>
         </button>
 
@@ -626,7 +666,7 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div class="ai-avatar-badge">🤖</div>
                     <div>
-                        <h4 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: #ffffff; margin: 0;">Tutor IA Morfo II</h4>
+                        <h4 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: #ffffff; margin: 0;" id="aiChatHeaderTitle">Tutor IA</h4>
                         <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">● Ayudante Académico Activo</span>
                     </div>
                 </div>
@@ -634,11 +674,8 @@
             </div>
 
             <!-- Suggestion Quick Chips -->
-            <div class="ai-chips-bar">
-                <button class="ai-chip-btn" data-query="¿Qué es el arco reflejo y cuáles son sus 5 componentes?">⚡ Arco Reflejo</button>
-                <button class="ai-chip-btn" data-query="Explícame la vía piramidal y extrapiramidal con un ejemplo clínico">🧠 Vías Motoras</button>
-                <button class="ai-chip-btn" data-query="¿Cómo diferencio las capas histológicas del cerebelo?">🔬 Cerebelo e Histología</button>
-                <button class="ai-chip-btn" data-query="¿Cómo razonar las preguntas de consolidación paso a paso?">📝 Ayuda en Consolidación</button>
+            <div class="ai-chips-bar" id="aiChipsBar">
+                <!-- Javascript will render dynamic quick chips depending on course -->
             </div>
 
             <!-- Messages Log -->
@@ -761,7 +798,7 @@
 
             <div style="padding: 24px;">
                 <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 18px;">
-                    Estimado estudiante, para cumplir con el proceso formativo y el seguimiento académico de <strong>Morfofisiología Humana II</strong>, es indispensable que todos tus datos se encuentren completos y actualizados.
+                    Estimado estudiante, para cumplir con el proceso formativo y el seguimiento académico, es indispensable que todos tus datos se encuentren completos y actualizados.
                 </p>
 
                 <form id="completeProfileForm" style="display: flex; flex-direction: column; gap: 14px;">
@@ -779,6 +816,30 @@
                             <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Estado de Venezuela *</label>
                             <select id="compStateOrigin" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
                                 <option value="" disabled selected>Selecciona tu Estado...</option>
+                                <option value="Amazonas">Amazonas</option>
+                                <option value="Anzoátegui">Anzoátegui</option>
+                                <option value="Apure">Apure</option>
+                                <option value="Aragua">Aragua</option>
+                                <option value="Barinas">Barinas</option>
+                                <option value="Bolívar">Bolívar</option>
+                                <option value="Carabobo">Carabobo</option>
+                                <option value="Cojedes">Cojedes</option>
+                                <option value="Delta Amacuro">Delta Amacuro</option>
+                                <option value="Distrito Capital">Distrito Capital</option>
+                                <option value="Falcón">Falcón</option>
+                                <option value="Guárico">Guárico</option>
+                                <option value="La Guaira">La Guaira (Vargas)</option>
+                                <option value="Lara">Lara</option>
+                                <option value="Mérida">Mérida</option>
+                                <option value="Miranda">Miranda</option>
+                                <option value="Monagas">Monagas</option>
+                                <option value="Nueva Esparta">Nueva Esparta</option>
+                                <option value="Portuguesa">Portuguesa</option>
+                                <option value="Sucre">Sucre</option>
+                                <option value="Táchira">Táchira</option>
+                                <option value="Trujillo">Trujillo</option>
+                                <option value="Yaracuy">Yaracuy</option>
+                                <option value="Zulia">Zulia</option>
                             </select>
                         </div>
                     </div>
@@ -799,9 +860,9 @@
                         <div style="display: flex; flex-direction: column; gap: 4px;">
                             <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Año Cursante *</label>
                             <select id="compCurrentYear" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                <option value="1er Año">1er Año (Morfo I)</option>
                                 <option value="2do Año" selected>2do Año (Morfo II)</option>
-                                <option value="1er Año">1er Año</option>
-                                <option value="3er Año">3er Año</option>
+                                <option value="3er Año">3er Año (Morfo III)</option>
                                 <option value="4to Año">4to Año</option>
                                 <option value="5to Año">5to Año</option>
                                 <option value="6to Año">6to Año</option>

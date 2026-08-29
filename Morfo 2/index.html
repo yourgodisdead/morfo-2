@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morfofisiolog&iacute;a Humana II - Portal Educativo M&eacute;dico</title>
+    
+    <!-- Meta tags for SEO & Metadata -->
+    <meta name="description" content="Portal educativo interactivo de Morfofisiolog&iacute;a Humana II para estudiantes de medicina de segundo a&ntilde;o. Contenidos de clases, atlas anat&oacute;mico interactivo y autoevaluaciones.">
+    <meta name="author" content="Medicina Integral Comunitaria">
+    <link rel="shortcut icon" href="mic.ico" type="image/x-icon">
+
+    <!-- Design System Stylesheet -->
+    <link rel="stylesheet" href="morfo2/morfo2_styles.css">
+
+    <!-- Leaflet GIS Mapping CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Local Static Databases (classic scripts, loaded before module) -->
+    <script src="morfo2/static_pages_data.js?v=4"></script>
+    <script src="morfo2/gallery_data.js?v=2"></script>
+    <script src="morfo2/laminarios_data.js?v=1"></script>
+    <script src="morfo2/extracted_data.js?v=2"></script>
+
+    <!-- Firebase Config -->
+    <script src="morfo2/firebase_config.js"></script>
+
+    <!-- SPA Logic Controller (ES Module for Firebase imports) -->
+    <script type="module" src="morfo2/morfo2_app.js?v=20260829_2000"></script>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN OVERLAY -->
+    <div class="login-overlay active" id="loginOverlay">
+        <div class="login-card">
+            <div class="brand-section" style="justify-content: center; margin-bottom: 20px;">
+                <div class="brand-logo">MII</div>
+                <h1 class="brand-title">Morfo II</h1>
+            </div>
+            <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 6px;">Iniciar Sesión</h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 20px;">Ingresa tus credenciales para acceder al portal médico</p>
+            
+            <form id="loginForm" style="display: flex; flex-direction: column; gap: 14px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="loginEmail" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" required class="search-input" style="padding-left: 16px;" placeholder="ejemplo@morfo.com">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="loginPassword" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Contraseña</label>
+                    <div style="position: relative; display: flex; align-items: center; width: 100%;">
+                        <input type="password" id="loginPassword" required class="search-input" style="padding-left: 16px; padding-right: 48px; width: 100%;" placeholder="••••••••">
+                        <button type="button" class="toggle-password-btn" data-target="loginPassword" style="position: absolute; right: 12px; background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 4px; display: flex; align-items: center; color: var(--text-secondary);" title="Mostrar contraseña">👁️</button>
+                    </div>
+                </div>
+                <div id="loginError" style="color: var(--danger-color); font-size: 0.85rem; font-weight: 600; text-align: center; display: none;">Credenciales incorrectas</div>
+                <button type="submit" class="download-btn" style="justify-content: center; margin-top: 6px; width: 100%;">Ingresar</button>
+            </form>
+
+            <!-- WHATSAPP ACCESS / HELP BANNER -->
+            <div class="login-whatsapp-banner">
+                <span class="whatsapp-question">¿Quieres entrar?</span>
+                <a href="https://wa.me/584129031966?text=Hola,%20deseo%20acceder%20al%20portal%20educativo%20de%20Morfofisiolog%C3%ADa%20II" target="_blank" rel="noopener noreferrer" class="whatsapp-link-btn" id="loginWhatsAppLink">
+                    <svg viewBox="0 0 24 24" class="whatsapp-svg-icon"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.11 7.17C8.94 7.17 8.66 7.24 8.42 7.5C8.18 7.76 7.5 8.4 7.5 9.72C7.5 11.04 8.46 12.31 8.6 12.5C8.74 12.68 10.48 15.38 13.16 16.54C15.38 17.5 15.83 17.31 16.31 17.27C16.79 17.22 17.86 16.63 18.08 16C18.3 15.37 18.3 14.83 18.23 14.72C18.17 14.61 18.01 14.55 17.75 14.42C17.49 14.29 16.23 13.67 16 13.58C15.77 13.49 15.6 13.45 15.43 13.71C15.26 13.97 14.77 14.55 14.62 14.72C14.47 14.89 14.33 14.91 14.07 14.78C13.81 14.65 12.98 14.38 11.99 13.5C11.22 12.81 10.7 11.96 10.55 11.7C10.4 11.44 10.53 11.3 10.66 11.17C10.78 11.05 10.93 10.86 11.06 10.71C11.19 10.56 11.23 10.45 11.32 10.28C11.41 10.11 11.36 9.96 11.3 9.83C11.24 9.7 10.75 8.5 10.55 8C10.35 7.53 10.15 7.59 9.98 7.58C9.83 7.58 9.66 7.57 9.48 7.57C9.31 7.57 9.11 7.17 9.11 7.17Z"/></svg>
+                    <span>Escribe al WhatsApp <strong>+584129031966</strong></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand-section">
+            <div class="brand-logo">MII</div>
+            <h1 class="brand-title">Morfo II</h1>
+        </div>
+
+        <!-- USER SIDEBAR PROFILE HEADER -->
+        <div class="user-sidebar-profile" id="userSidebarProfile" style="display:none; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); text-align: center;">
+            <img class="sidebar-avatar" id="sidebarAvatar" src="" alt="Avatar" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color); margin-bottom: 8px;">
+            <div id="sidebarUsername" style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Usuario</div>
+            <div id="sidebarRole" style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Estudiante</div>
+        </div>
+
+        <nav class="nav-menu">
+            <a class="nav-item active" data-section="inicio" id="navHome">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>Inicio</span>
+            </a>
+            <a class="nav-item" data-section="temario" id="navWeeks">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                <span>Temario Semanal</span>
+            </a>
+            <a class="nav-item" data-section="orientadoras" id="navOrientadoras">
+                <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+                <span>Clases Orientadoras</span>
+            </a>
+            <a class="nav-item" data-section="laminarios" id="navLaminarios">
+                <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                <span>Laminarios y Atlas</span>
+            </a>
+            <a class="nav-item" data-section="habilidades" id="navSkills">
+                <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 18.5c-3.73 0-6.93-1.95-8.66-4.88L12 21l8.66-4.38c-1.73 2.93-4.93 4.88-8.66 4.88z"/></svg>
+                <span>Habilidades</span>
+            </a>
+            <a class="nav-item" data-section="perfil" id="navProfile" style="display:none;">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                <span>Mi Perfil</span>
+            </a>
+            <a class="nav-item" data-section="admin" id="navAdmin" style="display:none;">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span>Administración</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <!-- Theme toggle button -->
+            <button class="theme-toggle-btn" id="themeToggleBtn">
+                <span class="theme-icon"></span>
+                <span class="theme-text">Modo Claro</span>
+            </button>
+            <!-- Logout button -->
+            <button class="theme-toggle-btn" id="logoutBtn" onclick="localStorage.removeItem('morfo2_session'); window.location.reload();" style="display:none; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger-color); margin-top: 8px;">
+                <span class="theme-icon">
+                    <svg viewBox="0 0 24 24" style="fill: var(--danger-color); width: 18px; height: 18px;"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                </span>
+                <span class="theme-text">Cerrar Sesión</span>
+            </button>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.4;">
+                Morfofisiolog&iacute;a II &copy; 2026<br>
+                Fines Educativos
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="main-content">
+
+        <!-- SECTION: INICIO / PORTADA -->
+        <section class="content-section active" id="inicioSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Segundo A&ntilde;o de Medicina</span>
+                <h2 class="hero-title">Morfofisiolog&iacute;a Humana II</h2>
+                <p class="hero-subtitle">Portal educativo de estudio para el Programa Nacional de Formaci&oacute;n de M&eacute;dicos Integrales Comunitarios. Explora objetivos, temas de estudio, clases orientadoras y un laminario virtual interactivo completo.</p>
+            </header>
+
+            <div class="tab-container">
+                <div class="tab-headers">
+                    <button class="tab-btn active" data-tab="objetivos" id="tabObjectives">Objetivos</button>
+                    <button class="tab-btn" data-tab="clases" id="tabClasses">Sistema de Clases</button>
+                    <button class="tab-btn" data-tab="evaluacion" id="tabEval">Evaluaci&oacute;n</button>
+                    <button class="tab-btn" data-tab="estudio" id="tabStudy">Consejos de Estudio</button>
+                    <button class="tab-btn" data-tab="bibliografia" id="tabBib">Bibliograf&iacute;a</button>
+                    <button class="tab-btn" data-tab="creditos" id="tabCredits">Cr&eacute;ditos</button>
+                </div>
+                
+                <div class="tab-panels">
+                    <!-- Dynamic rendering area for static page text -->
+                    <div class="tab-panel active" id="objetivosPanel"></div>
+                    <div class="tab-panel" id="clasesPanel"></div>
+                    <div class="tab-panel" id="evaluacionPanel"></div>
+                    <div class="tab-panel" id="estudioPanel"></div>
+                    <div class="tab-panel" id="bibliografiaPanel"></div>
+                    <div class="tab-panel" id="creditosPanel"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: TEMARIO SEMANAL -->
+        <section class="content-section" id="temarioSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Plan Acad&eacute;mico de 12 Semanas</span>
+                <h2 class="hero-title" id="workspaceTitle">Semana 1 - Recursos de Estudio</h2>
+                <p class="hero-subtitle">Visualiza de manera estructurada las gu&iacute;as orientadoras de contenido, instrucciones de clases pr&aacute;cticas y simulaciones para consolidar tus conocimientos de neurolog&iacute;a y morfolog&iacute;a.</p>
+            </header>
+
+            <div class="week-dashboard">
+                <!-- Vertical selector of weeks -->
+                <div class="week-selector-sidebar" id="weekSelectorSidebar">
+                    <!-- Javascript generated weeks 1-12 -->
+                </div>
+
+                <!-- Main workspace of selected week -->
+                <div class="week-workspace" id="weekWorkspace">
+                    <div class="tab-container">
+                        <div class="tab-headers" style="margin-bottom: 20px;">
+                            <button class="tab-btn active" data-tab="orientacion" id="tabWeekOrien">Orientaci&oacute;n</button>
+                            <button class="tab-btn" data-tab="practica" id="tabWeekPract">Pr&aacute;ctica Docente</button>
+                            <button class="tab-btn" data-tab="consolidacion" id="tabWeekConso">Consolidaci&oacute;n</button>
+                            <button class="tab-btn" data-tab="pdf" id="tabWeekDownloads">Descargas y Materiales</button>
+                        </div>
+                        
+                        <!-- Dynamic week sub-panel contents -->
+                        <div id="weekTabContent">
+                            <!-- Javascript rendered weekly page content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: CLASES ORIENTADORAS (NEW) -->
+        <section class="content-section" id="orientadorasSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Actividades Orientadoras de Morfofisiología Humana II</span>
+                <h2 class="hero-title">Clases Orientadoras (AO 01 - AO 14)</h2>
+                <p class="hero-subtitle">Accede al compendio completo de las 14 conferencias orientadoras oficiales del programa formativo. Consulta los temas, visualiza los documentos en formato PDF o descárgalos para tu estudio independiente.</p>
+            </header>
+
+            <div class="orientadoras-layout">
+                <div class="orientadoras-sidebar">
+                    <div class="search-wrapper" style="margin-bottom: 16px;">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" class="search-input" id="aoSearchInput" placeholder="Buscar por tema o número de AO...">
+                    </div>
+                    <div class="ao-list" id="aoListContainer">
+                        <!-- Javascript rendered list of 14 AO cards -->
+                    </div>
+                </div>
+
+                <div class="orientadoras-viewer" id="aoViewerContainer">
+                    <!-- Javascript rendered active AO view and PDF preview -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: LAMINARIOS Y ATLAS (ENHANCED) -->
+        <section class="content-section" id="laminariosSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Atlas y Colecciones Microscópicas y Teratológicas</span>
+                <h2 class="hero-title">Laminarios Médicos y Atlas Anatómico</h2>
+                <p class="hero-subtitle">Explora preparados histológicos reales con tinciones diagnósticas, galería teratológica de malformaciones congénitas, atlas anatómico de 346 figuras y presentaciones de diapositivas.</p>
+            </header>
+
+            <!-- Laminarios Sub Tabs -->
+            <div class="tab-container" style="margin-bottom: 24px;">
+                <div class="tab-headers">
+                    <button class="tab-btn active" data-lam-tab="histologico" id="tabLamHisto">🔬 Laminario Histológico (44)</button>
+                    <button class="tab-btn" data-lam-tab="malformaciones" id="tabLamMalfor">🧬 Malformaciones Congénitas (61)</button>
+                    <button class="tab-btn" data-lam-tab="atlas" id="tabLamAtlas">📐 Atlas Anatómico (346)</button>
+                    <button class="tab-btn" data-lam-tab="ppt" id="tabLamPpt">📊 Presentaciones PPT / Diapositivas</button>
+                </div>
+            </div>
+
+            <div class="atlas-control-bar" id="laminariosControlBar">
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" class="search-input" id="laminariosSearchInput" placeholder="Buscar láminas por nombre, órgano, tinción o diagnóstico...">
+                </div>
+
+                <div class="category-filters" id="laminariosCategoryFilters">
+                    <!-- Dynamic category pills generated by Javascript -->
+                </div>
+                
+                <div class="page-selector" id="atlasPageSelector" style="display: none;">
+                    <!-- Javascript generated pages 1 to 28 for Atlas tab -->
+                </div>
+            </div>
+
+            <!-- Grid listing of items -->
+            <div class="atlas-grid" id="laminariosGrid">
+                <!-- Javascript rendered items -->
+            </div>
+        </section>
+
+        <!-- SECTION: HABILIDADES -->
+        <section class="content-section" id="habilidadesSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Formaci&oacute;n del M&eacute;dico Integral Comunitario</span>
+                <h2 class="hero-title">Habilidades Clave de Aprendizaje</h2>
+                <p class="hero-subtitle">Gu&iacute;a de procedimientos intelectuales que todo estudiante debe perfeccionar en las ciencias b&aacute;sicas biom&eacute;dicas, desde definir conceptos hasta predecir efectos fisiopatol&oacute;gicos.</p>
+            </header>
+
+            <!-- Cards listing abilities -->
+            <div class="grid-container" id="habilidadesGrid">
+                <!-- Javascript rendered abilities list -->
+            </div>
+
+            <!-- Detail panel for selected ability -->
+            <div id="habilidadesDetails" style="margin-top: 40px;">
+                <!-- Detailed instructions container -->
+            </div>
+        </section>
+
+        <!-- SECTION: PERFIL -->
+        <section class="content-section" id="perfilSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Gestión de Cuenta & Ficha Informativa</span>
+                <h2 class="hero-title">Mi Ficha Informativa</h2>
+                <p class="hero-subtitle">Visualiza y actualiza tus datos académicos, personales, credenciales de acceso y foto de perfil. Guarda los cambios para mantener tu expediente actualizado.</p>
+            </header>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+                <!-- Left profile card -->
+                <div class="card" style="align-items: center; text-align: center; gap: 16px; padding: 40px; height: fit-content;">
+                    <div style="position: relative;">
+                        <img class="profile-page-avatar" id="profilePageAvatar" src="" alt="Foto de perfil" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent-color); box-shadow: var(--glass-shadow);">
+                        <label for="photoUploadInput" style="position: absolute; bottom: 0; right: 0; background: var(--accent-gradient); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; border: 2px solid var(--bg-card); transition: transform 0.2s;" title="Cambiar foto de perfil">
+                            📷
+                            <input type="file" id="photoUploadInput" accept="image/*" style="display: none;">
+                        </label>
+                    </div>
+                    <div>
+                        <h3 class="hero-title" id="profilePageName" style="font-size: 1.4rem; margin-top: 8px; margin-bottom: 4px;">Nombre</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;" id="profilePageEmailDisplay">correo@morfo.com</p>
+                    </div>
+                    <span class="hero-tag" id="profilePageRoleBadge" style="margin-bottom: 0;">Estudiante</span>
+                    
+                    <div style="width: 100%; border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: 8px; text-align: left; font-size: 0.82rem; color: var(--text-secondary);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                            <span>📍 Estado GIS:</span>
+                            <strong style="color: var(--text-primary);" id="profileSummaryState">Venezuela</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                            <span>🎓 Nivel:</span>
+                            <strong style="color: var(--text-primary);" id="profileSummaryYear">2do Año</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>🛡️ Rol en Sistema:</span>
+                            <strong style="color: var(--accent-hover);" id="profileSummaryRole">usuario</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right profile editable form card -->
+                <div class="card" style="padding: 36px; gap: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                        <div>
+                            <h3 style="font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; margin: 0;">Editar Datos de Mi Ficha</h3>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px;">Modifica tus campos y presiona Guardar Cambios</p>
+                        </div>
+                        <span class="ao-badge">Modo Edición</span>
+                    </div>
+
+                    <form id="editProfileForm" style="display: flex; flex-direction: column; gap: 16px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileName" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Nombre y Apellido *</label>
+                                <input type="text" id="editProfileName" class="auth-input" placeholder="Tu nombre completo" required>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfilePhone" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Número Telefónico / WhatsApp *</label>
+                                <input type="tel" id="editProfilePhone" class="auth-input" placeholder="+58 412 1234567" required>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileEmail" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Correo Electrónico (Login) *</label>
+                                <input type="email" id="editProfileEmail" class="auth-input" placeholder="correo@ejemplo.com" required>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfilePassword" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Contraseña de Acceso *</label>
+                                <div style="position: relative; display: flex; align-items: center;">
+                                    <input type="password" id="editProfilePassword" class="auth-input" placeholder="Tu contraseña" required style="padding-right: 42px;">
+                                    <button type="button" class="toggle-password-btn" data-target="editProfilePassword" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-muted);" title="Ver u ocultar contraseña">👁️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileState" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Estado de Procedencia *</label>
+                                <select id="editProfileState" class="auth-input" required>
+                                    <option value="" disabled selected>Selecciona tu estado</option>
+                                    <option value="Amazonas">Amazonas</option>
+                                    <option value="Anzoátegui">Anzoátegui</option>
+                                    <option value="Apure">Apure</option>
+                                    <option value="Aragua">Aragua</option>
+                                    <option value="Barinas">Barinas</option>
+                                    <option value="Bolívar">Bolívar</option>
+                                    <option value="Carabobo">Carabobo</option>
+                                    <option value="Cojedes">Cojedes</option>
+                                    <option value="Delta Amacuro">Delta Amacuro</option>
+                                    <option value="Distrito Capital">Distrito Capital (Caracas)</option>
+                                    <option value="Falcón">Falcón</option>
+                                    <option value="Guárico">Guárico</option>
+                                    <option value="La Guaira">La Guaira (Vargas)</option>
+                                    <option value="Lara">Lara</option>
+                                    <option value="Mérida">Mérida</option>
+                                    <option value="Miranda">Miranda</option>
+                                    <option value="Monagas">Monagas</option>
+                                    <option value="Nueva Esparta">Nueva Esparta (Margarita)</option>
+                                    <option value="Portuguesa">Portuguesa</option>
+                                    <option value="Sucre">Sucre</option>
+                                    <option value="Táchira">Táchira</option>
+                                    <option value="Trujillo">Trujillo</option>
+                                    <option value="Yaracuy">Yaracuy</option>
+                                    <option value="Zulia">Zulia</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileEnrollment" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Año de Inscripción *</label>
+                                <select id="editProfileEnrollment" class="auth-input" required>
+                                    <option value="2026">2026</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileCurrentYear" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Año Cursante *</label>
+                                <select id="editProfileCurrentYear" class="auth-input" required>
+                                    <option value="1er Año">1er Año</option>
+                                    <option value="2do Año" selected>2do Año (Morfo II)</option>
+                                    <option value="3er Año">3er Año</option>
+                                    <option value="4to Año">4to Año</option>
+                                    <option value="5to Año">5to Año</option>
+                                    <option value="6to Año">6to Año</option>
+                                    <option value="Internado Rotatorio">Internado Rotatorio</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Success Alert Message -->
+                        <div id="editProfileSuccess" style="display: none; padding: 12px 16px; border-radius: var(--border-radius-sm); background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-size: 0.88rem; font-weight: 600; text-align: center;">
+                            ✅ ¡Tu información ha sido actualizada y guardada con éxito!
+                        </div>
+
+                        <!-- Save Button -->
+                        <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                            <button type="submit" class="auth-submit" style="width: auto; padding: 12px 28px; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;">
+                                <span>💾</span> Guardar Cambios en Mi Ficha
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: ADMINISTRACIÓN & MAPA GIS (ONLY FOR SUPERUSER) -->
+        <section class="content-section" id="adminSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Panel Exclusivo Superusuario</span>
+                <h2 class="hero-title">Centro de Gestión y Mapa GIS Geoespacial</h2>
+                <p class="hero-subtitle">Visualiza la distribución geográfica de los estudiantes en Venezuela, audita su actividad de navegación y registra nuevos usuarios en la plataforma.</p>
+            </header>
+
+            <!-- Top Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 32px;">
+                <div class="card" style="padding: 24px; text-align: center; gap: 8px;">
+                    <div class="card-icon" style="margin: 0 auto; width: 48px; height: 48px; font-size: 1.5rem;">👥</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Total Estudiantes</span>
+                    <div id="adminUserCount" style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-heading); color: var(--accent-hover);">0</div>
+                </div>
+                <div class="card" style="padding: 24px; text-align: center; gap: 8px;">
+                    <div class="card-icon" style="margin: 0 auto; width: 48px; height: 48px; font-size: 1.5rem; background: rgba(16, 185, 129, 0.12); color: #10b981;">🗺️</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Estados Mapeados</span>
+                    <div id="adminMappedStatesCount" style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-heading); color: #10b981;">0</div>
+                </div>
+                <div class="card" style="padding: 24px; text-align: center; gap: 8px;">
+                    <div class="card-icon" style="margin: 0 auto; width: 48px; height: 48px; font-size: 1.5rem; background: rgba(59, 130, 246, 0.12); color: #3b82f6;">🤖</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Consultas al Tutor IA</span>
+                    <div id="adminAiQueriesCount" style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-heading); color: #3b82f6;">0</div>
+                </div>
+                <div class="card" style="padding: 24px; text-align: center; gap: 8px;">
+                    <div class="card-icon" style="margin: 0 auto; width: 48px; height: 48px; font-size: 1.5rem; background: rgba(245, 158, 11, 0.12); color: #f59e0b;">📥</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Descargas Registradas</span>
+                    <div id="adminTotalDownloadsCount" style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-heading); color: #f59e0b;">0</div>
+                </div>
+            </div>
+
+            <!-- GIS MAP MODULE -->
+            <div class="card" style="padding: 28px; margin-bottom: 32px; gap: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+                    <div>
+                        <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.35rem; color: var(--text-primary);">🗺️ Mapa GIS: Distribución Territorial de Estudiantes (Venezuela)</h3>
+                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">Explora los estudiantes geolocalizados por estado, contacta vía WhatsApp o revisa su auditoría profunda.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <select id="gisFilterState" class="search-input" style="padding: 8px 12px; font-size: 0.85rem; min-width: 170px;">
+                            <option value="todos">Todos los Estados</option>
+                        </select>
+                        <select id="gisFilterYear" class="search-input" style="padding: 8px 12px; font-size: 0.85rem; min-width: 150px;">
+                            <option value="todos">Todos los Años</option>
+                            <option value="1er Año">1er Año</option>
+                            <option value="2do Año">2do Año (Morfo II)</option>
+                            <option value="3er Año">3er Año</option>
+                            <option value="4to Año">4to Año</option>
+                            <option value="5to Año">5to Año</option>
+                            <option value="6to Año">6to Año</option>
+                            <option value="Internado Rotatorio">Internado Rotatorio</option>
+                        </select>
+                        <input type="text" id="gisSearchStudent" class="search-input" style="padding: 8px 14px; font-size: 0.85rem; width: 180px;" placeholder="Buscar estudiante...">
+                    </div>
+                </div>
+
+                <!-- Leaflet Canvas -->
+                <div id="gisMap" style="width: 100%; height: 500px; border-radius: var(--border-radius-md); border: 1px solid var(--border-color); z-index: 1;"></div>
+            </div>
+
+            <!-- Admin Registration & Table Layout -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; margin-bottom: 32px;">
+                <!-- Registration Form Card -->
+                <div class="card" style="padding: 32px; gap: 16px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <h3 style="font-family: var(--font-heading); font-weight: 700; font-size: 1.2rem;">Inscribir Nuevo Estudiante</h3>
+                        <span class="mag-badge" style="color: var(--accent-hover);">Rol: Usuario</span>
+                    </div>
+                    <p style="font-size: 0.82rem; color: var(--text-secondary);">Todo estudiante inscrito tendrá asignado el rol <strong>usuario</strong> con acceso al material y al tutor IA.</p>
+                    
+                    <form id="registerUserForm" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Nombre y Apellido *</label>
+                                <input type="text" id="regName" required class="search-input" style="padding-left: 14px; font-size: 0.88rem;" placeholder="Ej: María González">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Número Telefónico / WhatsApp *</label>
+                                <input type="tel" id="regPhone" required class="search-input" style="padding-left: 14px; font-size: 0.88rem;" placeholder="+58 412 1234567">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Correo Electrónico *</label>
+                                <input type="email" id="regEmail" required class="search-input" style="padding-left: 14px; font-size: 0.88rem;" placeholder="estudiante@correo.com">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Estado de Venezuela *</label>
+                                <select id="regStateOrigin" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                    <option value="" disabled selected>Selecciona Estado...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Año de Inscripción *</label>
+                                <select id="regEnrollmentYear" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                    <option value="2026" selected>2026</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Año Cursante *</label>
+                                <select id="regCurrentYear" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                    <option value="2do Año" selected>2do Año (Morfo II)</option>
+                                    <option value="1er Año">1er Año</option>
+                                    <option value="3er Año">3er Año</option>
+                                    <option value="4to Año">4to Año</option>
+                                    <option value="5to Año">5to Año</option>
+                                    <option value="6to Año">6to Año</option>
+                                    <option value="Internado Rotatorio">Internado Rotatorio</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Contraseña de Acceso *</label>
+                            <div style="position: relative; display: flex; align-items: center; width: 100%;">
+                                <input type="password" id="regPassword" required class="search-input" style="padding-left: 14px; padding-right: 48px; font-size: 0.88rem; width: 100%;" placeholder="Contraseña de acceso">
+                                <button type="button" class="toggle-password-btn" data-target="regPassword" style="position: absolute; right: 12px; background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 4px; display: flex; align-items: center; color: var(--text-secondary);" title="Mostrar contraseña">👁️</button>
+                            </div>
+                        </div>
+
+                        <div id="regSuccess" style="color: var(--success-color); font-size: 0.85rem; font-weight: 600; text-align: center; display: none;">Estudiante inscrito exitosamente con rol usuario</div>
+                        <button type="submit" class="download-btn" style="justify-content: center; width: 100%; margin-top: 6px;">Inscribir Estudiante</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Registered users list card with Deep Info Buttons -->
+            <div class="card" style="padding: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h3 style="font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem;">Directorio Completo de Usuarios Registrados</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px;">Visualiza, audita y gestiona las credenciales y datos de todos los estudiantes</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button id="toggleAllPasswordsBtn" class="download-btn" style="padding: 8px 14px; font-size: 0.82rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color);">
+                            👁️ Alternar Contraseñas
+                        </button>
+                        <input type="text" id="adminUsersTableSearch" class="search-input" style="padding: 8px 14px; font-size: 0.85rem; width: 200px;" placeholder="Buscar en tabla...">
+                    </div>
+                </div>
+                
+                <div style="overflow-x: auto; width: 100%;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="usersTable">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem;">
+                                <th style="padding: 12px 14px;">Foto</th>
+                                <th style="padding: 12px 14px;">Nombre y Apellido</th>
+                                <th style="padding: 12px 14px;">Teléfono / WhatsApp</th>
+                                <th style="padding: 12px 14px;">Correo Electrónico</th>
+                                <th style="padding: 12px 14px;">Contraseña</th>
+                                <th style="padding: 12px 14px;">Estado</th>
+                                <th style="padding: 12px 14px;">Año Cursante</th>
+                                <th style="padding: 12px 14px;">Inscripción</th>
+                                <th style="padding: 12px 14px;">Rol</th>
+                                <th style="padding: 12px 14px; text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Javascript rendered users -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- AI TUTOR FLOATING ACTION BUTTON & CHAT WINDOW -->
+    <div id="aiTutorWidget">
+        <button id="aiTutorFab" class="ai-tutor-fab" aria-label="Abrir Tutor IA">
+            <span class="ai-fab-icon">🤖</span>
+            <span class="ai-fab-text">Tutor IA Morfo II</span>
+            <span class="ai-fab-pulse"></span>
+        </button>
+
+        <div id="aiTutorChatModal" class="ai-chat-modal">
+            <div class="ai-chat-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="ai-avatar-badge">🤖</div>
+                    <div>
+                        <h4 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: #ffffff; margin: 0;">Tutor IA Morfo II</h4>
+                        <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">● Ayudante Académico Activo</span>
+                    </div>
+                </div>
+                <button id="aiChatCloseBtn" class="ai-close-btn" aria-label="Cerrar">&times;</button>
+            </div>
+
+            <!-- Suggestion Quick Chips -->
+            <div class="ai-chips-bar">
+                <button class="ai-chip-btn" data-query="¿Qué es el arco reflejo y cuáles son sus 5 componentes?">⚡ Arco Reflejo</button>
+                <button class="ai-chip-btn" data-query="Explícame la vía piramidal y extrapiramidal con un ejemplo clínico">🧠 Vías Motoras</button>
+                <button class="ai-chip-btn" data-query="¿Cómo diferencio las capas histológicas del cerebelo?">🔬 Cerebelo e Histología</button>
+                <button class="ai-chip-btn" data-query="¿Cómo razonar las preguntas de consolidación paso a paso?">📝 Ayuda en Consolidación</button>
+            </div>
+
+            <!-- Messages Log -->
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <!-- Javascript rendered messages -->
+            </div>
+
+            <!-- Input Bar -->
+            <form id="aiChatForm" class="ai-chat-form">
+                <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Escribe tu duda médica o consulta..." autocomplete="off" required>
+                <button type="submit" class="ai-send-btn" aria-label="Enviar pregunta">
+                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DEEP INFO / INFORMACIÓN PROFUNDA MODAL (SUPERUSER ONLY) -->
+    <div class="deep-info-modal-backdrop" id="deepInfoModal">
+        <div class="deep-info-modal-card">
+            <div class="deep-info-header">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <img id="deepInfoAvatar" src="" alt="Avatar" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color);">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h3 id="deepInfoName" style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">Nombre</h3>
+                            <span class="ao-badge" id="deepInfoYearBadge">2do Año</span>
+                            <span class="system-badge" id="deepInfoStateBadge">Zulia</span>
+                        </div>
+                        <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">
+                            <span id="deepInfoEmail">correo@morfo.com</span> &bull; <span id="deepInfoPhone">+58 412 1234567</span> &bull; Inscrito: <span id="deepInfoEnrollment">2026</span>
+                        </div>
+                    </div>
+                </div>
+                <button id="deepInfoCloseBtn" class="lightbox-close-btn" style="position: static;" aria-label="Cerrar">&times;</button>
+            </div>
+
+            <!-- Deep Info Sub Tabs -->
+            <div class="tab-headers" style="padding: 0 24px; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.1);">
+                <button class="tab-btn active" data-deep-tab="credentials">🔑 Ficha y Credenciales</button>
+                <button class="tab-btn" data-deep-tab="aiChat">🤖 Consultas IA (<span id="deepCountAi">0</span>)</button>
+                <button class="tab-btn" data-deep-tab="downloads">📥 Descargas (<span id="deepCountDownloads">0</span>)</button>
+                <button class="tab-btn" data-deep-tab="navigation">🧭 Navegación (<span id="deepCountNav">0</span>)</button>
+                <button class="tab-btn" data-deep-tab="notes">📝 Cuaderno</button>
+            </div>
+
+            <!-- Deep Info Tab Panels -->
+            <div class="deep-info-body" style="padding: 24px; max-height: 60vh; overflow-y: auto;">
+                <!-- Panel 0: Full Credentials & Data Sheet -->
+                <div class="deep-tab-panel active" id="deepPanelCredentials">
+                    <!-- Javascript rendered credentials & complete info sheet -->
+                </div>
+
+                <!-- Panel 1: AI Chat History -->
+                <div class="deep-tab-panel" id="deepPanelAiChat" style="display: none;">
+                    <!-- Javascript rendered AI logs -->
+                </div>
+
+                <!-- Panel 2: Downloads History -->
+                <div class="deep-tab-panel" id="deepPanelDownloads" style="display: none;">
+                    <!-- Javascript rendered Downloads logs -->
+                </div>
+
+                <!-- Panel 3: Navigation Logs -->
+                <div class="deep-tab-panel" id="deepPanelNavigation" style="display: none;">
+                    <!-- Javascript rendered Navigation logs -->
+                </div>
+
+                <!-- Panel 4: Notes and Consolidation answers -->
+                <div class="deep-tab-panel" id="deepPanelNotes" style="display: none;">
+                    <!-- Javascript rendered student notes -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FICHA COMPLETA DEL ESTUDIANTE (MODAL DEDICADO) -->
+    <div class="deep-info-modal-backdrop" id="studentFullInfoModal" style="z-index: 2200;">
+        <div class="deep-info-modal-card" style="max-width: 650px;">
+            <div class="deep-info-header">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        📋
+                    </div>
+                    <div>
+                        <h3 id="fullInfoCardTitle" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">
+                            Ficha Completa del Estudiante
+                        </h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">
+                            Todos los datos registrados, correo y contraseña de acceso
+                        </p>
+                    </div>
+                </div>
+                <button id="studentFullInfoCloseBtn" class="lightbox-close-btn" style="position: static;" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="deep-info-body" id="studentFullInfoContent" style="padding: 24px;">
+                <!-- Javascript rendered full student dossier -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE COMPLETAR INFORMACIÓN OBLIGATORIA (BLOQUEANTE) -->
+    <div class="deep-info-modal-backdrop" id="completeProfileModal" style="z-index: 2500;">
+        <div class="deep-info-modal-card" style="max-width: 580px; border-color: var(--accent-color);">
+            <div class="deep-info-header" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25));">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        📋
+                    </div>
+                    <div>
+                        <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--text-primary);">
+                            Completa tu Información de Estudiante
+                        </h3>
+                        <p style="font-size: 0.8rem; color: #fbbf24; font-weight: 600;">
+                            ⚠️ Paso obligatorio para desbloquear tu navegación en el portal
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding: 24px;">
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 18px;">
+                    Estimado estudiante, para cumplir con el proceso formativo y el seguimiento académico de <strong>Morfofisiología Humana II</strong>, es indispensable que todos tus datos se encuentren completos y actualizados.
+                </p>
+
+                <form id="completeProfileForm" style="display: flex; flex-direction: column; gap: 14px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Nombre y Apellido Completo *</label>
+                        <input type="text" id="compName" required class="search-input" style="padding-left: 14px; font-size: 0.88rem;" placeholder="Ej: Juan Pérez">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Número Telefónico (WhatsApp) *</label>
+                            <input type="tel" id="compPhone" required class="search-input" style="padding-left: 14px; font-size: 0.88rem;" placeholder="+58 412 0000000">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Estado de Venezuela *</label>
+                            <select id="compStateOrigin" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                <option value="" disabled selected>Selecciona tu Estado...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Año de Inscripción *</label>
+                            <select id="compEnrollmentYear" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                <option value="2026" selected>2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Año Cursante *</label>
+                            <select id="compCurrentYear" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                <option value="2do Año" selected>2do Año (Morfo II)</option>
+                                <option value="1er Año">1er Año</option>
+                                <option value="3er Año">3er Año</option>
+                                <option value="4to Año">4to Año</option>
+                                <option value="5to Año">5to Año</option>
+                                <option value="6to Año">6to Año</option>
+                                <option value="Internado Rotatorio">Internado Rotatorio</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="compError" style="color: var(--danger-color); font-size: 0.85rem; font-weight: 600; display: none;">Por favor completa todos los campos requeridos.</div>
+                    <button type="submit" class="download-btn" style="justify-content: center; width: 100%; margin-top: 10px; background: var(--accent-gradient); color: white; font-weight: 700;">
+                        💾 Guardar Datos y Continuar al Portal
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE BLOQUEO POR SESIÓN CONCURRENTE / MULTI-INGRESO -->
+    <div class="deep-info-modal-backdrop" id="concurrentSessionModal" style="z-index: 3000;">
+        <div class="deep-info-modal-card" style="max-width: 480px; border-color: var(--danger-color); text-align: center;">
+            <div style="padding: 32px 28px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+                <div style="width: 68px; height: 68px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); border: 2px solid var(--danger-color); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">
+                    🔒
+                </div>
+                <h3 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 700; color: #ffffff;">
+                    Sesión Finalizada por Acceso Concurrente
+                </h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                    Tu cuenta ha iniciado sesión en <strong>otro dispositivo o ventana del navegador</strong>. Por políticas de seguridad y control académico, solo se permite <strong>un único acceso activo simultáneo</strong> por usuario.
+                </p>
+                <button id="reloginBtn" class="download-btn" style="margin-top: 10px; background: var(--accent-gradient); color: #ffffff; width: 100%; justify-content: center;">
+                    🔑 Iniciar Sesión Nuevamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX / ATLAS SLIDE MODAL VIEWER -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close-btn" id="lightboxClose" aria-label="Cerrar">&times;</button>
+        <div class="lightbox-content-wrapper">
+            <img class="lightbox-img" id="lightboxImg" src="" alt="Vista ampliada">
+            <h3 class="lightbox-title" id="lightboxTitle">Figura</h3>
+            <div id="lightboxDetails" class="lightbox-details" style="display: none;"></div>
+        </div>
+    </div>
+
+</body>
+</html>

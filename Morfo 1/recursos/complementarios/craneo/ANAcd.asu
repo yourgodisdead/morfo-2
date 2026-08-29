@@ -1,0 +1,44 @@
+; Expert mode. Creation Date and Time: 06/29/99 08:57:34
+
+[General]
+Title=Instalación del entrenador de anatomía
+Background=Green,None
+Directory=c:\Anacra
+ArchiveName=ANACD
+RegistrationINI=$Windows$\asym.ini,Registered Apps
+FullInstallBMP=DEFAULT
+Common=MTB40,$windows$\asym\runtime,4.0,United States
+
+[Component0]
+Name=fontBS
+TotalSize=45728
+File0=brushsci.ttf,$Windows$\fonts,c:\windows\fonts,IfDoesNotExist,0
+
+[Component1]
+Name=icono de presentación
+TotalSize=2238
+File0=craneo1.ico,$Install$,c:\ana\anacdrom,AlwaysCopy,0
+
+[CommonComponent]
+Name=MMTB runtime
+TotalSize=3044359
+File0=tbload.exe,$Common$,C:\MTB40,IfNewerThanSys,0
+File1=mtb40utl.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+File2=mtb40run.exe,$Common$,C:\MTB40,IfNewerThanSys,0
+File3=mtb40rcr.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+File4=mtb40net.exe,$Common$,C:\MTB40,IfNewerThanSys,0
+File5=mtb40mm.ini,$Common$,C:\MTB40,IfNewerThanSys,0
+File6=mtb40mm.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+File7=mtb40lnl.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+File8=mtb40flt.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+File9=mtb40cmp.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+File10=mtb40bmp.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+File11=mtb40bas.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+File12=tb40dlg.dll,$Common$,C:\MTB40,IfNewerThanSys,0
+Ini0=asym.ini,ToolBook Load Information,MTB40,$Common$\MTB40RUN.EXE,NoReplace
+Ini1=WIN.INI,Extensions,TBK,$Common$\TBLOAD.EXE ^.TBK
+
+[DefaultComponent]
+PMGroupItem0=Entrenador de Anatomia,$source$\leeme.txt,Leeme,$Install$\CRANEO1.ICO,0
+PMGroupItem1=Entrenador de Anatomia,$source$\ana.exe,Entrenador de Anatomía,$Install$\CRANEO1.ICO,0
+Message0="Se ha instalado exitosamente el entrenador de Anatomia. Para su ejecución satisfactoria es necesario tener la siguiente configuración de pantalla: 640x480 pixels y paleleta de colores de alta densidad (16 bits). Utilice siempre fuentes pequeñas. REINICIE SU PC para actualizar las fuentes."

@@ -1,5 +1,14 @@
-# System files
+# Ignorar archivos temporales de Windows y Mac
 Thumbs.db
+ehthumbs.db
+Desktop.ini
 .DS_Store
-desktop.ini
+
+# Ignorar archivos de metadatos de Dreamweaver
+_notes/
+dwt/
+
+# Ignorar archivos temporales
 *.tmp
+*.bak
+*~

@@ -1,0 +1,23 @@
+[info]
+title=Construction Zone
+codepage=65001
+version=2.00
+format=2.00
+readonly=true
+refcount=2
+
+[titles]
+1036=Grillage
+1031=Baustelle
+3082=Zona de construcción
+1040=Lavori in corso
+1035=Rakennustyömaa
+1030=Trådhegn
+1044=Netting
+1053=Byggarbetsplats
+1046=Em construção
+1043=Bouwterrein
+2052=丝网
+1028=施工區
+1041=工事中
+1042=철망

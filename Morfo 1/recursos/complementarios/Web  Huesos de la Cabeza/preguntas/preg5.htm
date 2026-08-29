@@ -1,0 +1,130 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>pregunta0</title>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var segundos = 61; // ponga el tiempo que le va a dar al alumno para responder
+var lanota = 0;
+function start(){  
+  document.forma1.tbSeg.value = --segundos;
+  if (document.forma1.tbSeg.value > 0) setTimeout("start()", 1000)
+   else llena()
+}
+
+function llena() {
+charResp = new Array(9);  //declaro y lleno el arreglo
+charResp[0]= true;charResp[1]= false;charResp[2]= true;charResp[3]= false;charResp[4]= true;
+charResp[5]= false;charResp[6]= true;charResp[7]= false;charResp[8]= false;charResp[9]= true;
+var boton = document.forma.ckbResp; // asigno a "boton" al arreglo de botones 
+lanota = evalua(boton,charResp);
+correcta(boton);
+MM_showHideLayers('respuestas','','hide','boton','','hide','tiempo','','hide','correctas','','show')
+alert("Su nota en la pregunta es: " + lanota + ". ¡Arrastre esta ventana y vea la respuesta correcta!. Aceptar para pasar a la siguiente pregunta.");
+parent.respondido(lanota);
+} 
+
+function evalua(botones,arreglo) {
+  var suma = 0
+    for (i=0; i<arreglo.length; i++){
+       if (botones[i].checked == arreglo[i]){
+        suma++;  
+       }
+       else {
+         suma--;
+        }
+     }
+      suma =(suma<2) ? 2: suma;       
+    if (suma == 2) return suma
+    else  return suma/2   
+}  
+function correcta(botones) {
+  for (i=0; i<10; i++){
+    botones[i].checked = charResp[i];
+        }
+}
+function inicia() { // inicializa los botones en blanco
+var boton = document.forma.ckbResp;
+  for (i=0; i<10; i++){
+    boton[i].checked = false;
+        }  
+}   
+
+function MM_showHideLayers() { //v3.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function MM_findObj(n, d) { //v4.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && document.getElementById) x=document.getElementById(n); return x;
+}
+//-->
+</SCRIPT>
+</head>
+
+<BODY onLoad="start();inicia();MM_showHideLayers('respuestas','','show','tiempo','','show','correctas','','hide','boton','','show')">
+<div id="respuestas" style="position: absolute; left: 13; top: 50; width: 295; height: 37; z-index: 4">&nbsp;</div>
+<div id="tiempo" style="position: absolute; left: 215; top: 295; width: 250; height: 63; z-index: 5"> 
+  &nbsp;
+  <form method="POST" name="forma1" action="../_derived/nortbots.htm" onSubmit="location.href='../_derived/nortbots.htm';return false;" webbot-action="--WEBBOT-SELF--" WEBBOT-onSubmit>
+    <!--webbot bot="SaveResults" startspan U-File="../_private/form_results.txt"
+    S-Format="TEXT/CSV" S-Label-Fields="TRUE" --><input TYPE="hidden" NAME="VTI-GROUP" VALUE="0"><!--webbot
+    bot="SaveResults" endspan i-checksum="43374" -->
+    <p> 
+  Tiempo Restante: <input type="text" name="tbSeg" size="9"></p>
+  </form>
+</div>
+<h3>Pregunta 5:</h3>
+<form method="POST" action="../_derived/nortbots.htm" name="forma" onSubmit="location.href='../_derived/nortbots.htm';return false;" webbot-action="--WEBBOT-SELF--" WEBBOT-onSubmit>
+  <p><font face="Arial" size="3"> Marque los detalles del hueso parietal</font></p>
+  <table border="0" width="105%" height="124">
+    <tr>
+      <td width="5%" height="21"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="37%" height="21">Línea Temporal Superior</td>
+      <td width="4%" height="21"><input type="checkbox" name="ckbResp" value="ON">
+      </td>
+      <td width="59%" height="21"><span style="font-size: 11pt; mso-bidi-font-size: 10.0pt" lang="ES">Línea
+        Nucal Superior</span></td>
+    </tr>
+    <tr>
+      <td width="5%" height="21"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="37%" height="21">Borde Escamoso</td>
+      <td width="4%" height="21"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="59%" height="21">Borde Orbital</td>
+    </tr>
+    <tr>
+      <td width="5%" height="21"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="37%" height="21">Cara Externa</td>
+      <td width="4%" height="21"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="59%" height="21">Cara Orbital</td>
+    </tr>
+    <tr>
+      <td width="5%" height="21"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="37%" height="21">Surco del Seno Sagital</td>
+      <td width="4%" height="21"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="59%" height="21">Surco del Seno Transverso</td>
+    </tr>
+    <tr>
+      <td width="5%" height="20"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="37%" height="20">Proceso Estiloideo</td>
+      <td width="4%" height="20"><input type="checkbox" name="ckbResp" value="ON"></td>
+      <td width="59%" height="20">Borde Occipital</td>
+    </tr>
+  </table>
+  </form>  
+<div id="boton" style="position: absolute; left: 22; top: 306; width: 97; height: 25; z-index: 3"> 
+  <input type="button" value="Evaluación" name="cbnOK" onClick="llena()">
+</div>
+<p>
+  <input type="hidden" name="VTI-GROUP" value="0"><input TYPE="hidden" NAME="VTI-GROUP" VALUE="1"> 
+</BODY>
+</HTML>  

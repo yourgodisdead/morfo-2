@@ -1,0 +1,37 @@
+<title>Menu derecho</title>
+<table width="113" cellpadding="1" cellspacing="0" bgcolor="#000000">
+  <tr>
+    <td>
+      <table width="100%"  border="0" cellpadding="2" cellspacing="4">
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/objetivos.htm',1/2,3)>Sistema 
+            de Objetivos</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/contenidos.htm',1/2,3)>Contenidos</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/habilidades.htm',1/2,3)>Habilidades</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a href=javascript:MostrarPopup('../../../htm/clases.htm',1/2,3) class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'">Sistema 
+            de Clases</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/evaluacion.htm',1/2,3)>Evaluaci&oacute;n</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/estudio.htm',1/2,3)>Consejos 
+            para el Estudio</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" width="62%"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/bibliografia.htm',1/2,3)>Bibliograf&iacute;a</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" colspan="2"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('htm/ayuda.htm',1/2,3)>Ayuda</a></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+ 

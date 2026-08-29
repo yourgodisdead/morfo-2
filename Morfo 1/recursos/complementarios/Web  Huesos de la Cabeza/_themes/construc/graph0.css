@@ -1,0 +1,60 @@
+.mstheme
+{
+	separator-image: url(urbhorsd.gif);
+	list-image-1: url(urbbul1d.gif);
+	list-image-2: url(urbbul2d.gif);
+	list-image-3: url(urbbul3d.gif);
+	nav-banner-image: url(urbbannd.gif);
+	navbutton-horiz-normal: url(urbhbudd.gif);
+	navbutton-horiz-pushed: url(urbhbusd.gif);
+	navbutton-vert-normal: url(urbvbudd.gif);
+	navbutton-vert-pushed: url(urbvbusd.gif);
+	navbutton-home-normal: url(urbhombd.gif);
+	navbutton-next-normal: url(urbnexbd.gif);
+	navbutton-prev-normal: url(urbprebd.gif);
+	navbutton-up-normal: url(urbupbd.gif);
+}
+.mstheme-bannertxt
+{
+	font-family: Impact, Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-size: 6;
+}
+.mstheme-horiz-navtxt
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-size: 2;
+	font-weight: bold;
+}
+.mstheme-vert-navtxt
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-size: 2;
+	font-weight: bold;
+}
+.mstheme-navtxthome
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-size: 1;
+}
+.mstheme-navtxtnext
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-size: 1;
+}
+.mstheme-navtxtprev
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-size: 1;
+}
+.mstheme-navtxtup
+{
+	font-family: Arial, Helvetica;
+	color: rgb(0,0,0);
+	font-size: 1;
+}

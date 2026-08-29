@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>Anatom&iacute;a I</title>
+<!-- TemplateEndEditable --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<SCRIPT LANGUAGE="JavaScript">
+window.onerror = null;
+var topMargin = 97;
+var slideTime = 1200;
+var ns6 = (!document.all && document.getElementById);
+var ie4 = (document.all);
+var ns4 = (document.layers);
+function layerObject(id,left) {
+if (ns6) {
+this.obj = document.getElementById(id).style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ie4) {
+this.obj = document.all[id].style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ns4) {
+this.obj = document.layers[id];
+this.obj.left = left;
+return this.obj;
+   }
+}
+function layerSetup() {
+floatLyr1 = new layerObject('floatLayer1', 0);
+floatLyr2 = new layerObject('floatLayer2', 665);
+window.setInterval("main()", 10)
+}
+function floatObject() {
+if (ns4 || ns6) {
+findHt = window.innerHeight;
+} else if(ie4) {
+findHt = document.body.clientHeight;
+   }
+  
+} 
+function main() {
+if (ns4) {
+this.currentY = document.layers["floatLayer1"].top;
+this.scrollTop = window.pageYOffset;
+mainTrigger();
+}
+else if(ns6) {
+this.currentY = parseInt(document.getElementById('floatLayer1').style.top);
+this.scrollTop = scrollY;
+mainTrigger();
+} else if(ie4) {
+this.currentY = floatLayer1.style.pixelTop;
+if (document.documentElement && document.documentElement.scrollTop)
+	this.scrollTop = document.documentElement.scrollTop;
+else if (document.body)
+	this.scrollTop = document.body.scrollTop;
+mainTrigger();
+   }
+}
+function mainTrigger() {
+var newTargetY = this.scrollTop + this.topMargin;
+if ( this.currentY != newTargetY ) {
+if ( newTargetY != this.targetY ) {
+this.targetY = newTargetY;
+floatStart();
+}
+animator();
+   }
+}
+function floatStart() {
+var now = new Date();
+this.A = this.targetY - this.currentY;
+
+this.B = Math.PI / ( 2 * this.slideTime );
+this.C = now.getTime();
+
+if (Math.abs(this.A) > this.findHt) {
+this.D = this.A > 0 ? this.targetY - this.findHt : this.targetY + this.findHt;
+this.A = this.A > 0 ? this.findHt : -this.findHt;
+}
+else {
+this.D = this.currentY;
+   }
+ 
+}
+function animator() {
+var now = new Date();
+var newY = this.A * Math.sin( this.B * ( now.getTime() - this.C ) ) + this.D;
+newY = Math.round(newY);
+var tope1 = (80+document.all.idmenuizquierda.clientHeight)-(newY+floatLayer1.clientHeight);
+var tope2 = (80+document.all.idmenuderecha.clientHeight)-(newY+floatLayer2.clientHeight);
+if (( this.A > 0 && newY > this.currentY ) || ( this.A < 0 && newY < this.currentY )) {
+if ((tope1 >0) && (tope2 > 0)) 
+{
+
+if ( ie4 )document.all.floatLayer1.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer1"].top = newY;
+if ( ns6 )document.getElementById('floatLayer1').style.top = newY + "px";
+if ( ie4 )document.all.floatLayer2.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer2"].top = newY;
+if ( ns6 )document.getElementById('floatLayer2').style.top = newY + "px";
+   }
+   }
+}
+function start() {
+if(ns6||ns4) {
+pageWidth = innerWidth;
+pageHeight = innerHeight;
+layerSetup();
+floatObject();
+}
+else if(ie4) {
+pageWidth = document.body.clientWidth;
+pageHeight = document.body.clientHeight;
+layerSetup();
+floatObject();
+   }
+}
+//  End -->
+</script>
+<script language="JavaScript" src="../../scripts/testengine.js" type="text/JavaScript"> </script>
+<script language="JavaScript" src="../../scripts/ventana.js" type="text/JavaScript"></script>
+<link href="../estilos/biologicas.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onLoad="start();" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0">
+<table width="778" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="1" valign="top" bgcolor="#EDD3B5">
+	<table width="100%" height="0"  border="0" align="left" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="116" valign="top"><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+            <tr bgcolor="335599">
+                <td height="18" align="center" valign="middle" bgcolor="#211E1C"class=fondoazuloscuro id="nombremodulo"><span class="fondoazuloscuro">Temas</span></td>
+            </tr>
+            <tr>
+                <td width="0" align="center" valign="middle" bgcolor="#084A37">
+				  <table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td height="1"></td>
+                    </tr>
+                    <tr>
+                      <td><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td height="1"></td>
+                          </tr>
+                          <tr>
+                            <td><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                  <td height="1"></td>
+                                </tr>
+                                <tr>
+                                  <td><table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+                                      <tr>
+                                        
+                                        <td height="56" align="center"><!-- TemplateBeginEditable name="menumodulos" --><!-- #BeginLibraryItem "/library/tema1.lbi" -->
+<table width="70"  border="0" cellpadding="2" cellspacing="2">
+  <tr align="center" valign="middle">
+    <td width="25%" class="celdanumeroselecc">1 </td>
+    <td width="25%" class="celdanumero"><a class="celdanumerosinmarco" href="../contenidos/tema1/taller1/introduccion.htm">2</a></td>
+    <td width="25%" class="celdanumero"><a class="celdanumerosinmarco" href="../contenidos/tema2/taller1/introduccion.htm">3</a></td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --><!-- TemplateEndEditable --></td>
+                                        <td width="1" bgcolor="#EDD3B5"></td>
+                                      </tr>
+                                  </table></td>
+                                </tr>
+                                <tr>
+                                  <td height="1"></td>
+                                </tr>
+                            </table></td>
+                          </tr>
+                          <tr>
+                            <td height="1"></td>
+                          </tr>
+                      </table></td>
+                    </tr>
+                    <tr>
+                      <td height="1"></td>
+                    </tr>
+                  </table></td>
+            </tr>
+        </table></td>
+        <td height="78" align="center" valign="middle" background="../Imagenes/cabezal.jpg"><a href="../default.htm" class="titulosuperior">Curso de Anatom&iacute;a I </a></td>
+        <td width="113" align="right" valign="top"><table width="100%"  border="0" align="right" cellpadding="0" cellspacing="0">
+            <tr>
+              <td width="100" height="18" align="center" valign="middle" bgcolor="#211E1C">
+                <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+                  <tr>
+                    <td width="82%" align="center" class="fondoazuloscuro">Salir</td>
+                    <td width="18%" align="center" onClick="window.close();" style="cursor:hand">X</td>
+                  </tr>
+              </table></td>
+            </tr>
+            <tr>
+              <td align="left" valign="middle" bgcolor="#084A37"><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td height="1"></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td height="1"></td>
+                      </tr>
+                      <tr>
+                        <td><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td height="1"></td>
+                            </tr>
+                            <tr>
+                              <td><table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+                                  <tr>
+                                    <td width="1" bgcolor="#EDD3B5"></td>
+                                    <td height="56" align="center" bordercolor="#FDF7E2" class="celdanormalblanca"><a class="celdanormalblanca" href=javascript:MostrarPopup('../../../RecursosComp/ayuda.htm',1/2,3)>Ayuda</a></td>
+                                  </tr>
+                              </table></td>
+                            </tr>
+                            <tr>
+                              <td height="1"></td>
+                            </tr>
+                        </table></td>
+                      </tr>
+                      <tr>
+                        <td height="1"></td>
+                      </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td height="1"></td>
+                  </tr>
+              </table></td>
+            </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="1" valign="top" bgcolor="#084A37"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="1" bgcolor="#FFFFFF"></td>
+      </tr>
+      <tr>
+        <td><table width="100%" height="0"  border="0" cellpadding="0" cellspacing="0">
+            <tr>
+              <td width="116" valign="bottom" class="celdanormal">&nbsp;                </td>
+              <td valign="bottom"> <!-- TemplateBeginEditable name="menumodulo" --><!-- #BeginLibraryItem "/library/taller11.lbi" -->
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="12%" align="center" valign="bottom" nowrap class="celdaseleccionadanegra" id="leccion1">Taller 1</td>
+    <td width="12%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3"><a href="../contenidos/tema1/taller2/introduccion.htm" class="celdanormalazul">Taller 2 </a></td>
+    <td width="12%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3"><a href="../contenidos/tema1/taller3/introduccion.htm" class="celdanormalazul">Taller 3 </a></td>
+    <td width="12%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3"><a href="../contenidos/tema1/taller4/introduccion.htm" class="celdanormalazul">Taller 4 </a></td>
+    <td width="12%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3"><a href="../contenidos/tema1/taller5/introduccion.htm" class="celdanormalazul">Taller 5 </a></td>
+    <td width="12%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion4"><a href="../contenidos/tema1/taller6/introduccion.htm" class="celdanormalazul">Taller 6 </a></td>
+    <td width="12%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3"><a href="../contenidos/tema1/taller7/introduccion.htm" class="celdanormalazul">Taller 7 </a></td>
+    <td width="12%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion4"><a href="../contenidos/tema1/taller8/introduccion.htm" class="celdanormalazul">Taller 8 </a></td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --><!-- TemplateEndEditable --></td>
+              <td width="113" class="celdanormal"><table width="100%" height="100%" cellpadding="0" cellspacing="0" >
+                  <tr>
+                    <td valign="bottom" class="celdanormalazul style1"></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr> 
+    <td height="100%" valign="top"><table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<td width="115" height="100%" align="center" valign="top" bgcolor="#F7B67F" id=idmenuizquierda><DIV id="floatLayer1" style="position: absolute; left:1px; top:118px; z-index: 100; width: 100; height: 88px;">
+      <table width="114" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="115"><table cellpadding="0" cellspacing="0" width="100%" height="0">
+              <tr>
+                        <td>
+						<!-- TemplateBeginEditable name="menuizquierda" --><!-- TemplateEndEditable -->
+						<img src="../Imagenes/derechabiolog.jpg" width="115" height="285"></td>
+              </tr>
+          </table></td>
+        </tr>
+      </table>
+	  </div></td>
+	<td width="548" height="100%" valign="top" bgcolor="#FDF7E2"><table width="100%"  cellspacing="3" cellpadding="3">
+        <tr>
+                <td> <!-- TemplateBeginEditable name="contenido" --><!-- TemplateEndEditable --></td>
+        </tr>
+      </table> 
+	  </td>
+    <td width="113" height="100%" valign="bottom" bgcolor="#F7B67F" id=idmenuderecha>&nbsp;</td>
+      </tr>
+    </table>
+	</td>
+  </tr>
+</table>
+<DIV id="floatLayer2" style="position: absolute; left:662px; top:117px; width: 100; z-index: 100; height: 44px;"><table width="114" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="115"><table cellpadding="1" cellspacing="0" width="100%" height="0">
+              <tr>
+                        <td valign="top"><!-- #BeginLibraryItem "/library/menuderecha.lbi" --><title>Menu derecho</title>
+<table width="113" cellpadding="1" cellspacing="0" bgcolor="#000000">
+  <tr>
+    <td>
+      <table width="100%"  border="0" cellpadding="2" cellspacing="4">
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('../../../htm/objetivos.htm',1/2,3)>Sistema 
+            de Objetivos</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('../../../htm/sistemaconocimientos.htm',1/2,3)>Contenidos</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('../../../htm/sistemadehabilidades.htm',1/2,3)>Habilidades</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a href=javascript:MostrarPopup('../../../htm/sistemadeclases.htm',1/2,3) class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'">Sistema de Clases</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('../../../htm/sistemadeevaluacion.htm',1/2,3)>Evaluaci&oacute;n</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('../../../htm/consejosparaelestudio.htm',1/2,3)>Consejos 
+            para el Estudio</a></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#3366CC" class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'"><a class="menuderecha" onMouseOver="this.className='menuderecharojo'"  onMouseOut="this.className='menuderecha'" href=javascript:MostrarPopup('../../../htm/bibliografia.htm',1/2,3)>Bibliograf&iacute;a</a></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+ <!-- #EndLibraryItem --></td>
+</tr></table></div>
+</body>
+</html>

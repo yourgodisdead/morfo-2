@@ -1,0 +1,541 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="morfo2/templates/encabezado.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<style type="text/css">
+<!--
+.antes {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-style: normal; font-weight: bold; color: #993300; text-decoration: underline}
+.despues {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-weight: bold; color: #000099; text-decoration: underline}
+-->
+</style>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Tema 1. Contenidos</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<SCRIPT language="JavaScript">
+window.onerror = null;
+var topMargin = 89;
+var slideTime = 1200;
+var ns6 = (!document.all && document.getElementById);
+var ie4 = (document.all);
+var ns4 = (document.layers);
+function layerObject(id,left) {
+if (ns6) {
+this.obj = document.getElementById(id).style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ie4) {
+this.obj = document.all[id].style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ns4) {
+this.obj = document.layers[id];
+this.obj.left = left;
+return this.obj;
+   }
+}
+function layerSetup() {
+floatLyr1 = new layerObject('floatLayer1', 0);
+floatLyr2 = new layerObject('floatLayer2', 665);
+window.setInterval("main()", 10)
+}
+function floatObject() {
+if (ns4 || ns6) {
+findHt = window.innerHeight;
+} else if(ie4) {
+findHt = document.body.clientHeight;
+   }
+  
+} 
+function main() {
+if (ns4) {
+this.currentY = document.layers["floatLayer1"].top;
+this.scrollTop = window.pageYOffset;
+mainTrigger();
+}
+else if(ns6) {
+this.currentY = parseInt(document.getElementById('floatLayer1').style.top);
+this.scrollTop = scrollY;
+mainTrigger();
+} else if(ie4) {
+this.currentY = floatLayer1.style.pixelTop;
+if (document.documentElement && document.documentElement.scrollTop)
+	this.scrollTop = document.documentElement.scrollTop;
+else if (document.body)
+	this.scrollTop = document.body.scrollTop;
+mainTrigger();
+   }
+}
+function mainTrigger() {
+var newTargetY = this.scrollTop + this.topMargin;
+if ( this.currentY != newTargetY ) {
+if ( newTargetY != this.targetY ) {
+this.targetY = newTargetY;
+floatStart();
+}
+animator();
+   }
+}
+function floatStart() {
+var now = new Date();
+this.A = this.targetY - this.currentY;
+
+this.B = Math.PI / ( 2 * this.slideTime );
+this.C = now.getTime();
+
+if (Math.abs(this.A) > this.findHt) {
+this.D = this.A > 0 ? this.targetY - this.findHt : this.targetY + this.findHt;
+this.A = this.A > 0 ? this.findHt : -this.findHt;
+}
+else {
+this.D = this.currentY;
+   }
+ 
+}
+function animator() {
+var now = new Date();
+var newY = this.A * Math.sin( this.B * ( now.getTime() - this.C ) ) + this.D;
+newY = Math.round(newY);
+var tope1 = (98+document.all.idmenuderecha.clientHeight)-(newY+floatLayer1.clientHeight);
+
+if (( this.A > 0 && newY > this.currentY ) || ( this.A < 0 && newY < this.currentY )) {
+if (tope1 >0) 
+{
+
+if ( ie4 )document.all.floatLayer1.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer1"].top = newY;
+if ( ns6 )document.getElementById('floatLayer1').style.top = newY + "px";
+if ( ie4 )document.all.floatLayer2.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer2"].top = newY;
+if ( ns6 )document.getElementById('floatLayer2').style.top = newY + "px";
+   }
+   }
+}
+function start() {
+if(ns6||ns4) {
+pageWidth = innerWidth;
+pageHeight = innerHeight;
+layerSetup();
+floatObject();
+}
+else if(ie4) {
+pageWidth = document.body.clientWidth;
+pageHeight = document.body.clientHeight;
+layerSetup();
+floatObject();
+   }
+}
+function movermenu(celda,leccion)
+{
+	FW_startTimeout();
+	var posiciony = floatLayer1.style.pixelTop+3+(22*leccion);
+    eval ('window.FW_showMenu(window.fw_menu_'+leccion+',112,'+posiciony+');');
+    celda.className='menuizquierdarojo';
+}
+//  End -->
+</script>
+<script language="JavaScript" src="../../scripts/testengine.js" type="text/JavaScript"> </script>
+<script language="JavaScript" src="../../scripts/ventana.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="../../scripts/call.js" type="text/JavaScript"></script>
+<script language="JavaScript"  src="../../scripts/fw_menu.js" type="text/JavaScript"></script>
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+// -->
+</script>
+</head>
+
+<body onLoad="start();" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0">
+<table width="770" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="1" valign="top" bgcolor="#EDD3B5"> 
+      <table width="100%" height="1"  border="0" align="left" cellpadding="0" cellspacing="0" bgcolor="#3366CC">
+        <tr bgcolor="#3366CC"> 
+          <td background="../../../imagenes/cabezaln01.jpg" valign="top" height="82" bgcolor="#3366CC"> 
+            <div id="Layer1" style="position:absolute; width:124px; height:83px; z-index:101"> 
+              <div align="center"> <br>
+                <b><font face="Verdana, Arial, Helvetica, sans-serif">Temas: <br>
+                <!-- #BeginLibraryItem "../morfo3/library/cuadro1.lbi" -->
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<table width="80"  border="0" cellpadding="1" cellspacing="1">
+  <tr align="center" valign="middle">
+    <td width="25%" class="celdanumeroselecc">1 </td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema2/intro2.htm" >2</a></td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema3/intro3.htm" >3</a></td>
+</table>
+<!-- #EndLibraryItem --></font></b></div>
+            </div>
+            <script language=JavaScript1.2>fwLoadMenus(); </script>
+            <div id="Layer3" style="position:absolute; width:39px; height:16px; z-index:103; left: 721px; top: 54px"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="../../../indext1.htm" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Inicio</a></strong></font></div>
+            <div id="Layer2" style="position:absolute; width:541px; height:53px; z-index:102; left: 141px; top: 14px"> 
+              <p align="center"><font face="Courier New, Courier, mono"><b><font face="Geneva, Arial, Helvetica, san-serif" color="#990000">PROGRAMA 
+                NACIONAL DE MEDICINA INTEGRAL COMUNITARIA<br>
+                </font></b></font><font face="Geneva, Arial, Helvetica, san-serif" color="#990000"><b><font size="5">MORFOFISIOLOG&Iacute;A 
+                HUMANA III</font></b></font></p>
+              </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="1" valign="top" bgcolor="#3366cc"> 
+      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td height="1" bgcolor="#FFFFFF"></td>
+        </tr>
+        <tr> 
+          <td> 
+            <table width="98%" height="0"  border="0" cellpadding="0" cellspacing="0">
+              <tr> 
+                <td width="116" valign="bottom" class="celdanormal"></td>
+                <td valign="bottom" width="719"> <!-- #BeginLibraryItem "/morfo3/library/tema1cont.lbi" --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000">
+  <tr> 
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion1" bgcolor="#000000"><a href="intro1.htm" class="celdanormalazul">Introducción</a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="obj1.htm" class="celdanormalazul"><span class="celdanormalazul">Objetivos</span></a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdaseleccionadanegra" id="leccion3" bgcolor="#000000">Contenidos</td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="pdoc1.htm" class="celdanormalazul">Pr&aacute;ctica docente</a></td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="consol1.htm" class="celdanormalazul">Consolidaci&oacute;n</a></td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="100%" valign="top"> 
+      <table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="115" height="100%" align="center" valign="top" bgcolor="#3366CC" id=idmenuizquierda>&nbsp;</td>
+          <td height="100%" valign="top" bgcolor="#FDF7E2"> 
+            <table width="100%"  cellspacing="3" cellpadding="3" height="256">
+              <tr> 
+                <td height="316" > 
+                  <!-- InstanceBeginEditable name="contenido" -->
+                  <br>
+                  <p><b></b><b><font face="Arial, Helvetica, sans-serif" size="2">Tema 
+                    1. Sistema endocrino, metabolismo y su regulaci&oacute;n.</font></b><br>
+                  </p>
+                  <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    1. Actividad orientadora 1.</b></font><br>
+                  </p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.1. 
+                    Generalidades. Conceptos de metabolismo, sistema endocrino, 
+                    gl&aacute;ndula endocrina y hormona. Relaciones del sistema 
+                    endocrino con el sistema nervioso y con el metabolismo. Receptores 
+                    hormonales. Complejo hormona receptor. Concepto de &oacute;rgano 
+                    diana. Ciclo general de acci&oacute;n hormonal. Especificidad 
+                    de la respuesta metab&oacute;lica.<br>
+                    <br>
+                    1.2. Principios generales de los mecanismos de acci&oacute;n 
+                    hormonal. Mecanismo de acci&oacute;n hormonal por estimulaci&oacute;n 
+                    de la adenilciclasa. Estructura y efecto del AMP c&iacute;clico. 
+                    S&iacute;ntesis y degradaci&oacute;n del AMP c&iacute;clico. 
+                    Las proteinquinasas y su modificaci&oacute;n por el AMP c&iacute;clico. 
+                    Mecanismo de acci&oacute;n hormonal por inducci&oacute;n de 
+                    la s&iacute;ntesis proteica. Receptores intracelulares. Efecto 
+                    del complejo hormona receptor sobre la s&iacute;ntesis proteica.</font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/semana1/orien1.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.1. al 1.2.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    1. Actividad orientadora 2.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.3. 
+                    Metabolismo de los gl&uacute;cidos. <br>
+                    <br>
+                    1.3.1. Incorporaci&oacute;n de los monosac&aacute;ridos a 
+                    la c&eacute;lula. Transporte de los monosac&aacute;ridos a 
+                    trav&eacute;s de la membrana plasm&aacute;tica. Similitudes 
+                    y diferencias en los tejidos. Fosforilaci&oacute;n inicial 
+                    de las hexosas. Enzimas que participan. Efecto regulador de 
+                    la disponibilidad de sustratos. Significado metab&oacute;lico 
+                    de la fosforilaci&oacute;n. <br>
+                    <br>
+                    1.3.2. Metabolismo del gluc&oacute;geno. Glucogenog&eacute;nesis. 
+                    Caracter&iacute;sticas generales. Caracter&iacute;sticas enzim&aacute;ticas 
+                    del proceso. Regulaci&oacute;n. Glucogen&oacute;lisis. Caracter&iacute;sticas 
+                    generales. Caracter&iacute;sticas enzim&aacute;ticas del proceso. 
+                    Diferencias del proceso en diferentes tejidos. Balance entre 
+                    la g&eacute;nesis y la lisis del gluc&oacute;geno. Efecto 
+                    regulador de la modificaci&oacute;n covalente. Efecto regulador 
+                    de la especializaci&oacute;n celular. Regulaci&oacute;n de 
+                    la glicemia por el h&iacute;gado. Significado del gluc&oacute;geno 
+                    hep&aacute;tico y muscular. Las glucogenosis. Caracter&iacute;sticas 
+                    generales. Estudio de la glucogenosis por deficiencia de la 
+                    glucosa 6 fosfatasa.<br>
+                    <br>
+                    1.3.3. Metabolismo de la glucosa. Glic&oacute;lisis. Concepto, 
+                    caracter&iacute;sticas generales. Etapas claves. Rendimiento 
+                    energ&eacute;tico. La gluconeog&eacute;nesis. Concepto. Caracter&iacute;sticas 
+                    generales. Etapas claves. Importancia biol&oacute;gica. Etapas 
+                    diferenciales entre la gluc&oacute;lisis y la gluconeog&eacute;nesis. 
+                    Regulaci&oacute;n coordinada de los procesos. Efecto regulador 
+                    de la modificaci&oacute;n alost&eacute;rica. La fructosa 2-6 
+                    bisfosfato como efector alost&eacute;rico. El metabolismo 
+                    de la glucosa en hiperglicemia e hipoglicemia. Significado 
+                    del metabolismo de la glucosa en diferentes &oacute;rganos 
+                    y tejidos.<br>
+                    <br>
+                    1.3.4. Otras v&iacute;as del metabolismo gluc&iacute;dico. 
+                    El ciclo de las pentosas. Concepto. Importancia biol&oacute;gica. 
+                    Relaciones con otros procesos. Caracter&iacute;sticas generales 
+                    del metabolismo de las hexosas. La glucosa 6 P como compuesto 
+                    central en el metabolismo de los gl&uacute;cidos, ejemplo 
+                    de integraci&oacute;n como metabolito de encrucijada. La galactosemia. 
+                    Correlaci&oacute;n entre los defectos enzim&aacute;ticos y 
+                    los signos cl&iacute;nicos. <br>
+                    El metabolismo de los gl&uacute;cidos como fuente de energ&iacute;a, 
+                    de equivalentes de reducci&oacute;n, de elementos estructurales 
+                    y precursor de otros compuestos.</font></p>
+                  <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/semana1/orien2.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.3.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    2. Actividad orientadora 3.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.4. 
+                    Metabolismo de los l&iacute;pidos. <br>
+                    <br>
+                    1.4.1. Metabolismo de los triacilgliceroles. Lipog&eacute;nesis. 
+                    Concepto. Origen de los precursores. S&iacute;ntesis de &aacute;cidos 
+                    grasos. Concepto. Caracter&iacute;sticas generales. Papel 
+                    de la acetil CoA carboxilasa y de la sintetasa de &aacute;cidos 
+                    grasos en este proceso. Efecto regulador de la inducci&oacute;n 
+                    enzim&aacute;tica. Breve referencia a los procesos de alargamiento 
+                    y desaturaci&oacute;n oxidativa. Justificaci&oacute;n metab&oacute;lica 
+                    de la existencia de los &aacute;cidos grasos esenciales. Formaci&oacute;n 
+                    de los &aacute;cidos fosfat&iacute;dicos. Formaci&oacute;n 
+                    de los triacilglic&eacute;ridos. El h&iacute;gado y el tejido 
+                    adiposo en la lipog&eacute;nesis. <br>
+                    <br>
+                    1.4.2. Lip&oacute;lisis. Concepto. Caracter&iacute;sticas 
+                    generales. Valor energ&eacute;tico de los triacilgliceroles. 
+                    Oxidaci&oacute;n del glicerol. Betaoxidaci&oacute;n de los 
+                    &aacute;cidos grasos. Concepto. Caracter&iacute;sticas generales. 
+                    Rendimiento energ&eacute;tico. Relaci&oacute;n con la respiraci&oacute;n 
+                    celular. Papel del h&iacute;gado y el tejido adiposo en la 
+                    lip&oacute;lisis. Balance entre la g&eacute;nesis y la lisis 
+                    de los triacilgliceroles. Efecto regulador de la compartimentaci&oacute;n 
+                    celular sobre la s&iacute;ntesis y la degradaci&oacute;n de 
+                    los &aacute;cidos grasos.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana2/orien3.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.4.1. al 1.4.2.</a></strong><br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    3. Actividad orientadora 4.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.4.3. 
+                    Metabolismo de las lipoprote&iacute;nas. Lipoprote&iacute;nas. 
+                    Concepto. Caracter&iacute;sticas estructurales generales. 
+                    Clasificaci&oacute;n. Composici&oacute;n. S&iacute;ntesis, 
+                    degradaci&oacute;n y funci&oacute;n de cada una de ellas. 
+                    <br>
+                    <br>
+                    1.4.4. Metabolismo de los cuerpos cet&oacute;nicos. Concepto 
+                    de cuerpo cet&oacute;nico. Cetog&eacute;nesis. Caracter&iacute;sticas 
+                    generales. Cetolisis. Caracter&iacute;sticas generales. Esquema 
+                    general de las reacciones. Significado metab&oacute;lico de 
+                    los cuerpos cet&oacute;nicos. Vinculaci&oacute;n entre el 
+                    metabolismo de los gl&uacute;cidos, los l&iacute;pidos y los 
+                    cuerpos cet&oacute;nicos. Balance entre la g&eacute;nesis 
+                    y la lisis de los cuerpos cet&oacute;nicos. Cetosis. Causas 
+                    de la cetosis. La acidosis metab&oacute;lica como complicaci&oacute;n 
+                    frecuente de la cetosis.<br>
+                    <br>
+                    1.4.5. La acetil CoA como compuesto integrador de los l&iacute;pidos 
+                    a nivel celular. Ejemplo de integraci&oacute;n como metabolito 
+                    de encrucijada. Los l&iacute;pidos como fuente de energ&iacute;a, 
+                    como fuente de elementos estructurales y precursor de compuestos 
+                    de gran actividad biol&oacute;gica.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana3/orien4.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.4.3. al 1.4.5.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    4. Actividad orientadora 5.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.5. 
+                    Metabolismo de los compuestos nitrogenados. <br>
+                    <br>
+                    1.5.1. Generalidades. Importancia del nitr&oacute;geno en 
+                    los organismos vivos. Imposibilidad para los animales de incorporar 
+                    el nitr&oacute;geno inorg&aacute;nico. Ciclo del nitr&oacute;geno 
+                    en la naturaleza. Forma de ingreso del nitr&oacute;geno metab&oacute;licamente 
+                    &uacute;til al organismo. <br>
+                    <br>
+                    1.5.2. Los amino&aacute;cidos en el organismo. El pool de 
+                    amino&aacute;cidos. Procesos que aportan amino&aacute;cidos 
+                    al pool. Absorci&oacute;n intestinal. Catabolismo de prote&iacute;nas 
+                    h&iacute;sticas. S&iacute;ntesis de amino&aacute;cidos. Procesos 
+                    que sustraen amino&aacute;cidos del pool. S&iacute;ntesis 
+                    de prote&iacute;nas. Catabolismo de amino&aacute;cidos. S&iacute;ntesis 
+                    de compuestos nitrogenados no prote&iacute;nicos. <br>
+                    <br>
+                    1.5.3. Metabolismo general de amino&aacute;cidos. Reacciones 
+                    metab&oacute;licas generales de los amino&aacute;cidos. Desaminaci&oacute;n. 
+                    Importancia metab&oacute;lica de la deshidrogenasa L glut&aacute;mica. 
+                    Transaminaci&oacute;n. Inter&eacute;s m&eacute;dico de las 
+                    transaminasas. Descarboxilaci&oacute;n. Utilizaci&oacute;n 
+                    de amino&aacute;cidos como fuente de energ&iacute;a. Incorporaci&oacute;n 
+                    de la cadena carbonada a otras &aacute;reas del metabolismo: 
+                    intermediarios obtenidos. Rendimiento energ&eacute;tico global 
+                    del catabolismo de los amino&aacute;cidos. La Fenilcetonuria. 
+                    Defectos enzim&aacute;ticos. Correlaci&oacute;n entre el defecto 
+                    enzim&aacute;tico y los signos cl&iacute;nicos. Importancia 
+                    del diagn&oacute;stico precoz.<br>
+                    <br>
+                    1.5.4. S&iacute;ntesis de amino&aacute;cidos. Fundamento de 
+                    la limitaci&oacute;n de este proceso en el humano. Amino&aacute;cidos 
+                    esenciales y no esenciales. Concepto de valor biol&oacute;gico 
+                    de una prote&iacute;na. Score o c&oacute;mputo como &iacute;ndice 
+                    del valor biol&oacute;gico de una prote&iacute;na. Ejemplos 
+                    de prote&iacute;nas de valores biol&oacute;gicos diferentes. 
+                    Enfermedad carencial por d&eacute;ficit de ingesti&oacute;n 
+                    cuantitativa o cualitativa de prote&iacute;nas. Marasmo y 
+                    Kwashiorkor.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana4/orien5.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.5.1. al 1.5.4.</a></strong><br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    5. Actividad orientadora 6.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.5.5. 
+                    Mecanismos de eliminaci&oacute;n del amon&iacute;aco del organismo. 
+                    Or&iacute;genes del amon&iacute;aco en el organismo. Toxicidad 
+                    de este compuesto. Formas de eliminaci&oacute;n del amon&iacute;aco. 
+                    Ureog&eacute;nesis. Concepto. Importancia biol&oacute;gica. 
+                    Localizaci&oacute;n hep&aacute;tica. Secuencia de reacciones. 
+                    Puntos de ingreso del amon&iacute;aco. La encefalopat&iacute;a 
+                    hep&aacute;tica. Causas de la hiperamonemia. Mecanismo de 
+                    la toxicidad del amon&iacute;aco sobre el sistema nervioso. 
+                    Mecanismo de producci&oacute;n y enfermedades donde se manifiesta.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.5.6. 
+                    Papel central de los amino&aacute;cidos en el metabolismo.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.6. 
+                    La integraci&oacute;n general del metabolismo. El &aacute;cido 
+                    pir&uacute;vico como ejemplo de integraci&oacute;n de confluencia 
+                    en metabolito. Relaciones metab&oacute;licas entre gl&uacute;cidos, 
+                    l&iacute;pidos y compuestos nitrogenados. Papel del h&iacute;gado 
+                    en la regulaci&oacute;n de las concentraciones plasm&aacute;ticas 
+                    de diversos compuestos y el intercambio entre &oacute;rganos.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana5/orien6.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.5.5. al 1.6.</a></strong><br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    6. Actividad orientadora 7.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.7. 
+                    Sistema Endocrino.<br>
+                    <br>
+                    1.7.1. Introducci&oacute;n al estudio de las gl&aacute;ndulas 
+                    endocrinas. Caracter&iacute;sticas morfofuncionales. Clasificaci&oacute;n 
+                    morfofuncional. Modelo de &oacute;rgano macizo.<br>
+                    <br>
+                    1.7.2. Hip&oacute;fisis. Origen y desarrollo. Situaci&oacute;n. 
+                    Caracter&iacute;sticas morfofuncionales. Relaci&oacute;n con 
+                    el hipot&aacute;lamo. Hormonas hipofisiarias. Hormona del 
+                    crecimiento. Acciones fisiol&oacute;gicas. Mecanismos de regulaci&oacute;n 
+                    y alteraciones de la secreci&oacute;n hormonal: enanismo, 
+                    gigantismo y acromegalia. <br>
+                    <br>
+                    1.7.3. Tiroides. Origen y desarrollo. Situaci&oacute;n. Caracter&iacute;sticas 
+                    morfofuncionales. Mecanismos de s&iacute;ntesis, secreci&oacute;n 
+                    y liberaci&oacute;n de hormonas tiroideas. Acciones fisiol&oacute;gicas. 
+                    Mecanismos de regulaci&oacute;n y alteraciones de la secreci&oacute;n 
+                    hormonal. Cretinismo, hipotiroidismo e hipertiroidismo. Malformaciones 
+                    cong&eacute;nitas del tiroides.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana6/orien7.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.7.1. al 1.7.3.</a></strong><br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    6. Actividad orientadora 8.<br>
+                    </b><br>
+                    1.7.4. Suprarrenal. Origen y desarrollo. Situaci&oacute;n. 
+                    Caracter&iacute;sticas morfofuncionales. Metabolismo de los 
+                    esteroides. Colesterol end&oacute;geno. Esquema general de 
+                    su s&iacute;ntesis. Mecanismos moleculares en el control de 
+                    la s&iacute;ntesis del colesterol. Mecanismos de regulaci&oacute;n 
+                    m&uacute;ltiples. . El colesterol como precursor de resto 
+                    de los esteroides. Breve referencia a la formaci&oacute;n 
+                    de sales biliares y a las formas de excreci&oacute;n del colesterol. 
+                    La din&aacute;mica entre las LDL y las HDL en la homeostasis 
+                    del colesterol. Las hiperlipoproteinemias. Concepto y clasificaci&oacute;n. 
+                    Estudio de la hipercolesterolemia familiar. Hormonas de la 
+                    corteza suprarrenal. Cortisol. S&iacute;ntesis, transporte, 
+                    metabolismo y excreci&oacute;n. Acciones y efectos fisiol&oacute;gicos. 
+                    Regulaci&oacute;n de la secreci&oacute;n. Alteraciones: Cushing 
+                    y Addison. Hormonas de la m&eacute;dula suprarrenal. Catecolaminas. 
+                    S&iacute;ntesis, metabolismo y excreci&oacute;n. Acciones 
+                    fisiol&oacute;gicas. Regulaci&oacute;n de la secreci&oacute;n. 
+                    Feocromocitoma. Cuerpos cromafines.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana6/orien8.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.7.4.</a></strong><br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    7. Actividad orientadora 9.</b><br>
+                    <br>
+                    1.7.5. P&aacute;ncreas. Origen y desarrollo. Situaci&oacute;n. 
+                    Caracter&iacute;sticas morfofuncionales de los islotes de 
+                    Langerhans. Hormonas pancre&aacute;ticas. Modelo de la insulina. 
+                    Caracter&iacute;sticas del receptor. Acciones fisiol&oacute;gicas 
+                    de esta hormona. Ciclo general del glucag&oacute;n. Acciones 
+                    fisiol&oacute;gicas. Mecanismos de regulaci&oacute;n de la 
+                    secreci&oacute;n de ambas hormonas. Diabetes Mellitus. Diferencias 
+                    entre la cetosis diab&eacute;tica y la cetosis por ayuno. 
+                    Hiperinsulinismo. Regulaci&oacute;n integral de la glicemia. 
+                    Referencia a los modelos de ejercicio f&iacute;sico, ayuno 
+                    y la ingesti&oacute;n de alimentos.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana7/orien9.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.7.5.</a></strong><br>
+                    </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    7. Actividad orientadora 10.</b><br>
+                    <br>
+                    1.7.6. Paratiroides. Origen y desarrollo. Situaci&oacute;n. 
+                    Caracter&iacute;sticas morfofuncionales. Papel de la vitamina 
+                    D en el metabolismo del calcio y del fosfato. Hormona paratiroidea 
+                    y calcitonina. Regulaci&oacute;n de la calcemia. Raquitismo. 
+                    Hiperparatiroidismo e hipoparatiroidismo. Pineal. Caracter&iacute;sticas 
+                    morfofuncionales.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">1.8. 
+                    Din&aacute;mica del desarrollo humano. Factores que intervienen 
+                    en el crecimiento y desarrollo normal. Alteraciones. Envejecimiento. 
+                    Mecanismo b&aacute;sico del envejecimiento molecular. El envejecimiento 
+                    del organismo. El envejecimiento como una etapa natural del 
+                    desarrollo de los seres vivos.</font></p>
+                  <p class=MsoNormal><font size="2" face="Arial, Helvetica, sans-serif"><strong><a href="material/semana7/orien10.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 1.7.6. y 1.8.</a></strong></font></p>
+                  <p>&nbsp;</p>
+                  <p><font size="2" face="Arial, Helvetica, sans-serif"><br>
+                    </font></p>
+                  <p>&nbsp;</p>
+                  <!-- InstanceEndEditable -->
+                </td>
+              </tr>
+            </table>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<DIV id="floatLayer1" style="position: absolute; left:2px; top:83px; z-index: 100; width: 115px;; height: 293px"> 
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+      <td width="82%" align="center" class="fondoazuloscuro">Cerrar</td>
+      <td width="18%" align="center" onClick="window.close();" style="cursor:hand">X</td>
+    </tr>
+  </table>
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+                           
+      <td height="19" align="center"><a   class="celdanormalblanca" href=javascript:MostrarPopup('../../../htm/ayuda.htm',1/2,3)>Ayuda</a></td>    
+    </tr>
+  </table>
+  <b></b> <img src="../../imagenes/derechabiolog.jpg" ><b></b> </div>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,60 @@
+.mstheme
+{
+	separator-image: url(exphorsd.gif);
+	list-image-1: url(expbul1d.gif);
+	list-image-2: url(expbul2d.gif);
+	list-image-3: url(expbul3d.gif);
+	nav-banner-image: url(expbannd.gif);
+	navbutton-horiz-normal: url(exphbudd.gif);
+	navbutton-horiz-pushed: url(exphbusd.gif);
+	navbutton-vert-normal: url(expvbudd.gif);
+	navbutton-vert-pushed: url(expvbusd.gif);
+	navbutton-home-normal: url(exphombd.gif);
+	navbutton-next-normal: url(expnexbd.gif);
+	navbutton-prev-normal: url(expprebd.gif);
+	navbutton-up-normal: url(expupbd.gif);
+}
+.mstheme-bannertxt
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+	color: rgb(255,255,204);
+	font-size: 6;
+}
+.mstheme-horiz-navtxt
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+	color: rgb(255,255,204);
+	font-size: 2;
+	font-weight: bold;
+}
+.mstheme-vert-navtxt
+{
+	font-family: Book Antiqua, Times New Roman, Times;
+	color: rgb(255,255,204);
+	font-size: 2;
+	font-weight: bold;
+}
+.mstheme-navtxthome
+{
+	font-family: Arial, Helvetica;
+	color: rgb(255,255,204);
+	font-size: 1;
+}
+.mstheme-navtxtnext
+{
+	font-family: Arial, Helvetica;
+	color: rgb(255,255,204);
+	font-size: 1;
+}
+.mstheme-navtxtprev
+{
+	font-family: Arial, Helvetica;
+	color: rgb(255,255,204);
+	font-size: 1;
+}
+.mstheme-navtxtup
+{
+	font-family: Arial, Helvetica;
+	color: rgb(255,255,204);
+	font-size: 1;
+}

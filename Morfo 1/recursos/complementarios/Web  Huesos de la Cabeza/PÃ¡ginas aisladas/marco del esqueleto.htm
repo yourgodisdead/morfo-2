@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<title>marquety1</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="Microsoft Border" content="none, default">
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var preAlea;
+var cualPreg;
+var acumulado;
+function alea(){ 
+ preAlea = new Array(6);
+ cualPreg = 0;
+ acumulado= 0;
+ for (i = 0; i < preAlea.length; i++){
+   var numAlea = Math.floor(Math.random() * 10);//genera el numero aleatorio entre 0 y el n'umero de elementos deseado y lo almacena arreglo.
+   preAlea[i] = numAlea;repit = false; j= 0
+   while (j<i && !repit){
+     if (preAlea[j]== numAlea) {
+       repit = true; i--
+     }
+     else j++   
+   }    
+ }
+muestraPreg()
+}
+
+function muestraPreg(){
+var laPreg = preAlea[cualPreg];
+var cadena = "preg" + laPreg + ".htm";
+parent.principal.window.location.replace(cadena);
+}
+
+function respondido(mas){
+acumulado += mas;
+if (cualPreg < 4){
+  cualPreg++;
+  muestraPreg();
+   }
+  else parent.principal.window.location.replace("calif.htm");
+}
+
+function nota(){ 
+var no;
+if (acumulado > 23) no= 5;
+if (acumulado > 18 && acumulado <= 23) no=4;
+if (acumulado > 13 && acumulado <= 18) no = 3;
+if (acumulado <= 13) no = 2;
+parent.principal.MM_setTextOfLayer('nota','',no);
+}
+
+//-->
+</SCRIPT>
+
+</head>
+
+<frameset rows="46,*">
+  <frame name="titular" scrolling="no" noresize target="contenido"
+  src="../Páginas%20aisladas/título_del%20marco%20del%20esqueleto.htm">
+  <frameset cols="220,*">
+    <frame name="contenido" target="principal"
+    src="contenido%20del%20marco%20del%20esqueleto.htm" scrolling="auto">
+    <frame name="principal" src="generalidades%20del%20esqueleto.htm" scrolling="auto"
+    target="_self">
+  </frameset>
+  <noframes>
+  <body>
+  <p>Esta página usa marcos, pero su explorador no los admite. </p>
+  </body>
+  </noframes>
+</frameset>
+</html>

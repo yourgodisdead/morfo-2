@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<SCRIPT LANGUAGE="JavaScript">
+var segundos = 2
+function start (){
+   for (i= segundos); (segundos< 0){ 
+      setTimeout("time()", 1000);}
+  
+}
+function time(){
+document.form1.sec.value = --segundos;
+return segundos
+}
+</SCRIPT>
+</HEAD>
+<BODY onLoad="start()">
+
+
+
+<CENTER>
+<br>
+<br>
+<FORM name=form1>
+&nbsp; <INPUT name=start onclick=run() type=button value="Calculate">
+<BR>
+<BR>
+<BR>
+<INPUT name=sec size=30>
+<BR>
+<BR>
+</FORM>
+</CENTER>
+
+<p><center>
+<font face="arial, helvetica" size"-2">Free JavaScripts provided<br>
+by <a href="http://javascriptsource.com">The JavaScript Source</a></font>
+</center><p>
+
+</HTML>

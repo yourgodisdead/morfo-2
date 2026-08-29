@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="morfo2/templates/encabezado.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<style type="text/css">
+<!--
+.antes {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-style: normal; font-weight: bold; color: #993300; text-decoration: underline}
+.despues {  font-family: Arial, Helvetica, sans-serif; font-size: 9pt; font-weight: bold; color: #000099; text-decoration: underline}
+-->
+</style>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Tema 3. Contenidos</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
+<SCRIPT language="JavaScript">
+window.onerror = null;
+var topMargin = 89;
+var slideTime = 1200;
+var ns6 = (!document.all && document.getElementById);
+var ie4 = (document.all);
+var ns4 = (document.layers);
+function layerObject(id,left) {
+if (ns6) {
+this.obj = document.getElementById(id).style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ie4) {
+this.obj = document.all[id].style;
+this.obj.left = left;
+return this.obj;
+}
+else if(ns4) {
+this.obj = document.layers[id];
+this.obj.left = left;
+return this.obj;
+   }
+}
+function layerSetup() {
+floatLyr1 = new layerObject('floatLayer1', 0);
+floatLyr2 = new layerObject('floatLayer2', 665);
+window.setInterval("main()", 10)
+}
+function floatObject() {
+if (ns4 || ns6) {
+findHt = window.innerHeight;
+} else if(ie4) {
+findHt = document.body.clientHeight;
+   }
+  
+} 
+function main() {
+if (ns4) {
+this.currentY = document.layers["floatLayer1"].top;
+this.scrollTop = window.pageYOffset;
+mainTrigger();
+}
+else if(ns6) {
+this.currentY = parseInt(document.getElementById('floatLayer1').style.top);
+this.scrollTop = scrollY;
+mainTrigger();
+} else if(ie4) {
+this.currentY = floatLayer1.style.pixelTop;
+if (document.documentElement && document.documentElement.scrollTop)
+	this.scrollTop = document.documentElement.scrollTop;
+else if (document.body)
+	this.scrollTop = document.body.scrollTop;
+mainTrigger();
+   }
+}
+function mainTrigger() {
+var newTargetY = this.scrollTop + this.topMargin;
+if ( this.currentY != newTargetY ) {
+if ( newTargetY != this.targetY ) {
+this.targetY = newTargetY;
+floatStart();
+}
+animator();
+   }
+}
+function floatStart() {
+var now = new Date();
+this.A = this.targetY - this.currentY;
+
+this.B = Math.PI / ( 2 * this.slideTime );
+this.C = now.getTime();
+
+if (Math.abs(this.A) > this.findHt) {
+this.D = this.A > 0 ? this.targetY - this.findHt : this.targetY + this.findHt;
+this.A = this.A > 0 ? this.findHt : -this.findHt;
+}
+else {
+this.D = this.currentY;
+   }
+ 
+}
+function animator() {
+var now = new Date();
+var newY = this.A * Math.sin( this.B * ( now.getTime() - this.C ) ) + this.D;
+newY = Math.round(newY);
+var tope1 = (98+document.all.idmenuderecha.clientHeight)-(newY+floatLayer1.clientHeight);
+
+if (( this.A > 0 && newY > this.currentY ) || ( this.A < 0 && newY < this.currentY )) {
+if (tope1 >0) 
+{
+
+if ( ie4 )document.all.floatLayer1.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer1"].top = newY;
+if ( ns6 )document.getElementById('floatLayer1').style.top = newY + "px";
+if ( ie4 )document.all.floatLayer2.style.pixelTop = newY;
+if ( ns4 )document.layers["floatLayer2"].top = newY;
+if ( ns6 )document.getElementById('floatLayer2').style.top = newY + "px";
+   }
+   }
+}
+function start() {
+if(ns6||ns4) {
+pageWidth = innerWidth;
+pageHeight = innerHeight;
+layerSetup();
+floatObject();
+}
+else if(ie4) {
+pageWidth = document.body.clientWidth;
+pageHeight = document.body.clientHeight;
+layerSetup();
+floatObject();
+   }
+}
+function movermenu(celda,leccion)
+{
+	FW_startTimeout();
+	var posiciony = floatLayer1.style.pixelTop+3+(22*leccion);
+    eval ('window.FW_showMenu(window.fw_menu_'+leccion+',112,'+posiciony+');');
+    celda.className='menuizquierdarojo';
+}
+//  End -->
+</script>
+<script language="JavaScript" src="../../scripts/testengine.js" type="text/JavaScript"> </script>
+<script language="JavaScript" src="../../scripts/ventana.js" type="text/JavaScript"></script>
+<script language="JavaScript" src="../../scripts/call.js" type="text/JavaScript"></script>
+<script language="JavaScript"  src="../../scripts/fw_menu.js" type="text/JavaScript"></script>
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+// -->
+</script>
+</head>
+
+<body onLoad="start();" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0">
+<table width="770" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="1" valign="top" bgcolor="#EDD3B5"> 
+      <table width="100%" height="1"  border="0" align="left" cellpadding="0" cellspacing="0" bgcolor="#3366CC">
+        <tr bgcolor="#3366CC"> 
+          <td background="../../../imagenes/cabezaln01.jpg" valign="top" height="82" bgcolor="#3366CC"> 
+            <div id="Layer1" style="position:absolute; width:124px; height:83px; z-index:101"> 
+              <div align="center"> <br>
+                <b><font face="Verdana, Arial, Helvetica, sans-serif">Temas: <br>
+                <!-- #BeginLibraryItem "../morfo3/library/cuadro3.lbi" -->
+<link href="../../estilos/biologicas.css" rel="stylesheet" type="text/css">
+<table width="80"  border="0" cellpadding="1" cellspacing="1">
+  <tr align="center" valign="middle">
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema1/intro1.htm" >1</a></td>
+    <td width="25%" class="celdanumero"><a class="celdatexto" href="../tema2/intro2.htm" >2</a></td>
+    <td width="25%" class="celdanumeroselecc">3 </td>
+</table>
+<!-- #EndLibraryItem --></font></b></div>
+            </div>
+            <script language=JavaScript1.2>fwLoadMenus(); </script>
+            <div id="Layer3" style="position:absolute; width:39px; height:16px; z-index:103; left: 721px; top: 54px"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="../../../indext1.htm" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Inicio</a></strong></font></div>
+            <div id="Layer2" style="position:absolute; width:541px; height:53px; z-index:102; left: 141px; top: 14px"> 
+              <p align="center"><font face="Courier New, Courier, mono"><b><font face="Geneva, Arial, Helvetica, san-serif" color="#990000">PROGRAMA 
+                NACIONAL DE MEDICINA INTEGRAL COMUNITARIA<br>
+                </font></b></font><font face="Geneva, Arial, Helvetica, san-serif" color="#990000"><b><font size="5">MORFOFISIOLOG&Iacute;A 
+                HUMANA III</font></b></font></p>
+              </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="1" valign="top" bgcolor="#3366cc"> 
+      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td height="1" bgcolor="#FFFFFF"></td>
+        </tr>
+        <tr> 
+          <td> 
+            <table width="98%" height="0"  border="0" cellpadding="0" cellspacing="0">
+              <tr> 
+                <td width="116" valign="bottom" class="celdanormal"></td>
+                <td valign="bottom" width="719"> <!-- #BeginLibraryItem "/morfo3/library/tema3cont.lbi" --><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<table width="100%"  border="0" cellpadding="0" cellspacing="0" bgcolor="#000000">
+  <tr> 
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion1" bgcolor="#000000"><a href="intro3.htm" class="celdanormalazul">Introducción</a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="obj3.htm" class="celdanormalazul"><span class="celdanormalazul">Objetivos</span></a></td>
+    <td width="20%" align="center" valign="bottom" nowrap class="celdaseleccionadanegra" id="leccion3" bgcolor="#000000">Contenidos</td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="pdoc3.htm" class="celdanormalazul">Pr&aacute;ctica docente</a></td>
+    <td width="20%" align="center" valign="bottom" class="celdanormalazul" id="leccion3" bgcolor="#000000"><a href="consol3.htm" class="celdanormalazul">Consolidaci&oacute;n</a></td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td height="100%" valign="top"> 
+      <table width="100%" height="100%"  border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="115" height="100%" align="center" valign="top" bgcolor="#3366CC" id=idmenuizquierda>&nbsp;</td>
+          <td height="100%" valign="top" bgcolor="#FDF7E2"> 
+            <table width="100%"  cellspacing="3" cellpadding="3" height="256">
+              <tr> 
+                <td height="316" > 
+                  <!-- InstanceBeginEditable name="contenido" -->
+                  <strong><font face="Arial, Helvetica, sans-serif" size="2"> 
+                  </font></strong> 
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b><br>
+                    Tema 3. Sangre y defensa del organismo.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    10. Actividad orientadora 14.</b></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">3.1. 
+                    Sangre. Concepto, composici&oacute;n, funciones generales 
+                    y propiedades. M&eacute;dula &oacute;sea y tejido hemopoy&eacute;tico. 
+                    Variedades y caracter&iacute;sticas morfofuncionales. Hemopoyesis. 
+                    <br>
+                    <br>
+                    3.2. Eritrocitos. Caracter&iacute;sticas morfofuncionales. 
+                    Factores que intervienen en la maduraci&oacute;n del eritrocito. 
+                    Regulaci&oacute;n de la producci&oacute;n de eritrocitos. 
+                    Hemoglobina. Tipos. S&iacute;ntesis de porfirinas. Precursores 
+                    y reacciones iniciales. Formaci&oacute;n del grupo hemo. Regulaci&oacute;n 
+                    de su s&iacute;ntesis. Metabolismo del hierro. Alteraciones 
+                    del metabolismo de las porfirinas. Las porfirias. Caracter&iacute;sticas 
+                    generales. Catabolismo de porfirinas. Formaci&oacute;n y excreci&oacute;n 
+                    de bilirrubina. Los &iacute;cteros como manifestaci&oacute;n 
+                    de alteraciones del metabolismo de la bilirrubina. Relaci&oacute;n 
+                    del ciclo del eritrocito con algunos tipos de anemia y poliglobulia.<br>
+                    <br>
+                    3.3. Leucocitos. Clasificaci&oacute;n. Caracter&iacute;sticas 
+                    morfofuncionales. Propiedades.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana10/orien14.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 3.1. al 3.3.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    11. Actividad orientadora 15.</b><br>
+                    <br>
+                    3.4. Defensa del organismo.<br>
+                    <br>
+                    3.4.1. Bases morfofuncionales. &Oacute;rganos centrales. Timo. 
+                    Desarrollo embriol&oacute;gico. Situaci&oacute;n y caracter&iacute;sticas 
+                    macrosc&oacute;picas y microsc&oacute;picas. Diferenciaci&oacute;n 
+                    de linfocitos T. Importancia de la barrera hemot&iacute;mica. 
+                    &Oacute;rganos perif&eacute;ricos. Situaci&oacute;n y caracter&iacute;sticas 
+                    morfofuncionales de los ganglios linf&aacute;ticos, bazo y 
+                    tejido linf&aacute;tico difuso.<br>
+                    <br>
+                    3.4.2. Defensa inespec&iacute;fica. Concepto. Tipos. Piel 
+                    y faneras. Desarrollo embriol&oacute;gico y caracter&iacute;sticas 
+                    morfofuncionales. Factores que intervienen en la coloraci&oacute;n 
+                    de la piel. Unidad inmunol&oacute;gica y melanoc&iacute;tica 
+                    epid&eacute;rmica. Mucosas. Importancia de las barreras fisiol&oacute;gicas. 
+                    Sistema de macr&oacute;fagos. Inflamaci&oacute;n. Concepto. 
+                    Participaci&oacute;n de los leucocitos en el proceso inflamatorio.</font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana11/orien15.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 3.4.1. al 3.4.2.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    11. Actividad orientadora 16.</b><br>
+                    <br>
+                    3.4.3. Defensa espec&iacute;fica.<br>
+                    <br>
+                    3.4.3.1. Generalidades. Ant&iacute;geno e inmun&oacute;geno. 
+                    Hapteno. Concepto. Inmunogenicidad. Inmunoglobulinas o anticuerpos. 
+                    Concepto. Clasificaci&oacute;n y caracter&iacute;sticas estructurales. 
+                    Sitio de fijaci&oacute;n del ant&iacute;geno y fragmento Fc. 
+                    Interacci&oacute;n ant&iacute;geno-anticuerpo. Propiedades. 
+                    Relaci&oacute;n estructura funci&oacute;n. Teor&iacute;a de 
+                    la selecci&oacute;n clonal.<br>
+                    <br>
+                    3.4.3.2. Respuesta inmune. Respuesta inmune humoral y celular. 
+                    G&eacute;nesis de los linfocitos B y T. Mecanismos de acci&oacute;n 
+                    de los linfocitos. Sistema de complemento. Eventos que se 
+                    originan en el organismo al penetrar un inmun&oacute;geno. 
+                    Din&aacute;mica de la respuesta inmune humoral y celular. 
+                    Respuesta primaria y secundaria. </font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana11/orien16.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    al contenido 3.4.3.</a></strong></font></p>
+                  <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>Semana 
+                    12. Actividad orientadora 17.</b><br>
+                    <br>
+                    3.5. Grupos sangu&iacute;neos. Sistema ABO, aglutin&oacute;genos 
+                    y aglutininas. Herencia de grupos sangu&iacute;neos. Tipificaci&oacute;n. 
+                    Sistema Rh. Transfusi&oacute;n. Eritroblastosis.<br>
+                    <br>
+                    3.6. Hemostasia. Concepto. Mecanismos de la hemostasia. Plaquetas. 
+                    Caracter&iacute;sticas morfofuncionales. Mecanismo b&aacute;sico 
+                    de la coagulaci&oacute;n. V&iacute;a intr&iacute;nseca y extr&iacute;nseca. 
+                    Agentes anticoagulantes. Alteraciones de la coagulaci&oacute;n<br>
+                    </font><font face="Arial, Helvetica, sans-serif"> </font> 
+                  </p>
+                  <p><font face="Arial, Helvetica, sans-serif" size="2"><strong><a href="material/semana12/orien17.pdf" class="antes" onMouseOver="this.className ='despues';" onMouseOut="this.className ='antes';" target="_blank">Orientaciones 
+                    a los contenidos 3.5. al 3.6.</a></strong></font></p>
+                  <p><font size="2" face="Arial, Helvetica, sans-serif"><br>
+                    </font></p>
+                  <p>&nbsp;</p>
+                  <!-- InstanceEndEditable -->
+                </td>
+              </tr>
+            </table>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<DIV id="floatLayer1" style="position: absolute; left:2px; top:83px; z-index: 100; width: 115px;; height: 293px"> 
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+      <td width="82%" align="center" class="fondoazuloscuro">Cerrar</td>
+      <td width="18%" align="center" onClick="window.close();" style="cursor:hand">X</td>
+    </tr>
+  </table>
+  <table width="100%" height="18"  border="0" cellpadding="0" cellspacing="0" class=fondoazuloscuro>
+    <tr> 
+                           
+      <td height="19" align="center"><a   class="celdanormalblanca" href=javascript:MostrarPopup('../../../htm/ayuda.htm',1/2,3)>Ayuda</a></td>    
+    </tr>
+  </table>
+  <b></b> <img src="../../imagenes/derechabiolog.jpg" ><b></b> </div>
+</body>
+<!-- InstanceEnd --></html>

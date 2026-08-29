@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "num": "1",
+    "title": "1",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 1.célula eucariota.jpg",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de 1. Figura 1 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 2,
+    "num": "1",
+    "title": "Diferenciaci&oacute;n del mesodermo",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 1 Diferenciación del mesodermo.jpg",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Diferenciaci&oacute;n del mesodermo. Figura 1 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 3,
+    "num": "2",
+    "title": "Diferenciaci&oacute;n del Somita 1",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 2 Diferenciación del Somita 1.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Diferenciaci&oacute;n del Somita 1. Figura 2 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 4,
+    "num": "3",
+    "title": "Linea Primitiva",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 3 Linea Primitiva.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Linea Primitiva. Figura 3 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 5,
+    "num": "4",
+    "title": "Linea primitiva",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 4 Linea primitiva.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Linea primitiva. Figura 4 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 6,
+    "num": "5",
+    "title": "Tubo neural",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 5 Tubo neural.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Tubo neural. Figura 5 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 7,
+    "num": "6",
+    "title": "Tubo Neural Dorsal",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 6 Tubo Neural Dorsal.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Tubo Neural Dorsal. Figura 6 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 8,
+    "num": "7",
+    "title": "Tubo neural ventral",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 7 Tubo neural ventral.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Tubo neural ventral. Figura 7 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 9,
+    "num": "8",
+    "title": "Placenta",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 8 Placenta.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Placenta. Figura 8 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 10,
+    "num": "9",
+    "title": "Placenta",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 9 Placenta.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Placenta. Figura 9 del laminario de Embriología de Morfofisiología Humana I."
+  },
+  {
+    "id": 11,
+    "num": "10",
+    "title": "Placenta",
+    "src": "Morfo 1/recursos/lam_embrio/Fig 10 Placenta.JPG",
+    "stain": "Esquema / Fotomicrografía Embriológica",
+    "category": "Embriología Básica",
+    "description": "Preparado o esquema de Placenta. Figura 10 del laminario de Embriología de Morfofisiología Humana I."
+  }
+]

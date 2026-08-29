@@ -1,0 +1,9 @@
+vti_encoding:SR|utf8-nl
+vti_author:SR|javier
+vti_donotedit:BR|true
+vti_timecreated:TR|07 Dec 1999 12:26:01 -0500
+vti_modifiedby:SR|javier
+vti_nexttolasttimemodified:TR|07 Dec 1999 12:32:01 -0500
+vti_extenderversion:SR|3.0.2.926
+vti_nosourcecontrol:BR|true
+vti_timelastmodified:TR|07 Dec 1999 12:32:08 -0500

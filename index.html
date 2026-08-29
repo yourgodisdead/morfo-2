@@ -282,55 +282,152 @@
         <!-- SECTION: PERFIL -->
         <section class="content-section" id="perfilSection">
             <header class="hero-banner">
-                <span class="hero-tag">Gestión de Cuenta</span>
-                <h2 class="hero-title">Mi Perfil</h2>
-                <p class="hero-subtitle">Visualiza tus datos académicos y personales, tu rol dentro de la plataforma y actualiza tu foto de perfil.</p>
+                <span class="hero-tag">Gestión de Cuenta & Ficha Informativa</span>
+                <h2 class="hero-title">Mi Ficha Informativa</h2>
+                <p class="hero-subtitle">Visualiza y actualiza tus datos académicos, personales, credenciales de acceso y foto de perfil. Guarda los cambios para mantener tu expediente actualizado.</p>
             </header>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
                 <!-- Left profile card -->
-                <div class="card" style="align-items: center; text-align: center; gap: 16px; padding: 40px;">
+                <div class="card" style="align-items: center; text-align: center; gap: 16px; padding: 40px; height: fit-content;">
                     <div style="position: relative;">
                         <img class="profile-page-avatar" id="profilePageAvatar" src="" alt="Foto de perfil" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent-color); box-shadow: var(--glass-shadow);">
-                        <label for="photoUploadInput" style="position: absolute; bottom: 0; right: 0; background: var(--accent-gradient); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; border: 2px solid var(--bg-card); transition: transform 0.2s;" title="Cambiar foto">
+                        <label for="photoUploadInput" style="position: absolute; bottom: 0; right: 0; background: var(--accent-gradient); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; border: 2px solid var(--bg-card); transition: transform 0.2s;" title="Cambiar foto de perfil">
                             📷
                             <input type="file" id="photoUploadInput" accept="image/*" style="display: none;">
                         </label>
                     </div>
-                    <h3 class="hero-title" id="profilePageName" style="font-size: 1.5rem; margin-top: 8px; margin-bottom: 0;">Nombre</h3>
+                    <div>
+                        <h3 class="hero-title" id="profilePageName" style="font-size: 1.4rem; margin-top: 8px; margin-bottom: 4px;">Nombre</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;" id="profilePageEmailDisplay">correo@morfo.com</p>
+                    </div>
                     <span class="hero-tag" id="profilePageRoleBadge" style="margin-bottom: 0;">Estudiante</span>
-                </div>
-
-                <!-- Right profile details card -->
-                <div class="card" style="padding: 36px; gap: 16px;">
-                    <h3 style="font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Ficha Académica del Estudiante</h3>
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                        <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Nombre Completo</span>
-                            <span style="font-size: 1rem; font-weight: 600;" id="profileDetailName">Cargando...</span>
+                    <div style="width: 100%; border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: 8px; text-align: left; font-size: 0.82rem; color: var(--text-secondary);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                            <span>📍 Estado GIS:</span>
+                            <strong style="color: var(--text-primary);" id="profileSummaryState">Venezuela</strong>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Correo Electrónico</span>
-                            <span style="font-size: 1rem;" id="profileDetailEmail">Cargando...</span>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                            <span>🎓 Nivel:</span>
+                            <strong style="color: var(--text-primary);" id="profileSummaryYear">2do Año</strong>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Teléfono / WhatsApp</span>
-                            <span style="font-size: 1rem;" id="profileDetailPhone">No registrado</span>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Estado de Procedencia</span>
-                            <span style="font-size: 1rem; font-weight: 600; color: var(--accent-hover);" id="profileDetailState">Venezuela</span>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Año de Inscripción</span>
-                            <span style="font-size: 1rem;" id="profileDetailEnrollment">2026</span>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Año Cursante</span>
-                            <span style="font-size: 1rem;" id="profileDetailCurrentYear">2do Año (Morfo II)</span>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>🛡️ Rol en Sistema:</span>
+                            <strong style="color: var(--accent-hover);" id="profileSummaryRole">usuario</strong>
                         </div>
                     </div>
+                </div>
+
+                <!-- Right profile editable form card -->
+                <div class="card" style="padding: 36px; gap: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                        <div>
+                            <h3 style="font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; margin: 0;">Editar Datos de Mi Ficha</h3>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px;">Modifica tus campos y presiona Guardar Cambios</p>
+                        </div>
+                        <span class="ao-badge">Modo Edición</span>
+                    </div>
+
+                    <form id="editProfileForm" style="display: flex; flex-direction: column; gap: 16px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileName" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Nombre y Apellido *</label>
+                                <input type="text" id="editProfileName" class="auth-input" placeholder="Tu nombre completo" required>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfilePhone" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Número Telefónico / WhatsApp *</label>
+                                <input type="tel" id="editProfilePhone" class="auth-input" placeholder="+58 412 1234567" required>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileEmail" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Correo Electrónico (Login) *</label>
+                                <input type="email" id="editProfileEmail" class="auth-input" placeholder="correo@ejemplo.com" required>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfilePassword" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Contraseña de Acceso *</label>
+                                <div style="position: relative; display: flex; align-items: center;">
+                                    <input type="password" id="editProfilePassword" class="auth-input" placeholder="Tu contraseña" required style="padding-right: 42px;">
+                                    <button type="button" class="toggle-password-btn" data-target="editProfilePassword" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-muted);" title="Ver u ocultar contraseña">👁️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileState" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Estado de Procedencia *</label>
+                                <select id="editProfileState" class="auth-input" required>
+                                    <option value="" disabled selected>Selecciona tu estado</option>
+                                    <option value="Amazonas">Amazonas</option>
+                                    <option value="Anzoátegui">Anzoátegui</option>
+                                    <option value="Apure">Apure</option>
+                                    <option value="Aragua">Aragua</option>
+                                    <option value="Barinas">Barinas</option>
+                                    <option value="Bolívar">Bolívar</option>
+                                    <option value="Carabobo">Carabobo</option>
+                                    <option value="Cojedes">Cojedes</option>
+                                    <option value="Delta Amacuro">Delta Amacuro</option>
+                                    <option value="Distrito Capital">Distrito Capital (Caracas)</option>
+                                    <option value="Falcón">Falcón</option>
+                                    <option value="Guárico">Guárico</option>
+                                    <option value="La Guaira">La Guaira (Vargas)</option>
+                                    <option value="Lara">Lara</option>
+                                    <option value="Mérida">Mérida</option>
+                                    <option value="Miranda">Miranda</option>
+                                    <option value="Monagas">Monagas</option>
+                                    <option value="Nueva Esparta">Nueva Esparta (Margarita)</option>
+                                    <option value="Portuguesa">Portuguesa</option>
+                                    <option value="Sucre">Sucre</option>
+                                    <option value="Táchira">Táchira</option>
+                                    <option value="Trujillo">Trujillo</option>
+                                    <option value="Yaracuy">Yaracuy</option>
+                                    <option value="Zulia">Zulia</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileEnrollment" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Año de Inscripción *</label>
+                                <select id="editProfileEnrollment" class="auth-input" required>
+                                    <option value="2026">2026</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="editProfileCurrentYear" style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);">Año Cursante *</label>
+                                <select id="editProfileCurrentYear" class="auth-input" required>
+                                    <option value="1er Año">1er Año</option>
+                                    <option value="2do Año" selected>2do Año (Morfo II)</option>
+                                    <option value="3er Año">3er Año</option>
+                                    <option value="4to Año">4to Año</option>
+                                    <option value="5to Año">5to Año</option>
+                                    <option value="6to Año">6to Año</option>
+                                    <option value="Internado Rotatorio">Internado Rotatorio</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Success Alert Message -->
+                        <div id="editProfileSuccess" style="display: none; padding: 12px 16px; border-radius: var(--border-radius-sm); background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-size: 0.88rem; font-weight: 600; text-align: center;">
+                            ✅ ¡Tu información ha sido actualizada y guardada con éxito!
+                        </div>
+
+                        <!-- Save Button -->
+                        <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                            <button type="submit" class="auth-submit" style="width: auto; padding: 12px 28px; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;">
+                                <span>💾</span> Guardar Cambios en Mi Ficha
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>

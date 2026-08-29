@@ -1668,32 +1668,111 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function initProfile() {
         const photoUploadInput = document.getElementById("photoUploadInput");
-        if (!photoUploadInput) return;
-        
-        photoUploadInput.addEventListener("change", function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const base64Data = event.target.result;
+        if (photoUploadInput) {
+            photoUploadInput.addEventListener("change", function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
                 
-                // Update active user in localStorage
-                const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
-                const userIdx = users.findIndex(u => u.email === state.currentUser.email);
-                
-                if (userIdx !== -1) {
-                    users[userIdx].photo = base64Data;
-                    localStorage.setItem("morfo2_users", JSON.stringify(users));
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Data = event.target.result;
                     
-                    // Update state and UI
-                    state.currentUser.photo = base64Data;
-                    setupUserUI();
-                    renderProfile();
+                    // Update active user in localStorage
+                    const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+                    const userIdx = users.findIndex(u => u.email === state.currentUser.email);
+                    
+                    if (userIdx !== -1) {
+                        users[userIdx].photo = base64Data;
+                        localStorage.setItem("morfo2_users", JSON.stringify(users));
+                        
+                        // Update state and UI
+                        state.currentUser.photo = base64Data;
+                        setupUserUI();
+                        renderProfile();
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Edit Profile Form Submission Handler
+        const editProfileForm = document.getElementById("editProfileForm");
+        const editProfileName = document.getElementById("editProfileName");
+        const editProfilePhone = document.getElementById("editProfilePhone");
+        const editProfileEmail = document.getElementById("editProfileEmail");
+        const editProfilePassword = document.getElementById("editProfilePassword");
+        const editProfileState = document.getElementById("editProfileState");
+        const editProfileEnrollment = document.getElementById("editProfileEnrollment");
+        const editProfileCurrentYear = document.getElementById("editProfileCurrentYear");
+        const editProfileSuccess = document.getElementById("editProfileSuccess");
+
+        if (editProfileForm) {
+            editProfileForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                if (!state.currentUser) return;
+
+                const nameVal = editProfileName.value.trim();
+                const phoneVal = editProfilePhone.value.trim();
+                const emailVal = editProfileEmail.value.trim().toLowerCase();
+                const passVal = editProfilePassword.value;
+                const stateVal = editProfileState.value;
+                const enrollVal = editProfileEnrollment.value;
+                const curYearVal = editProfileCurrentYear.value;
+
+                if (!nameVal || !phoneVal || !emailVal || !passVal || !stateVal) {
+                    alert("Por favor completa todos los campos obligatorios.");
+                    return;
                 }
-            };
-            reader.readAsDataURL(file);
-        });
+
+                const users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+                const currentEmail = state.currentUser.email;
+                const userIdx = users.findIndex(u => u.email === currentEmail);
+
+                if (userIdx === -1) {
+                    alert("Error: usuario no encontrado en la base de datos.");
+                    return;
+                }
+
+                // If user changed email, verify it's not occupied by another registered user
+                if (emailVal !== currentEmail && users.some((u, idx) => idx !== userIdx && u.email === emailVal)) {
+                    alert("El correo electrónico ingresado ya está en uso por otro usuario.");
+                    return;
+                }
+
+                // Update current user record (preserve role and activity log)
+                users[userIdx].name = nameVal;
+                users[userIdx].phone = phoneVal;
+                users[userIdx].email = emailVal;
+                users[userIdx].password = passVal;
+                users[userIdx].stateOrigin = stateVal;
+                users[userIdx].enrollmentYear = enrollVal;
+                users[userIdx].currentYear = curYearVal;
+
+                localStorage.setItem("morfo2_users", JSON.stringify(users));
+
+                // Update session if email changed
+                if (emailVal !== currentEmail) {
+                    localStorage.setItem("morfo2_session", emailVal);
+                }
+
+                // Update state
+                state.currentUser = users[userIdx];
+
+                // Refresh UI components
+                setupUserUI();
+                renderProfile();
+                renderAdmin();
+                renderGisMap();
+
+                // Show success notification
+                if (editProfileSuccess) {
+                    editProfileSuccess.style.display = "block";
+                    setTimeout(() => {
+                        editProfileSuccess.style.display = "none";
+                    }, 4000);
+                }
+            });
+        }
     }
 
     function renderProfile() {
@@ -1701,30 +1780,41 @@ document.addEventListener("DOMContentLoaded", function() {
         
         const profilePageAvatar = document.getElementById("profilePageAvatar");
         const profilePageName = document.getElementById("profilePageName");
+        const profilePageEmailDisplay = document.getElementById("profilePageEmailDisplay");
         const profilePageRoleBadge = document.getElementById("profilePageRoleBadge");
         
-        const profileDetailName = document.getElementById("profileDetailName");
-        const profileDetailEmail = document.getElementById("profileDetailEmail");
-        const profileDetailRole = document.getElementById("profileDetailRole");
-        const profileDetailPhone = document.getElementById("profileDetailPhone");
-        const profileDetailState = document.getElementById("profileDetailState");
-        const profileDetailEnrollment = document.getElementById("profileDetailEnrollment");
-        const profileDetailCurrentYear = document.getElementById("profileDetailCurrentYear");
+        const profileSummaryState = document.getElementById("profileSummaryState");
+        const profileSummaryYear = document.getElementById("profileSummaryYear");
+        const profileSummaryRole = document.getElementById("profileSummaryRole");
+
+        const editProfileName = document.getElementById("editProfileName");
+        const editProfilePhone = document.getElementById("editProfilePhone");
+        const editProfileEmail = document.getElementById("editProfileEmail");
+        const editProfilePassword = document.getElementById("editProfilePassword");
+        const editProfileState = document.getElementById("editProfileState");
+        const editProfileEnrollment = document.getElementById("editProfileEnrollment");
+        const editProfileCurrentYear = document.getElementById("editProfileCurrentYear");
         
-        // Set info
+        // Left Card Summary Info
         if (profilePageName) profilePageName.textContent = state.currentUser.name;
+        if (profilePageEmailDisplay) profilePageEmailDisplay.textContent = state.currentUser.email;
         if (profilePageRoleBadge) profilePageRoleBadge.textContent = state.currentUser.role === "superuser" ? "Superusuario" : "Estudiante";
         
-        if (profileDetailName) profileDetailName.textContent = state.currentUser.name;
-        if (profileDetailEmail) profileDetailEmail.textContent = state.currentUser.email;
-        if (profileDetailRole) profileDetailRole.textContent = state.currentUser.role === "superuser" ? "Superusuario Administrador" : "Estudiante";
-        if (profileDetailPhone) profileDetailPhone.textContent = state.currentUser.phone || "No registrado";
-        if (profileDetailState) profileDetailState.textContent = state.currentUser.stateOrigin || "Venezuela";
-        if (profileDetailEnrollment) profileDetailEnrollment.textContent = state.currentUser.enrollmentYear || "2026";
-        if (profileDetailCurrentYear) profileDetailCurrentYear.textContent = state.currentUser.currentYear || "2do Año (Morfo II)";
+        if (profileSummaryState) profileSummaryState.textContent = state.currentUser.stateOrigin || "Venezuela";
+        if (profileSummaryYear) profileSummaryYear.textContent = state.currentUser.currentYear || "2do Año";
+        if (profileSummaryRole) profileSummaryRole.textContent = state.currentUser.role === "superuser" ? "Superusuario (Admin)" : "Estudiante (usuario)";
         
         const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
         if (profilePageAvatar) profilePageAvatar.src = state.currentUser.photo || defaultAvatar;
+
+        // Populate Form Fields with current user data
+        if (editProfileName) editProfileName.value = state.currentUser.name || "";
+        if (editProfilePhone) editProfilePhone.value = state.currentUser.phone || "";
+        if (editProfileEmail) editProfileEmail.value = state.currentUser.email || "";
+        if (editProfilePassword) editProfilePassword.value = state.currentUser.password || "";
+        if (editProfileState && state.currentUser.stateOrigin) editProfileState.value = state.currentUser.stateOrigin;
+        if (editProfileEnrollment && state.currentUser.enrollmentYear) editProfileEnrollment.value = state.currentUser.enrollmentYear;
+        if (editProfileCurrentYear && state.currentUser.currentYear) editProfileCurrentYear.value = state.currentUser.currentYear;
     }
 
     // ==========================================

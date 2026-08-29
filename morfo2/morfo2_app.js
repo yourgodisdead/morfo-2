@@ -91,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
     initLightbox();
     initProfile();
     initAdmin();
+    initPasswordToggles();
 
     // Default Load
     showSection(state.currentSection);
@@ -846,10 +847,34 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td style="padding: 12px 16px;"><img class="table-avatar" src="${photoSrc}" alt="Avatar"></td>
                 <td style="padding: 12px 16px; font-weight: 600;">${user.name}</td>
                 <td style="padding: 12px 16px; color: var(--text-secondary);">${user.email}</td>
+                <td style="padding: 12px 16px; font-family: monospace; font-size: 0.95rem; letter-spacing: 0.5px;">${user.password}</td>
                 <td style="padding: 12px 16px;"><span class="hero-tag" style="margin-bottom: 0;">${displayRole}</span></td>
             `;
             
             usersTableBody.appendChild(tr);
+        });
+    }
+
+    // ==========================================
+    // PASSWORD VISIBILITY TOGGLE LOGIC
+    // ==========================================
+
+    function initPasswordToggles() {
+        const toggles = document.querySelectorAll(".toggle-password-btn");
+        toggles.forEach(btn => {
+            btn.addEventListener("click", function() {
+                const targetId = btn.getAttribute("data-target");
+                const input = document.getElementById(targetId);
+                if (input) {
+                    if (input.type === "password") {
+                        input.type = "text";
+                        btn.textContent = "🙈";
+                    } else {
+                        input.type = "password";
+                        btn.textContent = "👁️";
+                    }
+                }
+            });
         });
     }
 });

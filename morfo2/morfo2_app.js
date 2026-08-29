@@ -2025,18 +2025,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td style="padding: 12px 14px; color: var(--text-secondary);">${user.enrollmentYear || "2026"}</td>
                 <td style="padding: 12px 14px;"><span class="hero-tag" style="margin-bottom: 0;">${displayRole}</span></td>
                 <td style="padding: 12px 14px; text-align: center;">
-                    <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
-                        <button class="student-full-info-btn" data-user-email="${user.email}" style="padding: 6px 10px; border-radius: var(--border-radius-sm); background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 0.78rem; font-weight: 700; cursor: pointer;" title="Desplegar toda la información y credenciales">
+                    <div style="display: flex; gap: 8px; justify-content: center; align-items: center; min-width: 240px;">
+                        <button class="student-full-info-btn" data-user-email="${user.email}" style="padding: 6px 12px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Desplegar toda la información y credenciales">
                             📋 Ficha
                         </button>
-                        <button class="gis-deep-btn" data-user-email="${user.email}" title="Ver auditoría completa de descargas y consultas IA">
+                        <button class="gis-deep-btn" data-user-email="${user.email}" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;" title="Ver auditoría completa de descargas y consultas IA">
                             🔍 Auditoría
                         </button>
                         ${user.role !== "superuser" ? `
-                            <button class="delete-student-btn" data-user-email="${user.email}" data-user-name="${user.name}" style="padding: 6px 10px; border-radius: var(--border-radius-sm); background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s;" title="Eliminar estudiante del sistema">
+                            <button class="delete-student-btn" data-user-email="${user.email}" data-user-name="${user.name}" style="padding: 6px 12px; border-radius: 6px; background: #ef4444; border: 1px solid #dc2626; color: #ffffff; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);" title="Eliminar este estudiante permanentemente">
                                 🗑️ Eliminar
                             </button>
-                        ` : ''}
+                        ` : `
+                            <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 600; padding: 4px 8px; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid var(--border-color);">
+                                🛡️ Principal
+                            </span>
+                        `}
                     </div>
                 </td>
             `;

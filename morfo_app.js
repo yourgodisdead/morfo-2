@@ -113,6 +113,13 @@ document.addEventListener("DOMContentLoaded", async function() {
     const deepInfoModal = document.getElementById("deepInfoModal");
     const deepInfoCloseBtn = document.getElementById("deepInfoCloseBtn");
 
+    // Mobile Header & Drawer DOM
+    const sidebar = document.getElementById("sidebar");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const sidebarMobileClose = document.getElementById("sidebarMobileClose");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+    const mobileThemeBtn = document.getElementById("mobileThemeBtn");
+
     // Initialize App Modules
     updateThemeToggleUI();
     initCourseSelector();
@@ -178,6 +185,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         renderOrientadoras();
         renderLaminarios();
         
+        if (window.innerWidth <= 768) {
+            closeMobileSidebar();
+        }
+        
         // Update IA Tutor welcome message
         const messagesContainer = document.getElementById("aiChatMessages");
         if (messagesContainer) {
@@ -229,13 +240,39 @@ document.addEventListener("DOMContentLoaded", async function() {
     // ==========================================
     // NAVIGATION & THEME SECTIONS
     // ==========================================
+    function openMobileSidebar() {
+        if (sidebar) sidebar.classList.add("mobile-open");
+        if (sidebarBackdrop) sidebarBackdrop.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeMobileSidebar() {
+        if (sidebar) sidebar.classList.remove("mobile-open");
+        if (sidebarBackdrop) sidebarBackdrop.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
     function initNavigation() {
         navItems.forEach(item => {
             item.addEventListener("click", () => {
                 const sectionId = item.getAttribute("data-section");
                 showSection(sectionId);
+                if (window.innerWidth <= 768) {
+                    closeMobileSidebar();
+                }
             });
         });
+
+        // Mobile drawer event listeners
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener("click", openMobileSidebar);
+        }
+        if (sidebarMobileClose) {
+            sidebarMobileClose.addEventListener("click", closeMobileSidebar);
+        }
+        if (sidebarBackdrop) {
+            sidebarBackdrop.addEventListener("click", closeMobileSidebar);
+        }
     }
 
     function showSection(sectionId) {
@@ -297,6 +334,15 @@ document.addEventListener("DOMContentLoaded", async function() {
             localStorage.setItem("morfo_theme", state.theme);
             updateThemeToggleUI();
         });
+
+        if (mobileThemeBtn) {
+            mobileThemeBtn.addEventListener("click", () => {
+                state.theme = (state.theme === "dark") ? "light" : "dark";
+                document.documentElement.setAttribute("data-theme", state.theme);
+                localStorage.setItem("morfo_theme", state.theme);
+                updateThemeToggleUI();
+            });
+        }
     }
 
     function updateThemeToggleUI() {
@@ -304,15 +350,21 @@ document.addEventListener("DOMContentLoaded", async function() {
         const iconSpan = themeToggleBtn.querySelector(".theme-icon");
         
         if (state.theme === "light") {
-            textSpan.textContent = "Modo Oscuro";
-            iconSpan.innerHTML = `
-                <svg viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/></svg>
-            `;
+            if (textSpan) textSpan.textContent = "Modo Oscuro";
+            if (iconSpan) {
+                iconSpan.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3z"/></svg>
+                `;
+            }
+            if (mobileThemeBtn) mobileThemeBtn.textContent = "🌙";
         } else {
-            textSpan.textContent = "Modo Claro";
-            iconSpan.innerHTML = `
-                <svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM2 12h2m16 0h2M12 2v2m0 16v2m-6.4-15.6l1.4 1.4m9.9 9.9l1.4 1.4M5.6 18.4l1.4-1.4m9.9-9.9l1.4-1.4"/></svg>
-            `;
+            if (textSpan) textSpan.textContent = "Modo Claro";
+            if (iconSpan) {
+                iconSpan.innerHTML = `
+                    <svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM2 12h2m16 0h2M12 2v2m0 16v2m-6.4-15.6l1.4 1.4m9.9 9.9l1.4 1.4M5.6 18.4l1.4-1.4m9.9-9.9l1.4-1.4"/></svg>
+                `;
+            }
+            if (mobileThemeBtn) mobileThemeBtn.textContent = "☀️";
         }
     }
 

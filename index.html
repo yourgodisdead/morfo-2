@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="Morfo 2/mic.ico" type="image/x-icon">
 
     <!-- Design System Stylesheet -->
-    <link rel="stylesheet" href="morfo_styles.css">
+    <link rel="stylesheet" href="morfo_styles.css?v=2">
 
     <!-- Leaflet GIS Mapping CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -38,7 +38,7 @@
     <script src="firebase_config.js"></script>
 
     <!-- SPA Logic Controller (ES Module for Firebase imports) -->
-    <script type="module" src="morfo_app.js?v=1.0.1"></script>
+    <script type="module" src="morfo_app.js?v=1.0.2"></script>
 </head>
 <body>
 
@@ -79,8 +79,28 @@
         </div>
     </div>
 
+    <!-- MOBILE TOP HEADER (VISIBLE ON MOBILE ONLY) -->
+    <header class="mobile-top-header" id="mobileTopHeader">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir Menú">
+            <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        </button>
+        <div class="mobile-header-brand">
+            <div class="brand-logo mini" id="mobileBrandLogo">MH</div>
+            <span class="mobile-brand-title" id="mobileBrandTitle">Portal Morfo</span>
+        </div>
+        <div class="mobile-header-actions">
+            <button class="mobile-theme-btn" id="mobileThemeBtn" aria-label="Cambiar Tema" title="Cambiar Tema">🌙</button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR BACKDROP FOR MOBILE -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar" id="sidebar">
+        <!-- Close Button (Mobile Only) -->
+        <button class="sidebar-mobile-close" id="sidebarMobileClose" aria-label="Cerrar Menú">&times;</button>
+
         <div class="brand-section">
             <div class="brand-logo" id="sidebarBrandLogo">MH</div>
             <h1 class="brand-title" id="sidebarBrandTitle">Portal Morfo</h1>

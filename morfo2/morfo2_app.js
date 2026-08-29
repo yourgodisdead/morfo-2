@@ -2025,13 +2025,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td style="padding: 12px 14px; color: var(--text-secondary);">${user.enrollmentYear || "2026"}</td>
                 <td style="padding: 12px 14px;"><span class="hero-tag" style="margin-bottom: 0;">${displayRole}</span></td>
                 <td style="padding: 12px 14px; text-align: center;">
-                    <div style="display: flex; gap: 6px; justify-content: center;">
+                    <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
                         <button class="student-full-info-btn" data-user-email="${user.email}" style="padding: 6px 10px; border-radius: var(--border-radius-sm); background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 0.78rem; font-weight: 700; cursor: pointer;" title="Desplegar toda la información y credenciales">
                             📋 Ficha
                         </button>
                         <button class="gis-deep-btn" data-user-email="${user.email}" title="Ver auditoría completa de descargas y consultas IA">
                             🔍 Auditoría
                         </button>
+                        ${user.role !== "superuser" ? `
+                            <button class="delete-student-btn" data-user-email="${user.email}" data-user-name="${user.name}" style="padding: 6px 10px; border-radius: var(--border-radius-sm); background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s;" title="Eliminar estudiante del sistema">
+                                🗑️ Eliminar
+                            </button>
+                        ` : ''}
                     </div>
                 </td>
             `;
@@ -2075,7 +2080,45 @@ document.addEventListener("DOMContentLoaded", function() {
                 openDeepInfoModal(email);
             });
         });
+
+        // Add event listeners to delete buttons
+        usersTableBody.querySelectorAll(".delete-student-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                const email = btn.getAttribute("data-user-email");
+                const name = btn.getAttribute("data-user-name");
+                handleDeleteUser(email, name);
+            });
+        });
     }
+
+    function handleDeleteUser(userEmail, userName) {
+        if (!userEmail) return;
+        if (userEmail === "lams210488@gmail.com") {
+            alert("El superusuario principal del sistema no puede ser eliminado.");
+            return;
+        }
+
+        const confirmed = confirm(`⚠️ ¿Estás seguro de que deseas eliminar permanentemente de la plataforma a:\n\n👤 ${userName || "Estudiante"} (${userEmail})?\n\nEsta acción borrará todas sus credenciales, descargas registradas y consultas al Tutor IA.`);
+        if (!confirmed) return;
+
+        let users = JSON.parse(localStorage.getItem("morfo2_users") || "[]");
+        users = users.filter(u => u.email !== userEmail);
+        localStorage.setItem("morfo2_users", JSON.stringify(users));
+
+        // Close modals if open
+        const studentFullInfoModal = document.getElementById("studentFullInfoModal");
+        if (studentFullInfoModal) studentFullInfoModal.classList.remove("active");
+        const deepInfoModal = document.getElementById("deepInfoModal");
+        if (deepInfoModal) deepInfoModal.classList.remove("active");
+
+        // Refresh admin dashboard, table and GIS Map
+        renderAdmin();
+        renderGisMap();
+
+        alert(`✅ El estudiante "${userName || userEmail}" ha sido eliminado exitosamente.`);
+    }
+
+    window.handleDeleteUser = handleDeleteUser;
 
     // ==========================================
     // GIS MAP CONTROLLER (LEAFLET.JS)
@@ -2782,7 +2825,12 @@ En el estudio médico del sistema nervioso, te sugiero analizar este tema bajo 3
                 </div>
 
                 <!-- Actions -->
-                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center; flex-wrap: wrap;">
+                    ${user.role !== "superuser" ? `
+                        <button onclick="handleDeleteUser('${user.email}', '${user.name}');" style="padding: 10px 18px; font-size: 0.88rem; border-radius: var(--border-radius-sm); background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; font-weight: 700; cursor: pointer; margin-right: auto;">
+                            🗑️ Eliminar Estudiante
+                        </button>
+                    ` : ''}
                     <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="gis-whatsapp-btn" style="padding: 10px 18px; font-size: 0.88rem;">
                         💬 Abrir WhatsApp
                     </a>

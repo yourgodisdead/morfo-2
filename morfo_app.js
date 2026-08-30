@@ -15,6 +15,7 @@ import {
     db_trackNote,
     db_ensureSuperuser
 } from "./db.js";
+import { getAiTutorResponse } from "./ai_tutor_engine.js";
 
 document.addEventListener("DOMContentLoaded", async function() {
     // Ensure superuser exists in Firestore
@@ -2947,6 +2948,35 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     }
 
+    function formatAiChatMessage(rawText) {
+        if (!rawText) return "";
+        let html = rawText
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+
+        // Markdown Headings
+        html = html.replace(/^### (.*$)/gim, '<h4 style="margin: 8px 0 4px; font-size: 1.05rem; color: var(--accent-hover); font-weight: 700;">$1</h4>');
+        html = html.replace(/^#### (.*$)/gim, '<h5 style="margin: 6px 0 2px; font-size: 0.92rem; color: var(--text-primary); font-weight: 600;">$1</h5>');
+
+        // Blockquotes
+        html = html.replace(/^&gt; (.*$)/gim, '<blockquote style="border-left: 3px solid var(--accent-color); margin: 6px 0; padding-left: 10px; color: var(--text-secondary); font-style: italic; background: rgba(var(--accent-color-rgb), 0.06); border-radius: 0 6px 6px 0; padding: 6px 10px;">$1</blockquote>');
+
+        // Horizontal Rule
+        html = html.replace(/^---$/gim, '<hr style="border: 0; border-top: 1px solid var(--border-color); margin: 10px 0;">');
+
+        // Bold and Italic
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text-primary); font-weight: 700;">$1</strong>');
+        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+        // Markdown Links [Text](URL)
+        html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: var(--accent-hover); text-decoration: underline; font-weight: 600;">$1 ↗</a>');
+
+        // Line breaks
+        html = html.replace(/\n/g, "<br>");
+        return html;
+    }
+
     function appendChatMessage(sender, text) {
         const container = document.getElementById("aiChatMessages");
         if (!container) return;
@@ -2955,7 +2985,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         msgDiv.className = `ai-message ${sender === 'user' ? 'user' : 'bot'}`;
         msgDiv.innerHTML = `
             <div class="message-content">
-                ${text.replace(/\n/g, "<br>")}
+                ${formatAiChatMessage(text)}
             </div>
         `;
         container.appendChild(msgDiv);
@@ -2963,106 +2993,11 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     function generateAiResponse(query) {
-        const q = query.toLowerCase();
-
-        // MORFO I RESPONSE TEMPLATES
-        if (state.currentCourse === "morfo1") {
-            if (q.includes("organelo") || q.includes("celula") || q.includes("célula")) {
-                return `🔬 **La Célula Eucariota y sus Organelos**:
-                
-1. **Núcleo Celular**: Almacena el ADN y coordina el ciclo celular. Contiene el nucléolo, donde se sintetizan los ribosomas.
-2. **Mitocondrias**: Centrales energéticas que realizan la fosforilación oxidativa para producir ATP a partir de nutrientes.
-3. **Retículo Endoplásmico Rugoso (RER)**: Asociado a ribosomas, es el sitio primario de síntesis de proteínas destinadas a secreción o membranas.
-4. **Aparato de Golgi**: Clasifica, procesa y empaqueta las proteínas del RER en vesículas secretoras.
-5. **Citoesqueleto**: Compuesto por microtúbulos, microfilamentos y filamentos intermedios. Proporciona soporte estructural y permite el transporte intracelular.`;
-            }
-            if (q.includes("replicacion") || q.includes("adn") || q.includes("genet")) {
-                return `🧬 **Expresión y Replicación del ADN**:
-                
-1. **Replicación**: Es semiconservativa. La helicasa abre la doble hélice, la ADN polimerasa añade nucleótidos complementarios y la ligasa une los fragmentos de Okazaki. Ocurre en la fase S del ciclo celular.
-2. **Transcripción**: Proceso donde la ARN polimerasa copia una hebra de ADN en un ARN mensajero (ARNm) primario en el núcleo.
-3. **Traducción**: El ARNm viaja al citoplasma, donde los ribosomas leen el código en codones (tripletes de bases) y reclutan ARNs de transferencia (ARNt) cargados con aminoácidos específicos para construir una cadena peptídica.`;
-            }
-            if (q.includes("epitel") || q.includes("tejido")) {
-                return `📖 **Tejidos Corporales Fundamentales**:
-                
-1. **Tejido Epitelial**: Células muy unidas con escasa matriz intercelular. Se divide en:
-   - *Epitelios de Revestimiento*: Simple (plano, cúbico, cilíndrico) o estratificado (plano queratinizado o no).
-   - *Epitelios Glandulares*: Exocrinos (con conductos) y endocrinos (vierten hormonas directamente a la sangre).
-2. **Tejido Conectivo**: Células separadas por abundante matriz intercelular. Incluye el tejido conectivo laxo, denso, adiposo y especializados (cartílago, hueso, sangre).`;
-            }
+        try {
+            return getAiTutorResponse(query, state.currentCourse);
+        } catch (err) {
+            console.error("AI Tutor response error:", err);
+            return `🤖 He recibido tu consulta sobre "${query}". Puedes consultar la sección de Temario Semanal, Clases Orientadoras en PDF y la Biblioteca Médica Digital para profundizar en este contenido.`;
         }
-
-        // MORFO II RESPONSE TEMPLATES
-        if (state.currentCourse === "morfo2") {
-            if (q.includes("piramidal") || q.includes("extrapiramidal") || q.includes("corticoespinal") || q.includes("haz") || q.includes("motora")) {
-                return `🧠 **Vías Motoras del Sistema Nervioso**:
-                
-1. **Vía Piramidal (Haz Corticoespinal)**: Autopista para el movimiento voluntario consciente fino.
-   - *Clínica*: Enhebrar una aguja o escribir. Si se lesiona (lesión de motoneurona superior), causa parálisis espástica e hiperreflexia con signo de Babinski (+).
-2. **Vía Extrapiramidal (Núcleos Basales)**: Controla el tono muscular, postura y movimientos automáticos asociados.
-   - *Clínica*: El balanceo de brazos al caminar. Lesiones en la sustancia negra causan rigidez y temblor (Enfermedad de Parkinson).`;
-            }
-            if (q.includes("reflejo") || q.includes("arco reflejo") || q.includes("rotuliano")) {
-                return `⚡ **El Arco Reflejo (Unidad Morfofuncional)**:
-                
-Es la vía de respuesta involuntaria inmediata ante un estímulo. Consta de 5 elementos:
-1. **Receptor**: Capta el estímulo (ej. huso neuromuscular).
-2. **Vía Aferente**: Neurona sensitiva que lleva el impulso a la médula por el asta posterior.
-3. **Centro Integrador**: Sinapsis en la sustancia gris medular.
-4. **Vía Eferente**: Neurona motora que sale por el asta anterior.
-5. **Efector**: Músculo que realiza la contracción.`;
-            }
-            if (q.includes("sustancia gris") || q.includes("sustancia blanca") || q.includes("mielina") || q.includes("purkinje") || q.includes("cerebelo") || q.includes("glia")) {
-                return `🔬 **Correlación Histológica del SNC**:
-                
-- **Sustancia Gris**: Contiene somas neuronales, dendritas, glías y capilares. Aquí se procesa la información.
-- **Sustancia Blanca**: Formada por axones mielinizados. Es la autopista de conducción.
-- **Corteza Cerebelosa**: Formada por 3 capas:
-  1. *Capa Molecular* (externa, pocas células).
-  2. *Capa de Purkinje* (células gigantes piriformes con gran arborización dendrítica).
-  3. *Capa Granulosa* (interna, densamente poblada de pequeños somas).`;
-            }
-        }
-
-        // MORFO III RESPONSE TEMPLATES
-        if (state.currentCourse === "morfo3") {
-            if (q.includes("gluc") || q.includes("metabol") || q.includes("lipido") || q.includes("lípido")) {
-                return `🍞 **Metabolismo Energético y su Regulación**:
-                
-1. **Glucólisis**: Conversión de glucosa en piruvato (aeróbica, rinde 36-38 ATP tras pasar por ciclo de Krebs y cadena de electrones) o lactato (anaeróbica, rinde 2 ATP).
-2. **Lipólisis**: Degradación de triacilgliceroles a glicerol y ácidos grasos en respuesta a glucagón o adrenalina. Los ácidos grasos sufren Beta-oxidación para producir Acetil-CoA.
-3. **Insulina**: Hormona anabólica (estimula glucogénesis y síntesis lipídica).
-4. **Glucagón**: Hormona catabólica (estimula glucogenólisis y gluconeogénesis hepática).`;
-            }
-            if (q.includes("repro") || q.includes("ovario") || q.includes("menstrual") || q.includes("ciclo")) {
-                return `🚺 **Ciclos Reproductores Femeninos**:
-                
-1. **Ciclo Ovárico**:
-   - *Fase Folicular*: Estimulada por FSH, maduran folículos que secretan estrógeno.
-   - *Ovulación*: Desencadenada por el pico de LH.
-   - *Fase Lútea*: Formación del cuerpo lúteo, productor de progesterona.
-2. **Ciclo Menstrual (Uterino)**:
-   - *Fase Proliferativa*: El estrógeno reconstruye el endometrio.
-   - *Fase Secretora*: La progesterona madura las glándulas endometriales para la implantación.
-   - *Menstruación*: Caída drástica de progesterona si no hay fecundación.`;
-            }
-            if (q.includes("sangre") || q.includes("linfa") || q.includes("defensa") || q.includes("inmun")) {
-                return `🛡️ **Sangre, Defensa e Inmunología**:
-                
-1. **Elementos de la Sangre**: Eritrocitos (transporte de O2/CO2), leucocitos (defensa: neutrófilos, linfocitos, monocitos, eosinófilos, basófilos) y plaquetas (hemostasia).
-2. **Órganos Linfáticos**:
-   - *Primarios*: Timo (maduración de linfocitos T) y Médula Ósea (maduración de linfocitos B).
-   - *Secundarios*: Bazo y ganglios linfáticos (filtración y presentación de antígenos).
-3. **Inmunidad Específica**: Humoral (linfocitos B y anticuerpos) y Celular (linfocitos T citotóxicos y cooperadores).`;
-            }
-        }
-
-        // Generic template
-        return `🤖 **Asistente Académico del Portal Morfo**:
-        
-He recibido tu consulta sobre "${query}". Recuerda que puedes resolver los cuestionarios en la sección 'Temario Semanal' para fijar los conceptos teóricos, y repasar preparados microscópicos reales en la sección 'Laminarios y Atlas'.
-        
-Para más detalles o tutoría presencial, no dudes en contactar al **Docente Leonardo Morales** a través del botón de WhatsApp en la barra lateral.`;
     }
 });

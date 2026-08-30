@@ -2183,3 +2183,147 @@ body {
     }
 }
 
+/* ============================================================
+   CLASES ORIENTADORAS - SIDEBAR & CARD ITEM STYLES
+   ============================================================ */
+
+.orientadoras-layout {
+    display: grid;
+    grid-template-columns: 370px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .orientadoras-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.orientadoras-sidebar {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.orientadoras-sidebar .search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 0 12px;
+    transition: all 0.2s ease;
+}
+
+.orientadoras-sidebar .search-wrapper:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.25);
+}
+
+.ao-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 680px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.ao-card-item, .ao-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.ao-card-item:hover, .ao-card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(var(--accent-color-rgb), 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 0 10px rgba(var(--accent-color-rgb), 0.1);
+}
+
+.ao-card-item.active, .ao-card.active {
+    background: linear-gradient(135deg, rgba(var(--accent-color-rgb), 0.14), rgba(var(--accent-color-rgb), 0.04));
+    border-color: var(--accent-color);
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 4px 18px rgba(var(--accent-color-rgb), 0.22);
+}
+
+.ao-card-header, .ao-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.ao-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    background: linear-gradient(135deg, rgba(var(--accent-color-rgb), 0.22), rgba(var(--accent-color-rgb), 0.1));
+    color: var(--accent-hover);
+    border: 1px solid rgba(var(--accent-color-rgb), 0.4);
+}
+
+.ao-week-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.ao-card-title {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.38;
+    margin: 0;
+}
+
+.ao-card-item.active .ao-card-title, .ao-card.active .ao-card-title {
+    color: var(--accent-hover);
+}
+
+.ao-card-theme {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.35;
+    margin: 0;
+    opacity: 0.88;
+}
+
+.orientadoras-viewer {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 28px;
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+

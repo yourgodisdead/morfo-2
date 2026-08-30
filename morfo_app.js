@@ -4,6 +4,7 @@ import {
     db_getUserByEmail,
     db_createUser,
     db_updateUser,
+    db_toggleUserVip,
     db_deleteUser,
     db_login,
     db_saveSessionToken,
@@ -78,6 +79,39 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.documentElement.setAttribute("data-theme", state.theme);
     // Apply active course attribute to HTML element to trigger CSS color changes
     document.documentElement.setAttribute("data-course", state.stateCourseClass || state.currentCourse);
+
+    // ==========================================
+    // VIP BADGE & ACCESS CONTROL HELPERS
+    // ==========================================
+    function isUserVip() {
+        if (!state.currentUser) return false;
+        // Solo el superusuario tiene acceso VIP automático
+        if (state.currentUser.role === "superuser" || state.currentUser.email === "lams210488@gmail.com") return true;
+        // Cualquier otro usuario (estudiantes, docentes, etc.) requiere que el superusuario le haya otorgado isVip: true
+        return state.currentUser.isVip === true;
+    }
+
+    function showVipPaywallModal(resourceName = "este material de estudio") {
+        const modal = document.getElementById("vipPaywallModal");
+        if (!modal) return;
+        const info = document.getElementById("vipModalResourceInfo");
+        if (info) {
+            info.innerHTML = `Para visualizar o descargar <strong>${resourceName}</strong> necesitas tu <strong>Insignia VIP activa</strong>.`;
+        }
+        const userEmail = state.currentUser ? state.currentUser.email : "";
+        const userName = state.currentUser ? (state.currentUser.name || "") : "";
+        const whatsappBtn = document.getElementById("vipWhatsappBtn");
+        if (whatsappBtn) {
+            const msg = encodeURIComponent(`Hola profesor Leonardo, deseo solicitar mi Insignia VIP en el Portal Morfo por 1$ a tasa BCV para desbloquear clases orientadoras, descargas y biblioteca médica.\n\n👤 Estudiante: ${userName}\n📧 Correo: ${userEmail}`);
+            whatsappBtn.href = `https://wa.me/584129031966?text=${msg}`;
+        }
+        modal.style.display = "flex";
+    }
+
+    function closeVipPaywallModal() {
+        const modal = document.getElementById("vipPaywallModal");
+        if (modal) modal.style.display = "none";
+    }
 
     // DOM Elements
     const navItems = document.querySelectorAll(".nav-item");
@@ -696,10 +730,15 @@ document.addEventListener("DOMContentLoaded", async function() {
             html += `</div>`;
             contentContainer.innerHTML = html;
 
-            // Telemetry hook on downloads
+            // Telemetry hook on downloads with VIP Protection
             contentContainer.querySelectorAll(".download-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
+                btn.addEventListener("click", (e) => {
                     const text = btn.textContent.trim();
+                    if (!isUserVip()) {
+                        e.preventDefault();
+                        showVipPaywallModal(text || "Materiales de Descarga Semanal");
+                        return;
+                    }
                     trackUserActivity("download", {
                         filename: text,
                         type: "Material Semanal"
@@ -1019,10 +1058,15 @@ document.addEventListener("DOMContentLoaded", async function() {
             </div>
         `;
 
-        // Telemetry tracking on AO view
+        // Telemetry tracking & VIP Guard on AO view
         const pdfBtn = document.getElementById("viewPDFBtn");
         if (pdfBtn) {
-            pdfBtn.addEventListener("click", () => {
+            pdfBtn.addEventListener("click", (e) => {
+                if (!isUserVip()) {
+                    e.preventDefault();
+                    showVipPaywallModal(`${ao.ao}: ${ao.title} (Conferencia Completa)`);
+                    return;
+                }
                 trackUserActivity("download", {
                     filename: ao.pdfFile,
                     type: "Clase Orientadora PDF"
@@ -1031,7 +1075,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
         const slideBtn = document.getElementById("viewSlideBtn");
         if (slideBtn && ao.slidesFile) {
-            slideBtn.addEventListener("click", () => {
+            slideBtn.addEventListener("click", (e) => {
+                if (!isUserVip()) {
+                    e.preventDefault();
+                    showVipPaywallModal(`${ao.ao}: Diapositiva Explicativa`);
+                    return;
+                }
                 trackUserActivity("download", {
                     filename: ao.slidesFile,
                     type: "Diapositiva Explicativa PDF"
@@ -1617,14 +1666,24 @@ document.addEventListener("DOMContentLoaded", async function() {
             if (isAller) {
                 const btnAller = card.querySelector(`#openAllerBtn_${book.id}`);
                 if (btnAller) {
-                    btnAller.addEventListener("click", () => {
+                    btnAller.addEventListener("click", (e) => {
+                        if (!isUserVip()) {
+                            e.preventDefault();
+                            showVipPaywallModal(`el libro ${book.title}`);
+                            return;
+                        }
                         openAllerChaptersModal(book);
                     });
                 }
             } else {
                 const btnRead = card.querySelector(`#readBook_${book.id}`);
                 if (btnRead) {
-                    btnRead.addEventListener("click", () => {
+                    btnRead.addEventListener("click", (e) => {
+                        if (!isUserVip()) {
+                            e.preventDefault();
+                            showVipPaywallModal(`el libro ${book.title}`);
+                            return;
+                        }
                         trackUserActivity("read_book", {
                             bookId: book.id,
                             title: book.title,
@@ -1634,7 +1693,12 @@ document.addEventListener("DOMContentLoaded", async function() {
                 }
                 const btnDl = card.querySelector(`#dlBook_${book.id}`);
                 if (btnDl) {
-                    btnDl.addEventListener("click", () => {
+                    btnDl.addEventListener("click", (e) => {
+                        if (!isUserVip()) {
+                            e.preventDefault();
+                            showVipPaywallModal(`el libro ${book.title}`);
+                            return;
+                        }
                         trackUserActivity("download", {
                             filename: book.file,
                             title: book.title,
@@ -1686,10 +1750,22 @@ document.addEventListener("DOMContentLoaded", async function() {
                     <div class="chapter-size">Tamaño: ${ch.size}</div>
                 </div>
                 <div class="chapter-actions">
-                    <a href="${ch.file}" target="_blank" class="chapter-btn-icon" title="Leer Capítulo en PDF">👁️ Leer</a>
-                    <a href="${ch.file}" download class="chapter-btn-icon" title="Descargar Capítulo (PDF)">📥 Bajar</a>
+                    <a href="${ch.file}" target="_blank" class="chapter-btn-icon chapter-btn-read" title="Leer Capítulo en PDF">👁️ Leer</a>
+                    <a href="${ch.file}" download class="chapter-btn-icon chapter-btn-dl" title="Descargar Capítulo (PDF)">📥 Bajar</a>
                 </div>
             `;
+
+            // VIP Guard on individual chapter actions
+            card.querySelectorAll(".chapter-btn-icon").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    if (!isUserVip()) {
+                        e.preventDefault();
+                        showVipPaywallModal(`el capítulo ${ch.name}`);
+                        return;
+                    }
+                });
+            });
+
             container.appendChild(card);
         });
     }
@@ -1715,10 +1791,13 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         }
 
-        if (showLoginCardBtn && loginCard && registerCard) {
-            showLoginCardBtn.addEventListener("click", () => {
-                registerCard.style.display = "none";
-                loginCard.style.display = "block";
+        // VIP Modal Close buttons
+        const closeVipBtn = document.getElementById("closeVipModalBtn");
+        const vipModal = document.getElementById("vipPaywallModal");
+        if (closeVipBtn) closeVipBtn.addEventListener("click", closeVipPaywallModal);
+        if (vipModal) {
+            vipModal.addEventListener("click", (e) => {
+                if (e.target === vipModal) closeVipPaywallModal();
             });
         }
 
@@ -1923,7 +2002,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         const avatarUrl = state.currentUser.photo || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
         sidebarAvatar.src = avatarUrl;
         sidebarUsername.textContent = state.currentUser.name || state.currentUser.email;
-        sidebarRole.textContent = state.currentUser.role === "superuser" ? "DOCENTE / ADMIN" : `ESTUDIANTE / ${state.currentUser.currentYear}`;
+        
+        const isSuperuser = state.currentUser.role === "superuser";
+        const hasVip = isUserVip();
+        sidebarRole.innerHTML = (isSuperuser ? "👑 DOCENTE / ADMIN" : `ESTUDIANTE / ${state.currentUser.currentYear}`) + 
+            (hasVip ? ' <span class="vip-badge active" style="font-size: 0.65rem; margin-left: 4px;">⭐ VIP</span>' : ' <span class="vip-badge inactive" style="font-size: 0.65rem; margin-left: 4px;">⚪ ESTÁNDAR</span>');
         
         userSidebarProfile.style.display = "block";
         logoutBtn.style.display = "flex";
@@ -2062,7 +2145,15 @@ document.addEventListener("DOMContentLoaded", async function() {
         document.getElementById("profilePageAvatar").src = state.currentUser.photo || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
         document.getElementById("profilePageName").textContent = state.currentUser.name || "Tu Nombre";
         document.getElementById("profilePageEmailDisplay").textContent = state.currentUser.email;
-        document.getElementById("profilePageRoleBadge").textContent = state.currentUser.role === "superuser" ? "Docente" : "Estudiante";
+        
+        const roleBadgeEl = document.getElementById("profilePageRoleBadge");
+        if (roleBadgeEl) {
+            if (state.currentUser.role === "superuser") {
+                roleBadgeEl.innerHTML = `👑 Docente / Superadmin <span class="vip-badge active" style="margin-left: 6px;">⭐ VIP</span>`;
+            } else {
+                roleBadgeEl.innerHTML = `Estudiante ${state.currentUser.isVip ? '<span class="vip-badge active" style="margin-left: 6px;">⭐ VIP ACTIVO</span>' : '<span class="vip-badge inactive" style="margin-left: 6px;">⚪ ESTÁNDAR</span>'}`;
+            }
+        }
 
         // Editable inputs
         document.getElementById("editProfileName").value = state.currentUser.name || "";
@@ -2339,12 +2430,26 @@ document.addEventListener("DOMContentLoaded", async function() {
                 tr.style.fontSize = "0.85rem";
                 
                 const avatar = u.photo || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
-                const isSuper = u.role === "superuser";
+                const isSuper = u.role === "superuser" || u.email.toLowerCase() === "lams210488@gmail.com";
+                const isVipUser = u.isVip === true;
                 
+                const vipCellHtml = isSuper ? `
+                    <span class="vip-badge active" style="font-size: 0.72rem;">👑 SUPERADMIN</span>
+                ` : `
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <span class="vip-badge ${isVipUser ? 'active' : 'inactive'}">
+                            ${isVipUser ? '⭐ VIP ACTIVO' : '⚪ ESTÁNDAR'}
+                        </span>
+                        <button class="btn-toggle-vip ${isVipUser ? 'revoke' : 'grant'}" data-email="${u.email}" data-vip="${isVipUser ? 'true' : 'false'}">
+                            ${isVipUser ? 'Revocar VIP' : '⭐ Otorgar VIP'}
+                        </button>
+                    </div>
+                `;
+
                 tr.innerHTML = `
                     <td style="padding: 10px 14px;"><img src="${avatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color);"></td>
                     <td style="padding: 10px 14px; font-weight: 600; color: var(--text-primary);">${u.name || 'Docente / Admin'}</td>
-                    <td style="padding: 10px 14px;"><a href="https://wa.me/${u.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color: #10b981; font-weight: 500; text-decoration: none;">💬 ${u.phone}</a></td>
+                    <td style="padding: 10px 14px;"><a href="https://wa.me/${u.phone ? u.phone.replace(/[^0-9]/g, '') : ''}" target="_blank" style="color: #10b981; font-weight: 500; text-decoration: none;">💬 ${u.phone || 'S/N'}</a></td>
                     <td style="padding: 10px 14px; color: var(--text-secondary);">${u.email}</td>
                     <td style="padding: 10px 14px; font-family: monospace;">
                         <span class="admin-password-span" data-raw="${u.password}" style="-webkit-text-security: disc;">${u.password}</span>
@@ -2353,6 +2458,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                     <td style="padding: 10px 14px; font-weight: 500;"><span class="ao-badge">${u.currentYear || 'Docente'}</span></td>
                     <td style="padding: 10px 14px; color: var(--text-muted);">${u.enrollmentYear || '2026'}</td>
                     <td style="padding: 10px 14px;"><span class="system-badge" style="background: ${isSuper ? 'rgba(139,92,246,0.12)' : 'rgba(255,255,255,0.06)'}; color: ${isSuper ? 'var(--accent-hover)' : 'var(--text-secondary)'}">${u.role}</span></td>
+                    <td style="padding: 10px 14px; text-align: center;">${vipCellHtml}</td>
                     <td style="padding: 10px 14px; text-align: center; display: flex; justify-content: center; gap: 8px; align-items: center;">
                         <button class="download-btn btn-view-dossier" data-email="${u.email}" style="padding: 6px 12px; font-size: 0.75rem; background: rgba(59, 130, 246, 0.12); color: #60a5fa; border-color: rgba(59, 130, 246, 0.25);">
                             🔎 Auditoría
@@ -2366,6 +2472,24 @@ document.addEventListener("DOMContentLoaded", async function() {
                 `;
 
                 tbody.appendChild(tr);
+            });
+
+            // Bind VIP Toggle buttons
+            tbody.querySelectorAll(".btn-toggle-vip").forEach(btn => {
+                btn.addEventListener("click", async () => {
+                    const email = btn.getAttribute("data-email");
+                    const currentVip = btn.getAttribute("data-vip") === "true";
+                    btn.disabled = true;
+                    btn.textContent = "⏳ Guardando...";
+                    try {
+                        await db_toggleUserVip(email, currentVip);
+                        renderUsersTable(searchFilter);
+                    } catch(err) {
+                        console.error("Error al actualizar status VIP:", err);
+                        alert("Error al actualizar el estado VIP del usuario.");
+                        renderUsersTable(searchFilter);
+                    }
+                });
             });
 
             // Bind Table Action buttons

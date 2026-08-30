@@ -2889,3 +2889,84 @@ body {
     color: var(--text-primary);
     margin: 6px 0;
 }
+
+/* ============================================================
+   VIP MEMBERSHIP & ACCESS CONTROL STYLES
+   ============================================================ */
+
+.vip-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.vip-badge.active {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.35));
+    border: 1px solid rgba(245, 158, 11, 0.7);
+    color: #fbbf24;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+}
+
+.vip-badge.inactive {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-muted);
+}
+
+.btn-toggle-vip {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-toggle-vip.grant {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.25));
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.btn-toggle-vip.grant:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #000;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.btn-toggle-vip.revoke {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-toggle-vip.revoke:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+.vip-crown-icon {
+    animation: vipPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes vipPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+    }
+    50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 35px rgba(245, 158, 11, 0.6);
+    }
+}
+

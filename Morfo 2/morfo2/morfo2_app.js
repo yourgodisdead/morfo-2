@@ -63,6 +63,12 @@ async function db_updateUser(email, updates) {
     await updateDoc(doc(_db, "users", email.toLowerCase()), updates);
 }
 
+async function db_toggleUserVip(email, currentVipStatus) {
+    const newStatus = !currentVipStatus;
+    await db_updateUser(email, { isVip: newStatus });
+    return newStatus;
+}
+
 async function db_deleteUser(email) {
     await deleteDoc(doc(_db, "users", email.toLowerCase()));
 }
@@ -148,6 +154,39 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Apply saved theme on startup
     document.documentElement.setAttribute("data-theme", state.theme);
+
+    // ==========================================
+    // VIP BADGE & ACCESS CONTROL HELPERS
+    // ==========================================
+    function isUserVip() {
+        if (!state.currentUser) return false;
+        // Solo el superusuario tiene acceso VIP automático
+        if (state.currentUser.role === "superuser" || state.currentUser.email === "lams210488@gmail.com") return true;
+        // Cualquier otro usuario (estudiantes, docentes, etc.) requiere que el superusuario le haya otorgado isVip: true
+        return state.currentUser.isVip === true;
+    }
+
+    function showVipPaywallModal(resourceName = "este material de estudio") {
+        const modal = document.getElementById("vipPaywallModal");
+        if (!modal) return;
+        const info = document.getElementById("vipModalResourceInfo");
+        if (info) {
+            info.innerHTML = `Para visualizar o descargar <strong>${resourceName}</strong> necesitas tu <strong>Insignia VIP activa</strong>.`;
+        }
+        const userEmail = state.currentUser ? state.currentUser.email : "";
+        const userName = state.currentUser ? (state.currentUser.name || "") : "";
+        const whatsappBtn = document.getElementById("vipWhatsappBtn");
+        if (whatsappBtn) {
+            const msg = encodeURIComponent(`Hola profesor Leonardo, deseo solicitar mi Insignia VIP en el Portal Morfo por 1$ a tasa BCV para desbloquear clases orientadoras, descargas y biblioteca médica.\n\n👤 Estudiante: ${userName}\n📧 Correo: ${userEmail}`);
+            whatsappBtn.href = `https://wa.me/584129031966?text=${msg}`;
+        }
+        modal.style.display = "flex";
+    }
+
+    function closeVipPaywallModal() {
+        const modal = document.getElementById("vipPaywallModal");
+        if (modal) modal.style.display = "none";
+    }
 
     // DOM Elements
     const navItems = document.querySelectorAll(".nav-item");
@@ -571,10 +610,15 @@ document.addEventListener("DOMContentLoaded", async function() {
             html += `</div>`;
             contentContainer.innerHTML = html;
 
-            // Telemetry hook on downloads
+            // Telemetry hook on downloads with VIP Protection
             contentContainer.querySelectorAll(".download-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
+                btn.addEventListener("click", (e) => {
                     const text = btn.textContent.trim();
+                    if (!isUserVip()) {
+                        e.preventDefault();
+                        showVipPaywallModal(text || "Materiales de Descarga Semanal");
+                        return;
+                    }
                     trackUserActivity("download", {
                         filename: text,
                         type: "Material Semanal"
@@ -819,9 +863,14 @@ document.addEventListener("DOMContentLoaded", async function() {
                 </div>
             `;
 
-            // Telemetry hook on AO downloads
+            // Telemetry hook & VIP Guard on AO downloads
             viewerContainer.querySelectorAll(".download-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
+                btn.addEventListener("click", (e) => {
+                    if (!isUserVip()) {
+                        e.preventDefault();
+                        showVipPaywallModal(`${currentAoObj.ao}: ${currentAoObj.title}`);
+                        return;
+                    }
                     trackUserActivity("download", {
                         filename: `${currentAoObj.ao} - ${currentAoObj.title}.pdf`,
                         type: "Clase Orientadora"
@@ -1478,6 +1527,16 @@ document.addEventListener("DOMContentLoaded", async function() {
                 if (submitBtn) { submitBtn.textContent = originalText; submitBtn.disabled = false; }
             }
         });
+
+        // VIP Modal Close buttons
+        const closeVipBtn = document.getElementById("closeVipModalBtn");
+        const vipModal = document.getElementById("vipPaywallModal");
+        if (closeVipBtn) closeVipBtn.addEventListener("click", closeVipPaywallModal);
+        if (vipModal) {
+            vipModal.addEventListener("click", (e) => {
+                if (e.target === vipModal) closeVipPaywallModal();
+            });
+        }
     }
 
 
@@ -1499,9 +1558,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         logoutBtn.style.display = "flex";
         navProfile.style.display = "flex";
         
-        // Update user text
+        // Update user text with VIP badge
         sidebarUsername.textContent = state.currentUser.name;
-        sidebarRole.textContent = state.currentUser.role === "superuser" ? "Superusuario" : "Estudiante";
+        const isSuper = state.currentUser.role === "superuser";
+        const hasVip = isUserVip();
+        sidebarRole.innerHTML = (isSuper ? "👑 DOCENTE / ADMIN" : `ESTUDIANTE / ${state.currentUser.currentYear}`) +
+            (hasVip ? ' <span class="vip-badge active" style="font-size: 0.65rem; margin-left: 4px;">⭐ VIP</span>' : ' <span class="vip-badge inactive" style="font-size: 0.65rem; margin-left: 4px;">⚪ ESTÁNDAR</span>');
         
         // Set avatar
         const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236b7280'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
@@ -1868,6 +1930,21 @@ document.addEventListener("DOMContentLoaded", async function() {
             const displayRole = user.role === "superuser" ? "Superusuario" : "Estudiante";
             const cleanPhone = (user.phone || "+584129031966").replace(/\D/g, "");
             const waLink = `https://wa.me/${cleanPhone}?text=Hola%20${encodeURIComponent(user.name)},%20te%20escribo%20desde%20la%20coordinaci%C3%B3n%20de%20Morfofisiolog%C3%ADa%20II`;
+            const isSuper = user.role === "superuser" || user.email.toLowerCase() === "lams210488@gmail.com";
+            const isVipUser = user.isVip === true;
+
+            const vipCellHtml = isSuper ? `
+                <span class="vip-badge active" style="font-size: 0.72rem;">👑 SUPERADMIN</span>
+            ` : `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                    <span class="vip-badge ${isVipUser ? 'active' : 'inactive'}">
+                        ${isVipUser ? '⭐ VIP ACTIVO' : '⚪ ESTÁNDAR'}
+                    </span>
+                    <button class="btn-toggle-vip ${isVipUser ? 'revoke' : 'grant'}" data-email="${user.email}" data-vip="${isVipUser ? 'true' : 'false'}">
+                        ${isVipUser ? 'Revocar VIP' : '⭐ Otorgar VIP'}
+                    </button>
+                </div>
+            `;
             
             tr.innerHTML = `
                 <td style="padding: 12px 14px;"><img class="table-avatar" src="${photoSrc}" alt="Avatar"></td>
@@ -1888,6 +1965,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 <td style="padding: 12px 14px;"><span class="ao-badge">${user.currentYear || "2do Año"}</span></td>
                 <td style="padding: 12px 14px; color: var(--text-secondary);">${user.enrollmentYear || "2026"}</td>
                 <td style="padding: 12px 14px;"><span class="hero-tag" style="margin-bottom: 0;">${displayRole}</span></td>
+                <td style="padding: 12px 14px; text-align: center;">${vipCellHtml}</td>
                 <td style="padding: 12px 14px; text-align: center;">
                     <div style="display: flex; gap: 8px; justify-content: center; align-items: center; min-width: 240px;">
                         <button class="student-full-info-btn" data-user-email="${user.email}" style="padding: 6px 12px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Desplegar toda la información y credenciales">
@@ -1910,6 +1988,24 @@ document.addEventListener("DOMContentLoaded", async function() {
             `;
             
             usersTableBody.appendChild(tr);
+        });
+
+        // Add event listeners to VIP toggle buttons
+        usersTableBody.querySelectorAll(".btn-toggle-vip").forEach(btn => {
+            btn.addEventListener("click", async function() {
+                const email = btn.getAttribute("data-email");
+                const currentVip = btn.getAttribute("data-vip") === "true";
+                btn.disabled = true;
+                btn.textContent = "⏳ Guardando...";
+                try {
+                    await db_toggleUserVip(email, currentVip);
+                    renderAdmin(searchQuery);
+                } catch(err) {
+                    console.error("Error al actualizar status VIP:", err);
+                    alert("Error al actualizar el estado VIP del usuario.");
+                    renderAdmin(searchQuery);
+                }
+            });
         });
 
         // Add event listeners to single password toggle buttons

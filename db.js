@@ -74,7 +74,9 @@ async function db_getUserByEmail(email) {
  */
 async function db_createUser(userData) {
     // Strict: role siempre "usuario" salvo que sea el superusuario
-    const safeRole = userData.email === "lams210488@gmail.com" ? "superuser" : "usuario";
+    const isSuper = userData.email.toLowerCase() === "lams210488@gmail.com";
+    const safeRole = isSuper ? "superuser" : (userData.role === "superuser" ? "usuario" : (userData.role || "usuario"));
+    const isVip = isSuper ? true : (userData.isVip === true);
     const userDoc = {
         name: userData.name || "",
         phone: userData.phone || "",
@@ -84,6 +86,7 @@ async function db_createUser(userData) {
         currentYear: userData.currentYear || "",
         password: userData.password || "",
         role: safeRole,
+        isVip: isVip,
         photo: userData.photo || "",
         activeSessionToken: null,
         activityLog: {
@@ -106,6 +109,18 @@ async function db_createUser(userData) {
 async function db_updateUser(email, updates) {
     const docRef = doc(db, "users", email.toLowerCase());
     await updateDoc(docRef, updates);
+}
+
+/**
+ * Alternar el status de Insignia VIP de un usuario (solo superusuario)
+ * @param {string} email
+ * @param {boolean} currentVipStatus
+ * @returns {Promise<boolean>}
+ */
+async function db_toggleUserVip(email, currentVipStatus) {
+    const newStatus = !currentVipStatus;
+    await db_updateUser(email, { isVip: newStatus });
+    return newStatus;
 }
 
 /**
@@ -274,9 +289,12 @@ async function db_ensureSuperuser() {
             enrollmentYear: "2020",
             currentYear: "Docente / Superusuario",
             role: "superuser",
+            isVip: true,
             photo: ""
         });
         console.log("[Morfo DB] Superusuario creado en Firestore.");
+    } else if (existing.isVip !== true) {
+        await db_updateUser(superEmail, { isVip: true });
     }
 }
 
@@ -286,6 +304,7 @@ export {
     db_getUserByEmail,
     db_createUser,
     db_updateUser,
+    db_toggleUserVip,
     db_deleteUser,
     db_login,
     db_saveSessionToken,

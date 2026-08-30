@@ -68,7 +68,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         gisFilterState: "todos",
         gisFilterYear: "todos",
         gisSearchQuery: "",
-        currentDeepUser: null
+        currentDeepUser: null,
+        currentBibliotecaCategory: "todos",
+        bibliotecaSearch: ""
     };
 
     // Apply saved theme on startup
@@ -131,6 +133,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     initOrientadoras();
     initLaminarios();
     initHabilidades();
+    initBiblioteca();
     initLightbox();
     initProfile();
     initAdmin();
@@ -303,6 +306,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             "orientadoras": "Clases Orientadoras",
             "laminarios": "Laminarios y Atlas Virtual",
             "habilidades": "Habilidades Médicas",
+            "biblioteca": "Biblioteca Médica Digital",
             "perfil": "Mi Perfil de Estudiante",
             "admin": "Panel de Administración y GIS"
         };
@@ -319,6 +323,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             renderOrientadoras();
         } else if (sectionId === "laminarios") {
             renderLaminarios();
+        } else if (sectionId === "biblioteca") {
+            renderBiblioteca();
         } else if (sectionId === "perfil") {
             renderProfile();
         } else if (sectionId === "admin") {
@@ -1301,6 +1307,221 @@ document.addEventListener("DOMContentLoaded", async function() {
         } else {
             container.innerHTML = `<div class="empty-viewer-card">⚠️ Instrucciones de la habilidad '${abilityId}' no cargadas.</div>`;
         }
+    }
+
+    // ==========================================
+    // BIBLIOTECA MÉDICA DIGITAL MODULE
+    // ==========================================
+    function initBiblioteca() {
+        const searchInput = document.getElementById("bibliotecaSearchInput");
+        const categoryFilters = document.getElementById("bibliotecaCategoryFilters");
+        const allerCloseBtn = document.getElementById("allerChaptersCloseBtn");
+        const allerModal = document.getElementById("allerChaptersModal");
+        const allerSearch = document.getElementById("allerChapterSearch");
+
+        if (searchInput) {
+            searchInput.addEventListener("input", (e) => {
+                state.bibliotecaSearch = e.target.value.toLowerCase().trim();
+                renderBiblioteca();
+            });
+        }
+
+        if (categoryFilters) {
+            const pills = categoryFilters.querySelectorAll(".filter-pill");
+            pills.forEach(pill => {
+                pill.addEventListener("click", () => {
+                    pills.forEach(p => p.classList.remove("active"));
+                    pill.classList.add("active");
+                    state.currentBibliotecaCategory = pill.getAttribute("data-category");
+                    renderBiblioteca();
+                });
+            });
+        }
+
+        if (allerCloseBtn) {
+            allerCloseBtn.addEventListener("click", closeAllerChaptersModal);
+        }
+
+        if (allerModal) {
+            allerModal.addEventListener("click", (e) => {
+                if (e.target === allerModal) {
+                    closeAllerChaptersModal();
+                }
+            });
+        }
+
+        if (allerSearch) {
+            allerSearch.addEventListener("input", (e) => {
+                renderAllerChapters(e.target.value.toLowerCase().trim());
+            });
+        }
+    }
+
+    function renderBiblioteca() {
+        const grid = document.getElementById("bibliotecaGrid");
+        if (!grid) return;
+
+        if (typeof BIBLIOGRAFIAS_DATA === "undefined" || !Array.isArray(BIBLIOGRAFIAS_DATA)) {
+            grid.innerHTML = `<div class="empty-viewer-card">⚠️ No se pudo cargar la base de datos de bibliografías médicas.</div>`;
+            return;
+        }
+
+        let filtered = BIBLIOGRAFIAS_DATA.filter(book => {
+            const matchesCategory = (state.currentBibliotecaCategory === "todos") || 
+                                    (book.category === state.currentBibliotecaCategory);
+            
+            const query = state.bibliotecaSearch;
+            const matchesSearch = !query || 
+                                  book.title.toLowerCase().includes(query) ||
+                                  book.author.toLowerCase().includes(query) ||
+                                  book.category.toLowerCase().includes(query) ||
+                                  book.description.toLowerCase().includes(query);
+
+            return matchesCategory && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-viewer-card" style="grid-column: 1 / -1; padding: 48px; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 12px;">🔍</div>
+                    <h4 style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700;">No se encontraron libros</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 6px;">Prueba ajustando el término de búsqueda o seleccionando otra categoría.</p>
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = "";
+        filtered.forEach(book => {
+            const card = document.createElement("div");
+            card.className = "book-card animate-fade";
+
+            const isAller = Array.isArray(book.chapters) && book.chapters.length > 0;
+
+            let actionButtonsHtml = "";
+            if (isAller) {
+                actionButtonsHtml = `
+                    <button class="book-btn-download" id="openAllerBtn_${book.id}" style="grid-column: 1 / -1; width: 100%; justify-content: center; cursor: pointer;">
+                        📚 Explorar Capítulos (${book.chapters.length})
+                    </button>
+                `;
+            } else {
+                actionButtonsHtml = `
+                    <a href="${book.file}" target="_blank" class="book-btn-read" id="readBook_${book.id}">
+                        👁️ Leer Libro
+                    </a>
+                    <a href="${book.file}" download class="book-btn-download" id="dlBook_${book.id}">
+                        📥 Descargar PDF
+                    </a>
+                `;
+            }
+
+            card.innerHTML = `
+                <div>
+                    <div class="book-header">
+                        <div class="book-icon-wrapper">${book.icon || '📖'}</div>
+                        <div class="book-info-header">
+                            <div class="book-badges-row">
+                                <span class="book-pill-category">${book.category}</span>
+                                <span class="book-pill-edition">${book.edition}</span>
+                            </div>
+                            <h3 class="book-title">${book.title}</h3>
+                            <div class="book-author">✍️ ${book.author}</div>
+                        </div>
+                    </div>
+                    <p class="book-desc">${book.description}</p>
+                </div>
+                <div>
+                    <div class="book-meta-footer">
+                        <span>🏷️ <strong>${book.badge || 'Texto Oficial'}</strong></span>
+                        <span>📦 <strong>${book.size}</strong></span>
+                    </div>
+                    <div class="book-actions-group">
+                        ${actionButtonsHtml}
+                    </div>
+                </div>
+            `;
+
+            grid.appendChild(card);
+
+            if (isAller) {
+                const btnAller = card.querySelector(`#openAllerBtn_${book.id}`);
+                if (btnAller) {
+                    btnAller.addEventListener("click", () => {
+                        openAllerChaptersModal(book);
+                    });
+                }
+            } else {
+                const btnRead = card.querySelector(`#readBook_${book.id}`);
+                if (btnRead) {
+                    btnRead.addEventListener("click", () => {
+                        trackUserActivity("read_book", {
+                            bookId: book.id,
+                            title: book.title,
+                            category: book.category
+                        });
+                    });
+                }
+                const btnDl = card.querySelector(`#dlBook_${book.id}`);
+                if (btnDl) {
+                    btnDl.addEventListener("click", () => {
+                        trackUserActivity("download", {
+                            filename: book.file,
+                            title: book.title,
+                            type: "Libro de Biblioteca"
+                        });
+                    });
+                }
+            }
+        });
+    }
+
+    let activeAllerBook = null;
+
+    function openAllerChaptersModal(book) {
+        activeAllerBook = book;
+        const modal = document.getElementById("allerChaptersModal");
+        if (!modal) return;
+        modal.style.display = "flex";
+        const search = document.getElementById("allerChapterSearch");
+        if (search) search.value = "";
+        renderAllerChapters("");
+    }
+
+    function closeAllerChaptersModal() {
+        const modal = document.getElementById("allerChaptersModal");
+        if (modal) modal.style.display = "none";
+    }
+
+    function renderAllerChapters(searchQuery = "") {
+        const container = document.getElementById("allerChaptersContainer");
+        if (!container || !activeAllerBook || !activeAllerBook.chapters) return;
+
+        const chapters = activeAllerBook.chapters.filter(ch => {
+            return !searchQuery || ch.name.toLowerCase().includes(searchQuery);
+        });
+
+        if (chapters.length === 0) {
+            container.innerHTML = `<div class="empty-viewer-card" style="grid-column: 1 / -1;">No se encontraron capítulos con el término '${searchQuery}'.</div>`;
+            return;
+        }
+
+        container.innerHTML = "";
+        chapters.forEach(ch => {
+            const card = document.createElement("div");
+            card.className = "chapter-item-card";
+            card.innerHTML = `
+                <div>
+                    <div class="chapter-title">📄 ${ch.name}</div>
+                    <div class="chapter-size">Tamaño: ${ch.size}</div>
+                </div>
+                <div class="chapter-actions">
+                    <a href="${ch.file}" target="_blank" class="chapter-btn-icon" title="Leer Capítulo en PDF">👁️ Leer</a>
+                    <a href="${ch.file}" download class="chapter-btn-icon" title="Descargar Capítulo (PDF)">📥 Bajar</a>
+                </div>
+            `;
+            container.appendChild(card);
+        });
     }
 
     // ==========================================

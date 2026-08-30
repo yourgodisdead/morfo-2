@@ -13,6 +13,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 1: Generalidades y SNP",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+01.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+01DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+01VID.mp4",
+    videoDriveId: "1JMTMNOaHsLkPPrRoPjGPiTbk-_P0aBBN",
+    videoDriveUrl: "https://drive.google.com/file/d/1JMTMNOaHsLkPPrRoPjGPiTbk-_P0aBBN/preview",
     description: "Concepto evolutivo del sistema nervioso, propiedades funcionales (excitabilidad y conductibilidad), origen embriológico y diferenciación del tubo neural. Organización del tejido nervioso: neuronas, neuroglias, sustancia gris y sustancia blanca. Concepto de arco reflejo y bases bioquímicas.",
     topics: ["Filogenia y ontogenia del SNC", "Tejido nervioso y neuroglias", "Sustancia gris y sustancia blanca", "Arco reflejo"]
   },
@@ -24,6 +27,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 1: Generalidades y SNP",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+2.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+2DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+2VID.mp4",
+    videoDriveId: "1LJkCa-PTCDeX-ftbVQ_Oi5sBfK_6ORdf",
+    videoDriveUrl: "https://drive.google.com/file/d/1LJkCa-PTCDeX-ftbVQ_Oi5sBfK_6ORdf/preview",
     description: "Receptores sensoriales periféricos, transducción, potencial generador y adaptación. Fibras mielínicas y amielínicas, vainas de Schwann y nodos de Ranvier. Constitución de los nervios espinales, ramos anteriores y formación de los plexos cervical, braquial, lumbar y sacrococcígeo.",
     topics: ["Transducción y receptores", "Fibras nerviosas y mielinización", "Nervios espinales y ganglios", "Plexos somáticos y lesiones"]
   },
@@ -35,6 +41,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+03.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+03DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+03VID.mp4",
+    videoDriveId: "15RUl4aw2kjpZaQ0C7HZaCc8ZU_5aCmkv",
+    videoDriveUrl: "https://drive.google.com/file/d/15RUl4aw2kjpZaQ0C7HZaCc8ZU_5aCmkv/preview",
     description: "Límites, topografía y engrosamientos de la médula espinal. Sustancia gris (astas anteriores, posteriores y laterales; laminación de Rexed) y sustancia blanca (cordones o funículos anterior, lateral y posterior). Segmento medular, reflejo miotático y arco reflejo espinal.",
     topics: ["Configuración externa y raíces", "Sustancia gris medular", "Funículos y tractos medulares", "Reflejos espinales"]
   },
@@ -46,6 +55,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+04.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+04DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+04VID.mp4",
+    videoDriveId: "14FL3oeSSqALFvU_IqeOGg0UmptFlHpn2",
+    videoDriveUrl: "https://drive.google.com/file/d/14FL3oeSSqALFvU_IqeOGg0UmptFlHpn2/preview",
     description: "Morfología externa e interna del bulbo raquídeo, puente de Varolio y mesencéfalo. Cuarto ventrículo (fosa romboidea). Núcleos de los nervios craneales (pares III al XII), núcleos propios (olivares, rojos, sustancia negra) y centros reflejos vitales de la vida vegetativa.",
     topics: ["Médula oblongada y puente", "Mesencéfalo y colículos", "Fosa romboidea y IV ventrículo", "Núcleos de los pares craneales"]
   },
@@ -57,6 +69,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+05.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+05DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+05VID.mp4",
+    videoDriveId: "1_MG55tqcTXfMhINSVPUuVU_Zxgh6guUP",
+    videoDriveUrl: "https://drive.google.com/file/d/1_MG55tqcTXfMhINSVPUuVU_Zxgh6guUP/preview",
     description: "Evolución filogenética del cerebelo (Arquicerebelo, Paleocerebelo, Neocerebelo). Morfología, corteza cerebelosa (capas molecular, de Purkinje y granular), núcleos profundos y pedúnculos cerebelosos. Funciones de equilibrio, tono muscular y coordinación motora. Sistema activador reticular ascendente (SARA).",
     topics: ["Capas de la corteza cerebelosa", "Núcleos centrales del cerebelo", "Coordinación motora y eferencias", "Formación reticular y vigilia"]
   },
@@ -68,6 +83,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+06.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+06DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+06VID.mp4",
+    videoDriveId: "1PhX5R3s73AofgeaR_Dn_b3iVZi8GZAAi",
+    videoDriveUrl: "https://drive.google.com/file/d/1PhX5R3s73AofgeaR_Dn_b3iVZi8GZAAi/preview",
     description: "Estructura y relaciones del diencéfalo y tercer ventrículo. Tálamo óptico como estación de relevo sensitivo-sensorial. Hipotálamo: núcleos hipotalámicos, funciones de integración autonómica, termorregulación, homeostasis e ingesta. Epitálamo y glándula pineal. Sistema Límbico y conducta.",
     topics: ["Núcleos talámicos y relevo", "Centros hipotalámicos homeostáticos", "Glándula pineal y melatonina", "Circuito de Papez y Sistema Límbico"]
   },
@@ -79,6 +97,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+07.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+07DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+07VID.mp4",
+    videoDriveId: "12dWv__5yZzlI8D0BbI5Tb12cC0d31fGn",
+    videoDriveUrl: "https://drive.google.com/file/d/12dWv__5yZzlI8D0BbI5Tb12cC0d31fGn/preview",
     description: "Hemisferios cerebrales, cisuras, surcos y giros. Estructura histológica de la corteza cerebral (isocorteza en 6 capas). Mapa citoarquitectónico de Brodmann (áreas motoras, sensoriales y de asociación). Ganglios de la base (cuerpo estriado: núcleo caudado, putamen y globo pálido) y circuito extrapiramidal.",
     topics: ["Surcos y lóbulos cerebrales", "Capas histológicas corticales", "Áreas funcionales de Brodmann", "Núcleos basales y vía extrapiramidal"]
   },
@@ -90,6 +111,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+08.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+08DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+08VID.mp4",
+    videoDriveId: "12dWv__5yZzlI8D0BbI5Tb12cC0d31fGn",
+    videoDriveUrl: "https://drive.google.com/file/d/12dWv__5yZzlI8D0BbI5Tb12cC0d31fGn/preview",
     description: "Organización central y periférica del sistema nervioso autónomo. División simpática (toracolumbar) y parasimpática (craneosacra). Neurona preganglionar y posganglionar. Neurotransmisores (acetilcolina y noradrenalina), receptores adrenérgicos y colinérgicos. Respuestas fisiológicas de lucha o reposo.",
     topics: ["División simpática toracolumbar", "División parasimpática craneosacra", "Neurotransmisores y receptores", "Acciones viscerales y homeostasis"]
   },
@@ -101,6 +125,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+09.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+09DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+09VID.mp4",
+    videoDriveId: "1q9vxMIX-GLPu0bufqWDTbFyr_KBrYRpQ",
+    videoDriveUrl: "https://drive.google.com/file/d/1q9vxMIX-GLPu0bufqWDTbFyr_KBrYRpQ/preview",
     description: "Cadenas neuronales de la aferencia. Vías de la sensibilidad somática general: termoalgésica (haz espinotalámico lateral), tacto simple (haz espinotalámico anterior) y propiocepción consciente/tacto discriminativo (fascículos grácil y cuneiforme). Vías espinocerebelosas inconscientes.",
     topics: ["Vía termoalgésica espinotalámica", "Sistema columna dorsal - lemnisco medial", "Vías espinocerebelosas", "Relevo talámico y corteza somestésica"]
   },
@@ -112,6 +139,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+10.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+10DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+10VID.mp4",
+    videoDriveId: "1bLLvZSIlx4F-EqzOZQkSSw0Pl994DkqR",
+    videoDriveUrl: "https://drive.google.com/file/d/1bLLvZSIlx4F-EqzOZQkSSw0Pl994DkqR/preview",
     description: "Vía piramidal: tractos corticoespinal (anterior y lateral) y corticonuclear (geniculado). Motoneurona superior e inferior. Síndrome de motoneurona superior vs inferior. Vías extrapiramidales (rubroespinal, vestibuloespinal, reticuloespinal y tectoespinal) y control postural y motor fino.",
     topics: ["Tracto corticoespinal piramidal", "Tracto corticonuclear", "Síndromes motores piramidales", "Vías extrapiramidales de apoyo"]
   },
@@ -123,6 +153,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+11.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+11DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+11VID.mp4",
+    videoDriveId: "1jhdB9MPV8eUQpY8oQsKzJwZ7JduS2oP6",
+    videoDriveUrl: "https://drive.google.com/file/d/1jhdB9MPV8eUQpY8oQsKzJwZ7JduS2oP6/preview",
     description: "Globo ocular: túnicas fibrosa, vascular y nerviosa. Medios refringentes (córnea, humor acuoso, cristalino, cuerpo vítreo). Histología de la retina (10 capas, fotorreceptores: conos y bastones). Fotoquímica de la visión. Vía óptica (nervio, quiasma, tracto, cuerpo geniculado lateral y corteza visual primaria 17).",
     topics: ["Túnicas y medios transparentes del ojo", "Histología de la retina", "Fisiología de fotorreceptores", "Vía óptica y corteza occipital"]
   },
@@ -134,6 +167,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 2: Sistema Nervioso Central",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+12.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+12DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+12VID.mp4",
+    videoDriveId: "1OY5-ChKlimnZ7RUMd7huluvzOcfz_-0F",
+    videoDriveUrl: "https://drive.google.com/file/d/1OY5-ChKlimnZ7RUMd7huluvzOcfz_-0F/preview",
     description: "Oído externo, medio e interno. Estructura del laberinto óseo y membranoso. Órgano de Corti y cóclea (audición). Aparato vestibular: máculas utricular y sacular (gravedad y aceleración lineal) y crestas ampollares (aceleración angular). Vía auditiva y vía vestibular hacia núcleos vestibulares y cerebelo.",
     topics: ["Anatomía del oído medio e interno", "Histología del Órgano de Corti", "Máculas, otolitos y crestas ampollares", "Vías coclear y vestibular"]
   },
@@ -145,6 +181,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 3: Sistema Endocrino",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+13.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+13DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+13VID.mp4",
+    videoDriveId: "1vB5ql7kivFzaCzK9mbDf5s6edMWRzbPm",
+    videoDriveUrl: "https://drive.google.com/file/d/1vB5ql7kivFzaCzK9mbDf5s6edMWRzbPm/preview",
     description: "Morfofisiología de las glándulas de secreción interna. Eje hipotálamo-hipofisario: adenohipófisis y neurohipófisis. Hormonas tróficas y liberadoras. Histología y función de tiroides, paratiroides, corteza y médula suprarrenal, y porción endocrina del páncreas (islotes de Langerhans).",
     topics: ["Eje hipotálamo - adenohipófisis", "Neurohipófisis y oxitocina / ADH", "Tiroides, paratiroides y suprarrenales", "Mecanismos de retroalimentación (feedback)"]
   },
@@ -156,6 +195,9 @@ var CLASES_ORIENTADORAS_DATA = [
     theme: "Tema 3: Sistema Endocrino",
     pdfFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+14.pdf",
     slidesFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+14DIA.pdf",
+    videoFile: "Morfo 2/Clases orientadoras/MFH+II+-+AO+14VID.mp4",
+    videoDriveId: "1D2atcyhgD0QWNx-iLGhbRdWKw7IlUcGu",
+    videoDriveUrl: "https://drive.google.com/file/d/1D2atcyhgD0QWNx-iLGhbRdWKw7IlUcGu/preview",
     description: "Interacción de los sistemas nervioso y endocrino en la regulación del medio interno. Mecanismos de retroalimentación positiva y negativa. Respuesta neuroendocrina ante el estrés (eje simpático-adrenomedular y eje corticosuprarrenal). Adaptación metabólica y homeostasis integral.",
     topics: ["Integración neuro-hormonal", "Mecanismos de retroalimentación", "Fisiopatología del estrés y adaptación", "Resumen de Morfofisiología Humana II"]
   }

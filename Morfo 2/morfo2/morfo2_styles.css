@@ -1084,6 +1084,117 @@ body {
     margin-top: 8px;
 }
 
+/* AO Resource Tabs (PDF / Diapositivas / Video) */
+.ao-resource-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0 12px 0;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.ao-res-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ao-res-tab:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.ao-res-tab.active {
+    background: var(--accent-gradient);
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+}
+
+.ao-video-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 12px;
+}
+
+.ao-video-source-group, .ao-video-speed-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ao-pill-btn {
+    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.ao-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+}
+
+.ao-pill-btn.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.ao-video-frame-wrapper {
+    width: 100%;
+    height: 600px;
+    max-height: 75vh;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.ao-video-player {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000000;
+    border-radius: var(--border-radius-md);
+}
+
+.ao-video-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #000000;
+}
+
 .ao-pdf-frame-wrapper {
     width: 100%;
     height: 650px;

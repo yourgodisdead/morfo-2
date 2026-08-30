@@ -137,6 +137,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         currentWeekTab: "orientacion",
         currentAO: 1,
         aoSearch: "",
+        aoTab: "pdf",
+        aoVideoSource: "drive",
         currentLaminarioTab: "histologico",
         laminarioSearch: "",
         currentLaminarioFilter: "todos",
@@ -826,6 +828,98 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (currentAoObj) {
             let topicsHtml = currentAoObj.topics.map(t => `<span class="ao-topic-pill">📌 ${t}</span>`).join("");
 
+            // Active resource mode (pdf | slides | video)
+            const activeTab = state.aoTab || "pdf";
+            const videoSrcMode = state.aoVideoSource || "local";
+
+            let mediaContentHtml = "";
+            let actionButtonsHtml = "";
+
+            if (activeTab === "pdf") {
+                actionButtonsHtml = `
+                    <a href="${currentAoObj.pdfFile}" target="_blank" class="download-btn" style="background: var(--accent-gradient); color: white;">
+                        <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                        <span>Abrir Documento en Pantalla Completa</span>
+                    </a>
+                    <a href="${currentAoObj.pdfFile}" download class="download-btn">
+                        <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
+                        <span>Descargar PDF</span>
+                    </a>
+                `;
+                mediaContentHtml = `
+                    <div class="ao-pdf-frame-wrapper">
+                        <iframe class="ao-pdf-frame" src="${currentAoObj.pdfFile}#toolbar=1&navpanes=0"></iframe>
+                    </div>
+                `;
+            } else if (activeTab === "slides") {
+                actionButtonsHtml = `
+                    <a href="${currentAoObj.slidesFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+                        <span>Abrir Diapositivas en Pantalla Completa</span>
+                    </a>
+                    <a href="${currentAoObj.slidesFile}" download class="download-btn">
+                        <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
+                        <span>Descargar Diapositivas</span>
+                    </a>
+                `;
+                mediaContentHtml = `
+                    <div class="ao-pdf-frame-wrapper">
+                        <iframe class="ao-pdf-frame" src="${currentAoObj.slidesFile}#toolbar=1&navpanes=0"></iframe>
+                    </div>
+                `;
+            } else if (activeTab === "video") {
+                actionButtonsHtml = `
+                    <a href="${currentAoObj.videoFile}" download class="download-btn" id="downloadVideoBtn" style="background: var(--accent-gradient); color: white;">
+                        <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
+                        <span>Descargar Video MP4</span>
+                    </a>
+                `;
+
+                // Drive preview or Local HTML5 Player
+                let playerHtml = "";
+                if (videoSrcMode === "drive" && currentAoObj.videoDriveId) {
+                    playerHtml = `
+                        <div class="ao-video-frame-wrapper">
+                            <iframe class="ao-video-iframe" src="https://drive.google.com/file/d/${currentAoObj.videoDriveId}/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                        </div>
+                    `;
+                } else {
+                    playerHtml = `
+                        ${videoSrcMode === "drive" && !currentAoObj.videoDriveId ? `
+                            <div style="background: rgba(59, 130, 246, 0.12); border: 1px dashed rgba(59, 130, 246, 0.35); border-radius: 10px; padding: 12px 16px; margin-bottom: 12px; font-size: 0.85rem; color: #93c5fd; display: flex; align-items: center; gap: 10px;">
+                                <span>☁️</span>
+                                <span>El enlace de Drive aún no tiene ID configurado. Reproduciendo instantáneamente desde el archivo local en tu almacenamiento.</span>
+                            </div>
+                        ` : ''}
+                        <div class="ao-video-frame-wrapper">
+                            <video id="aoMainVideoPlayer" class="ao-video-player" controls preload="metadata" playsinline>
+                                <source src="${currentAoObj.videoFile}" type="video/mp4">
+                                Tu navegador no soporta el reproductor de video HTML5.
+                            </video>
+                        </div>
+                    `;
+                }
+
+                mediaContentHtml = `
+                    <div class="ao-video-toolbar">
+                        <div class="ao-video-source-group">
+                            <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-right: 4px;">Fuente de Reproducción:</span>
+                            <button class="ao-pill-btn ${videoSrcMode === 'local' ? 'active' : ''}" data-video-source="local">💻 Archivo Local (Offline)</button>
+                            <button class="ao-pill-btn ${videoSrcMode === 'drive' ? 'active' : ''}" data-video-source="drive">☁️ Google Drive (Nube)</button>
+                        </div>
+                        ${videoSrcMode === 'local' ? `
+                        <div class="ao-video-speed-group">
+                            <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-right: 4px;">Velocidad:</span>
+                            <button class="ao-pill-btn active" data-playback-rate="1">1x</button>
+                            <button class="ao-pill-btn" data-playback-rate="1.25">1.25x</button>
+                            <button class="ao-pill-btn" data-playback-rate="1.5">1.5x</button>
+                            <button class="ao-pill-btn" data-playback-rate="2">2x</button>
+                        </div>` : ''}
+                    </div>
+                    ${playerHtml}
+                `;
+            }
+
             viewerContainer.innerHTML = `
                 <div class="ao-viewer-header">
                     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
@@ -841,29 +935,72 @@ document.addEventListener("DOMContentLoaded", async function() {
                     <div class="ao-topics-container">
                         ${topicsHtml}
                     </div>
-                    <div class="ao-viewer-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <a href="${currentAoObj.pdfFile}" target="_blank" class="download-btn" style="background: var(--accent-gradient); color: white;">
-                            <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                            <span>Abrir Documento en Pantalla Completa</span>
-                        </a>
+
+                    <!-- MULTIMEDIA RESOURCE SELECTOR TABS -->
+                    <div class="ao-resource-tabs">
+                        <button class="ao-res-tab ${activeTab === 'pdf' ? 'active' : ''}" data-ao-tab="pdf">
+                            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <span>📄 Guía de Estudio (PDF)</span>
+                        </button>
                         ${currentAoObj.slidesFile ? `
-                        <a href="${currentAoObj.slidesFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
-                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
-                            <span>Visualizar Diapositiva Explicativa</span>
-                        </a>` : ''}
-                        <a href="${currentAoObj.pdfFile}" download class="download-btn">
-                            <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
-                            <span>Descargar PDF</span>
-                        </a>
+                        <button class="ao-res-tab ${activeTab === 'slides' ? 'active' : ''}" data-ao-tab="slides">
+                            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+                            <span>📊 Diapositivas Explicativas</span>
+                        </button>` : ''}
+                        ${currentAoObj.videoFile || currentAoObj.videoDriveId ? `
+                        <button class="ao-res-tab ${activeTab === 'video' ? 'active' : ''}" data-ao-tab="video">
+                            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                            <span>🎥 Video Conferencia (MP4)</span>
+                        </button>` : ''}
+                    </div>
+
+                    <div class="ao-viewer-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        ${actionButtonsHtml}
                     </div>
                 </div>
 
-                <div class="ao-pdf-frame-wrapper">
-                    <iframe class="ao-pdf-frame" src="${currentAoObj.pdfFile}#toolbar=1&navpanes=0"></iframe>
-                </div>
+                ${mediaContentHtml}
             `;
 
-            // Telemetry hook & VIP Guard on AO downloads
+            // Resource Tab Switching Handlers
+            viewerContainer.querySelectorAll("[data-ao-tab]").forEach(tabBtn => {
+                tabBtn.addEventListener("click", () => {
+                    const chosenTab = tabBtn.getAttribute("data-ao-tab");
+                    state.aoTab = chosenTab;
+                    renderOrientadoras(state.currentAO);
+                });
+            });
+
+            // Video Source Switching Handlers
+            viewerContainer.querySelectorAll("[data-video-source]").forEach(srcBtn => {
+                srcBtn.addEventListener("click", () => {
+                    state.aoVideoSource = srcBtn.getAttribute("data-video-source");
+                    renderOrientadoras(state.currentAO);
+                });
+            });
+
+            // Video Speed Controls Handler
+            const videoEl = document.getElementById("aoMainVideoPlayer");
+            if (videoEl) {
+                viewerContainer.querySelectorAll("[data-playback-rate]").forEach(speedBtn => {
+                    speedBtn.addEventListener("click", () => {
+                        const rate = parseFloat(speedBtn.getAttribute("data-playback-rate"));
+                        videoEl.playbackRate = rate;
+                        viewerContainer.querySelectorAll("[data-playback-rate]").forEach(b => b.classList.remove("active"));
+                        speedBtn.classList.add("active");
+                    });
+                });
+
+                // Telemetry on play
+                videoEl.addEventListener("play", () => {
+                    trackUserActivity("video_play", {
+                        filename: currentAoObj.videoFile,
+                        title: `${currentAoObj.ao} - ${currentAoObj.title}`
+                    });
+                }, { once: true });
+            }
+
+            // Telemetry hook & VIP Guard on AO downloads / videos
             viewerContainer.querySelectorAll(".download-btn").forEach(btn => {
                 btn.addEventListener("click", (e) => {
                     if (!isUserVip()) {
@@ -872,8 +1009,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                         return;
                     }
                     trackUserActivity("download", {
-                        filename: `${currentAoObj.ao} - ${currentAoObj.title}.pdf`,
-                        type: "Clase Orientadora"
+                        filename: `${currentAoObj.ao} - ${currentAoObj.title}`,
+                        type: state.aoTab === 'video' ? "Video Conferencia" : "Clase Orientadora"
                     });
                 });
             });

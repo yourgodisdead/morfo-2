@@ -12,3 +12,10 @@ dwt/
 *.tmp
 *.bak
 *~
+
+# Ignorar archivos de video pesados (hospedados en Google Drive / Nube)
+*.mp4
+*.MP4
+*.mkv
+*.avi
+*.mov

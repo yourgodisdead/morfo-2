@@ -1053,6 +1053,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                         <a href="${ao.slidesFile}" target="_blank" class="download-btn" id="viewSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
                             <span>📊</span> Visualizar Diapositiva Explicativa
                         </a>` : ''}
+                        ${ao.videoFile ? `
+                        <a href="${ao.videoFile}" target="_blank" class="download-btn" id="viewVideoBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(244, 63, 94, 0.25)); border: 1px solid rgba(239, 68, 68, 0.45); color: #fca5a5;">
+                            <span>🎥</span> Reproducir Video Conferencia (MP4)
+                        </a>` : ''}
                     </div>
                 </div>
             </div>
@@ -1084,6 +1088,20 @@ document.addEventListener("DOMContentLoaded", async function() {
                 trackUserActivity("download", {
                     filename: ao.slidesFile,
                     type: "Diapositiva Explicativa PDF"
+                });
+            });
+        }
+        const videoBtn = document.getElementById("viewVideoBtn");
+        if (videoBtn && ao.videoFile) {
+            videoBtn.addEventListener("click", (e) => {
+                if (!isUserVip()) {
+                    e.preventDefault();
+                    showVipPaywallModal(`${ao.ao}: Video Conferencia`);
+                    return;
+                }
+                trackUserActivity("download", {
+                    filename: ao.videoFile,
+                    type: "Video Conferencia MP4"
                 });
             });
         }

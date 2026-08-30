@@ -1528,6 +1528,142 @@ document.addEventListener("DOMContentLoaded", async function() {
     // AUTHENTICATION MODULE
     // ==========================================
     function initAuth() {
+        // Toggle between Login Card and Registration Card
+        const loginCard = document.querySelector("#loginOverlay .login-card:not(#registerCard)");
+        const registerCard = document.getElementById("registerCard");
+        const showRegisterCardBtn = document.getElementById("showRegisterCardBtn");
+        const showLoginCardBtn = document.getElementById("showLoginCardBtn");
+
+        if (showRegisterCardBtn && loginCard && registerCard) {
+            showRegisterCardBtn.addEventListener("click", () => {
+                loginCard.style.display = "none";
+                registerCard.style.display = "block";
+                const selfRegError = document.getElementById("selfRegError");
+                const selfRegSuccess = document.getElementById("selfRegSuccess");
+                if (selfRegError) selfRegError.style.display = "none";
+                if (selfRegSuccess) selfRegSuccess.style.display = "none";
+            });
+        }
+
+        if (showLoginCardBtn && loginCard && registerCard) {
+            showLoginCardBtn.addEventListener("click", () => {
+                registerCard.style.display = "none";
+                loginCard.style.display = "block";
+            });
+        }
+
+        // Student Self-Registration Submission Handler
+        const selfRegisterForm = document.getElementById("selfRegisterForm");
+        const selfRegName = document.getElementById("selfRegName");
+        const selfRegEmail = document.getElementById("selfRegEmail");
+        const selfRegPhone = document.getElementById("selfRegPhone");
+        const selfRegState = document.getElementById("selfRegState");
+        const selfRegYear = document.getElementById("selfRegYear");
+        const selfRegPassword = document.getElementById("selfRegPassword");
+        const selfRegError = document.getElementById("selfRegError");
+        const selfRegSuccess = document.getElementById("selfRegSuccess");
+        const selfRegSubmitBtn = document.getElementById("selfRegSubmitBtn");
+
+        if (selfRegisterForm) {
+            selfRegisterForm.addEventListener("submit", async function(e) {
+                e.preventDefault();
+                if (selfRegError) selfRegError.style.display = "none";
+                if (selfRegSuccess) selfRegSuccess.style.display = "none";
+
+                const name = selfRegName.value.trim();
+                const email = selfRegEmail.value.trim().toLowerCase();
+                const phone = selfRegPhone.value.trim();
+                const stateOrigin = selfRegState.value;
+                const currentYear = selfRegYear.value;
+                const password = selfRegPassword.value;
+
+                if (!name || !email || !phone || !stateOrigin || !currentYear || !password) {
+                    if (selfRegError) {
+                        selfRegError.textContent = "Por favor completa todos los campos obligatorios.";
+                        selfRegError.style.display = "block";
+                    }
+                    return;
+                }
+
+                if (password.length < 6) {
+                    if (selfRegError) {
+                        selfRegError.textContent = "La contraseña debe tener al menos 6 caracteres.";
+                        selfRegError.style.display = "block";
+                    }
+                    return;
+                }
+
+                if (selfRegSubmitBtn) {
+                    selfRegSubmitBtn.disabled = true;
+                    selfRegSubmitBtn.textContent = "⏳ Guardando inscripción...";
+                }
+
+                try {
+                    // Check if email already registered
+                    const existing = await db_getUserByEmail(email);
+                    if (existing) {
+                        throw new Error("Ya existe una cuenta registrada con este correo electrónico.");
+                    }
+
+                    // Create user in Firestore (saved to live database and admin student roster)
+                    const newUserData = {
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        stateOrigin: stateOrigin,
+                        enrollmentYear: new Date().getFullYear().toString(),
+                        currentYear: currentYear,
+                        password: password,
+                        role: "usuario"
+                    };
+
+                    await db_createUser(newUserData);
+
+                    // Fetch created user and establish session
+                    const user = await db_getUserByEmail(email);
+                    const token = "token_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+                    await db_saveSessionToken(email, token);
+
+                    const sessionObj = { email: email, token: token };
+                    localStorage.setItem("morfo_session", JSON.stringify(sessionObj));
+
+                    if (selfRegSuccess) {
+                        selfRegSuccess.textContent = "🎉 ¡Inscripción completada con éxito! Ingresando al portal...";
+                        selfRegSuccess.style.display = "block";
+                    }
+
+                    setTimeout(() => {
+                        loginOverlay.classList.remove("active");
+                        state.currentUser = user;
+                        setupAuthenticatedUI();
+
+                        if (user.currentYear && user.currentYear.includes("1er")) {
+                            setCourse("morfo1");
+                        } else if (user.currentYear && user.currentYear.includes("3er")) {
+                            setCourse("morfo3");
+                        } else {
+                            setCourse("morfo2");
+                        }
+
+                        startSessionLivenessCheck();
+                        trackUserActivity("navigation", { section: "inicio", name: "Inicio tras Auto-Inscripción" });
+                    }, 800);
+
+                } catch (err) {
+                    console.error("Self-registration error:", err);
+                    if (selfRegError) {
+                        selfRegError.textContent = err.message || "Error al procesar la inscripción.";
+                        selfRegError.style.display = "block";
+                    }
+                } finally {
+                    if (selfRegSubmitBtn) {
+                        selfRegSubmitBtn.disabled = false;
+                        selfRegSubmitBtn.textContent = "✅ Registrarse e Ingresar";
+                    }
+                }
+            });
+        }
+
         if (loginForm) {
             loginForm.addEventListener("submit", async function(e) {
                 e.preventDefault();

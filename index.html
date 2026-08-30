@@ -41,7 +41,7 @@
     <script src="firebase_config.js"></script>
 
     <!-- SPA Logic Controller (ES Module for Firebase imports) -->
-    <script type="module" src="morfo_app.js?v=1.0.4"></script>
+    <script type="module" src="morfo_app.js?v=1.0.5"></script>
 </head>
 <body>
 
@@ -71,14 +71,108 @@
                 <button type="submit" class="download-btn" style="justify-content: center; margin-top: 6px; width: 100%;">Ingresar</button>
             </form>
 
-            <!-- HELP BANNER -->
-            <div class="login-whatsapp-banner">
-                <span class="whatsapp-question">¿Quieres entrar?</span>
-                <a href="https://wa.me/584129031966?text=Hola,%20deseo%20acceder%20al%20portal%20educativo%20de%20Morfofisiolog%C3%ADa" target="_blank" rel="noopener noreferrer" class="whatsapp-link-btn" id="loginWhatsAppLink">
-                    <svg viewBox="0 0 24 24" class="whatsapp-svg-icon"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.11 7.17C8.94 7.17 8.66 7.24 8.42 7.5C8.18 7.76 7.5 8.4 7.5 9.72C7.5 11.04 8.46 12.31 8.6 12.5C8.74 12.68 10.48 15.38 13.16 16.54C15.38 17.5 15.83 17.31 16.31 17.27C16.79 17.22 17.86 16.63 18.08 16C18.3 15.37 18.3 14.83 18.23 14.72C18.17 14.61 18.01 14.55 17.75 14.42C17.49 14.29 16.23 13.67 16 13.58C15.77 13.49 15.6 13.45 15.43 13.71C15.26 13.97 14.77 14.55 14.62 14.72C14.47 14.89 14.33 14.91 14.07 14.78C13.81 14.65 12.98 14.38 11.99 13.5C11.22 12.81 10.7 11.96 10.55 11.7C10.4 11.44 10.53 11.3 10.66 11.17C10.78 11.05 10.93 10.86 11.06 10.71C11.19 10.56 11.23 10.45 11.32 10.28C11.41 10.11 11.36 9.96 11.3 9.83C11.24 9.7 10.75 8.5 10.55 8C10.35 7.53 10.15 7.59 9.98 7.58C9.83 7.58 9.66 7.57 9.48 7.57C9.31 7.57 9.11 7.17 9.11 7.17Z"/></svg>
-                    <span>Escribe al WhatsApp <strong>+584129031966</strong></span>
-                </a>
+            <!-- REGISTRATION CALL-TO-ACTION -->
+            <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color); text-align: center;">
+                <span style="font-size: 0.84rem; color: var(--text-secondary);">¿No tienes una cuenta aún?</span>
+                <button type="button" id="showRegisterCardBtn" class="download-btn" style="margin-top: 10px; width: 100%; justify-content: center; background: rgba(var(--accent-color-rgb), 0.12); border: 1px solid var(--accent-color); color: var(--accent-hover); font-weight: 600; font-size: 0.88rem;">
+                    ✍️ Inscribirse en el Portal
+                </button>
             </div>
+        </div>
+
+        <!-- SELF REGISTRATION CARD -->
+        <div class="login-card" id="registerCard" style="display: none; max-width: 460px;">
+            <div class="brand-section" style="justify-content: center; margin-bottom: 16px;">
+                <div class="brand-logo">MH</div>
+                <h1 class="brand-title">Morfo Portal</h1>
+            </div>
+            <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 4px; font-size: 1.25rem;">Inscripción de Estudiante</h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 16px;">Crea tu cuenta para acceder a Morfo I, II y III, bibliotecas, laminarios y tutor IA.</p>
+            
+            <form id="selfRegisterForm" style="display: flex; flex-direction: column; gap: 11px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label for="selfRegName" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Nombre y Apellido *</label>
+                    <input type="text" id="selfRegName" required class="search-input" style="padding-left: 14px;" placeholder="Ej: Carlos Silva">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label for="selfRegEmail" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Correo Electrónico *</label>
+                        <input type="email" id="selfRegEmail" required class="search-input" style="padding-left: 14px;" placeholder="correo@ejemplo.com">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label for="selfRegPhone" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">WhatsApp / Teléfono *</label>
+                        <input type="tel" id="selfRegPhone" required class="search-input" style="padding-left: 14px;" placeholder="+58 412 1234567">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label for="selfRegState" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Estado *</label>
+                        <select id="selfRegState" required class="search-input" style="padding-left: 8px; font-size: 0.82rem;">
+                            <option value="" disabled selected>Selecciona Estado</option>
+                            <option value="Amazonas">Amazonas</option>
+                            <option value="Anzoátegui">Anzoátegui</option>
+                            <option value="Apure">Apure</option>
+                            <option value="Aragua">Aragua</option>
+                            <option value="Barinas">Barinas</option>
+                            <option value="Bolívar">Bolívar</option>
+                            <option value="Carabobo">Carabobo</option>
+                            <option value="Cojedes">Cojedes</option>
+                            <option value="Delta Amacuro">Delta Amacuro</option>
+                            <option value="Distrito Capital">Distrito Capital</option>
+                            <option value="Falcón">Falcón</option>
+                            <option value="Guárico">Guárico</option>
+                            <option value="La Guaira">La Guaira</option>
+                            <option value="Lara">Lara</option>
+                            <option value="Mérida">Mérida</option>
+                            <option value="Miranda">Miranda</option>
+                            <option value="Monagas">Monagas</option>
+                            <option value="Nueva Esparta">Nueva Esparta</option>
+                            <option value="Portuguesa">Portuguesa</option>
+                            <option value="Sucre">Sucre</option>
+                            <option value="Táchira">Táchira</option>
+                            <option value="Trujillo">Trujillo</option>
+                            <option value="Yaracuy">Yaracuy</option>
+                            <option value="Zulia">Zulia</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label for="selfRegYear" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Año Cursante *</label>
+                        <select id="selfRegYear" required class="search-input" style="padding-left: 8px; font-size: 0.82rem;">
+                            <option value="1er Año">1er Año (Morfo I)</option>
+                            <option value="2do Año" selected>2do Año (Morfo II)</option>
+                            <option value="3er Año">3er Año (Morfo III)</option>
+                            <option value="4to Año">4to Año</option>
+                            <option value="5to Año">5to Año</option>
+                            <option value="6to Año">6to Año</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label for="selfRegPassword" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Crear Contraseña de Acceso *</label>
+                    <div style="position: relative; display: flex; align-items: center; width: 100%;">
+                        <input type="password" id="selfRegPassword" required class="search-input" style="padding-left: 14px; padding-right: 42px; width: 100%;" placeholder="Mínimo 6 caracteres">
+                        <button type="button" class="toggle-password-btn" data-target="selfRegPassword" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-muted);" title="Mostrar u ocultar">👁️</button>
+                    </div>
+                </div>
+
+                <div id="selfRegError" style="color: var(--danger-color); font-size: 0.82rem; font-weight: 600; text-align: center; display: none;"></div>
+                <div id="selfRegSuccess" style="color: #10b981; font-size: 0.82rem; font-weight: 600; text-align: center; display: none;"></div>
+
+                <button type="submit" id="selfRegSubmitBtn" class="download-btn" style="justify-content: center; margin-top: 6px; width: 100%;">
+                    ✅ Registrarse e Ingresar
+                </button>
+            </form>
+
+            <div style="margin-top: 14px; text-align: center; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                <span style="font-size: 0.82rem; color: var(--text-secondary);">¿Ya tienes una cuenta registrada?</span>
+                <button type="button" id="showLoginCardBtn" style="background: none; border: none; color: var(--accent-hover); font-weight: 600; cursor: pointer; text-decoration: underline; margin-left: 4px; font-size: 0.84rem;">
+                    Iniciar Sesión
+                </button>
+            </div>
+        </div>
         </div>
     </div>
 

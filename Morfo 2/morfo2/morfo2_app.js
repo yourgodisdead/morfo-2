@@ -520,6 +520,11 @@ document.addEventListener("DOMContentLoaded", async function() {
                             <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
                             <span>${ao.ao}: ${ao.title} (Clase Orientadora)</span>
                         </a>
+                        ${ao.slidesFile ? `
+                        <a href="${ao.slidesFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(99, 102, 241, 0.08)); border-color: rgba(139, 92, 246, 0.4); color: var(--accent-hover);">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+                            <span>${ao.ao}: Diapositiva Explicativa</span>
+                        </a>` : ''}
                     `;
                 });
             }
@@ -792,11 +797,16 @@ document.addEventListener("DOMContentLoaded", async function() {
                     <div class="ao-topics-container">
                         ${topicsHtml}
                     </div>
-                    <div class="ao-viewer-actions">
+                    <div class="ao-viewer-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <a href="${currentAoObj.pdfFile}" target="_blank" class="download-btn" style="background: var(--accent-gradient); color: white;">
                             <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
                             <span>Abrir Documento en Pantalla Completa</span>
                         </a>
+                        ${currentAoObj.slidesFile ? `
+                        <a href="${currentAoObj.slidesFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+                            <span>Visualizar Diapositiva Explicativa</span>
+                        </a>` : ''}
                         <a href="${currentAoObj.pdfFile}" download class="download-btn">
                             <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
                             <span>Descargar PDF</span>

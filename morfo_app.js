@@ -646,6 +646,11 @@ document.addEventListener("DOMContentLoaded", async function() {
                         <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
                         <span>${ao.ao}: ${ao.title} (Clase Orientadora)</span>
                     </a>
+                    ${ao.slidesFile ? `
+                    <a href="${ao.slidesFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(99, 102, 241, 0.08)); border-color: rgba(139, 92, 246, 0.4); color: var(--accent-hover);">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+                        <span>${ao.ao}: Diapositiva Explicativa</span>
+                    </a>` : ''}
                 `;
             });
             
@@ -1001,10 +1006,14 @@ document.addEventListener("DOMContentLoaded", async function() {
                         ${topicsHtml}
                     </div>
 
-                    <div style="display: flex; gap: 14px; margin-top: 32px;">
+                    <div style="display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap;">
                         <a href="${ao.pdfFile}" target="_blank" class="download-btn btn-primary" id="viewPDFBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;">
                             <span>👁️</span> Visualizar Conferencia Completa (PDF)
                         </a>
+                        ${ao.slidesFile ? `
+                        <a href="${ao.slidesFile}" target="_blank" class="download-btn" id="viewSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
+                            <span>📊</span> Visualizar Diapositiva Explicativa
+                        </a>` : ''}
                     </div>
                 </div>
             </div>
@@ -1017,6 +1026,15 @@ document.addEventListener("DOMContentLoaded", async function() {
                 trackUserActivity("download", {
                     filename: ao.pdfFile,
                     type: "Clase Orientadora PDF"
+                });
+            });
+        }
+        const slideBtn = document.getElementById("viewSlideBtn");
+        if (slideBtn && ao.slidesFile) {
+            slideBtn.addEventListener("click", () => {
+                trackUserActivity("download", {
+                    filename: ao.slidesFile,
+                    type: "Diapositiva Explicativa PDF"
                 });
             });
         }

@@ -398,7 +398,7 @@ export function getAiTutorResponse(userQuery, activeCourse) {
         response += `- 🎓 **Materia y Ubicación**: ${bestTopic.exactResourceRef}\n`;
 
         if (matchingAos.length > 0) {
-            response += `- 📑 **Clase Orientadora Oficial (PDF)**: [${matchingAos[0].ao}: ${matchingAos[0].title}](${matchingAos[0].pdfFile})\n`;
+            response += `- 📑 **Clase Orientadora Oficial (PDF)**: [${matchingAos[0].ao}: ${matchingAos[0].title}](${matchingAos[0].pdfFile})${matchingAos[0].slidesFile ? ` | [📊 Diapositiva Explicativa](${matchingAos[0].slidesFile})` : ''}\n`;
         }
 
         if (matchingLaminas.length > 0) {
@@ -422,7 +422,7 @@ export function getAiTutorResponse(userQuery, activeCourse) {
             foundSomething = true;
             response += `#### 📑 Clases Orientadoras Directas (PDF):\n`;
             matchingAos.forEach(ao => {
-                response += `- **${ao.ao}**: [${ao.title}](${ao.pdfFile})\n`;
+                response += `- **${ao.ao}**: [${ao.title}](${ao.pdfFile})${ao.slidesFile ? ` &bull; [📊 Diapositiva Explicativa](${ao.slidesFile})` : ''}\n`;
             });
             response += `\n`;
         }

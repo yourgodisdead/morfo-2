@@ -706,42 +706,193 @@ document.addEventListener("DOMContentLoaded", async function() {
     function formatPedagogicalReading(rawText, title, icon) {
         if (!rawText) return `<p class="text-muted">Sin contenido disponible.</p>`;
 
-        // Clean up repeated OCR header strings
+        // Clean up repeated OCR header strings, page headers and numbers
         let clean = rawText
-            .replace(/MORFOFISIOLOGÍA HUMANA I, II, III/gi, "")
-            .replace(/MORFOFISIOLOGÍA HUMANA/gi, "")
-            .replace(/Semana \d+\.?\s*Actividad orientadora \d+\.?/gi, "")
-            .replace(/Tema \d+:?[^\n]*/gi, "");
+            .replace(/MORFOFISIOLOG[IÍ]A HUMANA[^\n]*/gi, "")
+            .replace(/ORIENTACIONES AL CONTENIDO[^\n]*/gi, "")
+            .replace(/GU[IÍ]A DE LA PR[AÁ]CTICA[^\n]*/gi, "")
+            .replace(/\n\s*\d+\s*\n/g, "\n\n")
+            .replace(/Semana \d+\.?\s*/gi, "")
+            .replace(/Actividad orientadora \d+\.?\s*/gi, "")
+            .replace(/\r\n/g, "\n");
 
-        // Split text into paragraphs
-        const paragraphs = clean.split("\n\n").map(p => p.trim()).filter(p => p.length > 0);
+        // Split into logical lines and filter out empty lines
+        const rawLines = clean.split("\n");
+        const lines = [];
+        rawLines.forEach(l => {
+            const trimmed = l.trim();
+            if (trimmed) lines.push(trimmed);
+        });
+
+        // Group lines into semantic paragraphs, headings, bullets
+        const paragraphs = [];
+        let currPara = "";
+
+        lines.forEach(line => {
+            const isBullet = /^[•\-\*9vØo]\s+/.test(line) || /^\d+[\.\)]\s+/.test(line);
+            const isHeading = /^(introducci[oó]n|objetivos|contenidos|conclusiones|orientaciones|tareas docentes)\b/i.test(line);
+            const isSubheading = /^\d+\.\d+\s+/.test(line);
+
+            if (isHeading || isSubheading || isBullet) {
+                if (currPara) {
+                    paragraphs.push(currPara);
+                    currPara = "";
+                }
+                paragraphs.push(line);
+            } else {
+                if (currPara) {
+                    currPara += " " + line;
+                } else {
+                    currPara = line;
+                }
+            }
+        });
+
+        if (currPara) {
+            paragraphs.push(currPara);
+        }
 
         let html = `
-            <div class="static-content-wrapper">
+            <div class="pedagogical-guide-wrapper">
                 <div class="info-banner-card">
                     <div class="banner-icon-badge">${icon || "📖"}</div>
                     <div class="banner-text-content">
                         <h3 class="banner-title">${title}</h3>
-                        <p class="banner-desc">Lectura estructurada y reformateada pedagógicamente a partir del CD original para facilitar tu estudio.</p>
+                        <p class="banner-desc">Guía docente estructurada pedagógicamente con objetivos de aprendizaje, desglose de ejes temáticos y recomendaciones bibliográficas.</p>
                     </div>
                 </div>
-                <div class="reading-pane">
+                <div class="pedagogical-content-body">
         `;
 
+        let inList = false;
+        let inObjectivesGrid = false;
+        let currentSection = "general";
+
         paragraphs.forEach(p => {
-            if (p.startsWith("•") || p.startsWith("-") || p.startsWith("9")) {
-                const items = p.split(/\n[•\-9]\s*/);
-                html += `<ul>`;
-                items.forEach(it => {
-                    if (it.trim()) html += `<li>${it.replace(/^9\s*/, "").trim()}</li>`;
-                });
-                html += `</ul>`;
-            } else if (/^(objetivos|contenidos|conclusiones|introducción)\.?$/i.test(p)) {
-                html += `<h3>${p}</h3>`;
+            // Main Headings Detection
+            if (/^introducci[oó]n\.?:?\s*$/i.test(p)) {
+                if (inList) { html += `</ul>`; inList = false; }
+                if (inObjectivesGrid) { html += `</div>`; inObjectivesGrid = false; }
+                html += `<div class="pedagogical-section-header"><span class="section-icon">🌟</span><h4>Introducción al Tema</h4></div>`;
+                currentSection = "intro";
+                return;
+            }
+            if (/^objetivos\.?:?\s*$/i.test(p) || /^objetivos (generales|espec[ií]ficos)\.?:?\s*$/i.test(p)) {
+                if (inList) { html += `</ul>`; inList = false; }
+                if (inObjectivesGrid) { html += `</div>`; inObjectivesGrid = false; }
+                html += `<div class="pedagogical-section-header"><span class="section-icon">🎯</span><h4>Objetivos de Aprendizaje</h4></div><div class="learning-objectives-grid">`;
+                inObjectivesGrid = true;
+                currentSection = "objectives";
+                return;
+            }
+            if (/^contenidos\.?:?\s*$/i.test(p)) {
+                if (inObjectivesGrid) { html += `</div>`; inObjectivesGrid = false; }
+                if (inList) { html += `</ul>`; inList = false; }
+                html += `<div class="pedagogical-section-header"><span class="section-icon">📋</span><h4>Ejes Temáticos y Contenidos</h4></div>`;
+                currentSection = "contents";
+                return;
+            }
+            if (/^orientaciones\b.*/i.test(p) || /^tareas docentes\b.*/i.test(p)) {
+                if (inObjectivesGrid) { html += `</div>`; inObjectivesGrid = false; }
+                if (inList) { html += `</ul>`; inList = false; }
+                const isTask = /^tareas docentes\b/i.test(p);
+                html += `<div class="pedagogical-section-header"><span class="section-icon">${isTask ? '✏️' : '💡'}</span><h4>${isTask ? 'Tareas Docentes y Ejercicios' : 'Orientaciones para el Estudio'}</h4></div>`;
+                currentSection = "orientations";
+                return;
+            }
+
+            // Subheadings (e.g., "1.1 Generalidades...", "1.2 Tejido Nervioso...")
+            const subheadMatch = p.match(/^(\d+\.\d+)\s+(.*)/);
+            if (subheadMatch) {
+                if (inObjectivesGrid) { html += `</div>`; inObjectivesGrid = false; }
+                if (inList) { html += `</ul>`; inList = false; }
+                const numTag = subheadMatch[1];
+                const titleTag = subheadMatch[2];
+                html += `<div class="topic-subheading-card"><span class="topic-num-badge">${numTag}</span><h5>${titleTag}</h5></div>`;
+                return;
+            }
+
+            // Objectives Grid Items
+            if (inObjectivesGrid && /^\d+[\.\)]\s+/.test(p)) {
+                const objMatch = p.match(/^(\d+)[\.\)]\s+(.*)/);
+                if (objMatch) {
+                    const num = objMatch[1];
+                    const objText = objMatch[2];
+                    html += `
+                        <div class="objective-card-item">
+                            <div class="objective-num-badge">Objetivo ${num}</div>
+                            <div class="objective-text">${objText}</div>
+                        </div>
+                    `;
+                    return;
+                }
+            }
+
+            // Bullets / List Items
+            if (/^[•\-\*9vØo]\s+/.test(p)) {
+                if (inObjectivesGrid) { html += `</div>`; inObjectivesGrid = false; }
+                if (!inList) {
+                    html += `<ul class="pedagogical-bullet-list">`;
+                    inList = true;
+                }
+
+                const cleanItem = p.replace(/^[•\-\*9vØo]\s+/, "");
+
+                if (/(te recomendamos|debes consultar|revisa el|estudiar por el|folleto complementario|libro de texto|en tu cd|cuadro \d+|figura \d+|langman|guyton|junqueira|ross|cardellá)/i.test(cleanItem)) {
+                    html += `
+                        <li class="bullet-item-reading">
+                            <div class="reading-callout-inline">
+                                <span class="callout-pill">📚 Lectura / Recurso Recomendado</span>
+                                <span>${cleanItem}</span>
+                            </div>
+                        </li>
+                    `;
+                } else if (/¿[^\?]+\?/.test(cleanItem)) {
+                    html += `
+                        <li class="bullet-item-question">
+                            <div class="question-callout-inline">
+                                <span class="callout-pill question">❓ Pregunta de Reflexión</span>
+                                <span>${cleanItem}</span>
+                            </div>
+                        </li>
+                    `;
+                } else {
+                    html += `<li>${cleanItem}</li>`;
+                }
+                return;
+            }
+
+            // Reset list/grid if standard paragraph
+            if (inList) { html += `</ul>`; inList = false; }
+            if (inObjectivesGrid && !/^\d+[\.\)]/.test(p)) {
+                html += `</div>`;
+                inObjectivesGrid = false;
+            }
+
+            // Standalone Paragraphs formatting
+            if (/(te recomendamos|te sugerimos|debes consultar|estudiar por el folleto|bibliograf[ií]a)/i.test(p)) {
+                html += `
+                    <div class="pedagogical-callout-block reading">
+                        <div class="callout-header"><span class="callout-icon">📖</span> <strong>Recomendación Bibliográfica</strong></div>
+                        <div class="callout-body">${p}</div>
+                    </div>
+                `;
+            } else if (p.startsWith("¿") && p.endsWith("?")) {
+                html += `
+                    <div class="pedagogical-callout-block question">
+                        <div class="callout-header"><span class="callout-icon">🩺</span> <strong>Razonamiento Clínico / Pregunta</strong></div>
+                        <div class="callout-body">${p}</div>
+                    </div>
+                `;
+            } else if (currentSection === "intro") {
+                html += `<div class="intro-paragraph-card"><p>${p}</p></div>`;
             } else {
-                html += `<p>${p}</p>`;
+                html += `<p class="pedagogical-paragraph">${p}</p>`;
             }
         });
+
+        if (inList) html += `</ul>`;
+        if (inObjectivesGrid) html += `</div>`;
 
         html += `</div></div>`;
         return html;

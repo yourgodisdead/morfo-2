@@ -1052,6 +1052,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Célula Eucariota y Generalidades",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 1/orien11.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 1DIA.pdf",
     "description": "Características generales de la morfofisiología, célula eucariota y membrana plasmática.",
     "topics": [
       "Generalidades",
@@ -1066,6 +1067,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Agua, Electrólitos y Macromoléculas",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 1/orien12.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 2DIA.pdf",
     "description": "Bases moleculares de la vida, agua y equilibrio hidroelectrolítico.",
     "topics": [
       "Agua",
@@ -1080,6 +1082,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Proteínas y Aminoácidos",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 2/orien13.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 3DIA.pdf",
     "description": "Estructura, niveles de organización y funciones de las proteínas.",
     "topics": [
       "Proteínas",
@@ -1094,6 +1097,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Biocatalizadores y Bioenergética",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 2/orien14.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 4DIA.pdf",
     "description": "Enzimas, cinética enzimática y termodinámica de sistemas vivos.",
     "topics": [
       "Enzimas",
@@ -1108,6 +1112,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Ácidos Nucleicos y Replicación",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 3/orien15.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 5DIA.pdf",
     "description": "Estructura del ADN y replicación celular.",
     "topics": [
       "ADN",
@@ -1122,6 +1127,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Transcripción y Traducción Genética",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 3/orien16.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 6DIA.pdf",
     "description": "Expresión génica: síntesis de ARN y síntesis de proteínas.",
     "topics": [
       "Transcripción",
@@ -1136,6 +1142,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Membranas Biológicas y Transporte",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 4/orieno17.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 7DIA.pdf",
     "description": "Transporte a través de membrana: difusión, transporte activo.",
     "topics": [
       "Transporte celular",
@@ -1150,6 +1157,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Núcleo Celular y Ciclo Celular",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 5/orien18.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 8DIA.pdf",
     "description": "Morfofisiología del núcleo celular, ciclo celular y mitosis.",
     "topics": [
       "Núcleo",
@@ -1164,6 +1172,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Sistema de Endomembranas y Citoesqueleto",
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 6/orien19.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 9DIA.pdf",
     "description": "Retículo endoplásmico, aparato de Golgi, lisosomas y citoesqueleto.",
     "topics": [
       "Retículo endoplásmico",
@@ -1178,6 +1187,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Mitocondrias y Respiración Celular",
     "theme": "Tema 2",
     "pdfFile": "Morfo 1/morfo/contenidos/tema2/material/Semana 7/orien210.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 10DIA.pdf",
     "description": "Morfología de la mitocondria y fosforilación oxidativa.",
     "topics": [
       "Mitocondria",
@@ -1192,6 +1202,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Tejidos Básicos: Epitelial",
     "theme": "Tema 2",
     "pdfFile": "Morfo 1/morfo/contenidos/tema2/material/Semana 7/orien211.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 11DIA.pdf",
     "description": "Características y clasificación del tejido epitelial de revestimiento y glandular.",
     "topics": [
       "Tejido epitelial",
@@ -1206,6 +1217,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Tejido Conectivo y Variedades",
     "theme": "Tema 2",
     "pdfFile": "Morfo 1/morfo/contenidos/tema2/material/Semana 8/orien212.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 12DIA.pdf",
     "description": "Tejido conectivo general, adiposo, reticular y elástico.",
     "topics": [
       "Tejido conectivo",
@@ -1220,6 +1232,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Tejidos de Sostén: Cartílago y Hueso",
     "theme": "Tema 3",
     "pdfFile": "Morfo 1/morfo/contenidos/tema3/material/Semana 9/orien313.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 13DIA.pdf",
     "description": "Tejido cartilaginoso y tejido óseo.",
     "topics": [
       "Cartílago",
@@ -1234,6 +1247,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Tejido Muscular General",
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 10/orien414.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 14DIA.pdf",
     "description": "Morfofisiología general del tejido muscular liso y estriado.",
     "topics": [
       "Tejido muscular",
@@ -1248,6 +1262,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Osteología: Cráneo y Cara",
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 11/orien415.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 15DIA.pdf",
     "description": "Huesos del neurocráneo y viscerocráneo.",
     "topics": [
       "Neurocráneo",

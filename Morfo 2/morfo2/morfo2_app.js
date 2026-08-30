@@ -869,10 +869,16 @@ document.addEventListener("DOMContentLoaded", async function() {
                 `;
             } else if (activeTab === "video") {
                 actionButtonsHtml = `
-                    <a href="${currentAoObj.videoFile}" download class="download-btn" id="downloadVideoBtn" style="background: var(--accent-gradient); color: white;">
+                    ${currentAoObj.videoDriveId ? `
+                    <a href="https://drive.google.com/file/d/${currentAoObj.videoDriveId}/view?usp=sharing" target="_blank" class="download-btn" id="openDriveVideoBtn" style="background: var(--accent-gradient); color: white;">
+                        <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                        <span>Abrir Video en Google Drive</span>
+                    </a>` : ''}
+                    ${currentAoObj.videoFile ? `
+                    <a href="${currentAoObj.videoFile}" download class="download-btn" id="downloadVideoBtn">
                         <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>
-                        <span>Descargar Video MP4</span>
-                    </a>
+                        <span>Descargar Video Local</span>
+                    </a>` : ''}
                 `;
 
                 // Drive preview or Local HTML5 Player

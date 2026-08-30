@@ -1053,9 +1053,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                         <a href="${ao.slidesFile}" target="_blank" class="download-btn" id="viewSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
                             <span>📊</span> Visualizar Diapositiva Explicativa
                         </a>` : ''}
-                        ${ao.videoFile ? `
-                        <a href="${ao.videoFile}" target="_blank" class="download-btn" id="viewVideoBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(244, 63, 94, 0.25)); border: 1px solid rgba(239, 68, 68, 0.45); color: #fca5a5;">
-                            <span>🎥</span> Reproducir Video Conferencia (MP4)
+                        ${ao.videoDriveId || ao.videoDriveUrl || ao.videoFile ? `
+                        <a href="${ao.videoDriveId ? `https://drive.google.com/file/d/${ao.videoDriveId}/view?usp=sharing` : (ao.videoDriveUrl || ao.videoFile)}" target="_blank" class="download-btn" id="viewVideoBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(244, 63, 94, 0.25)); border: 1px solid rgba(239, 68, 68, 0.45); color: #fca5a5;">
+                            <span>🎥</span> Ver Video Conferencia en Google Drive
                         </a>` : ''}
                     </div>
                 </div>
@@ -1092,7 +1092,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         }
         const videoBtn = document.getElementById("viewVideoBtn");
-        if (videoBtn && ao.videoFile) {
+        if (videoBtn) {
             videoBtn.addEventListener("click", (e) => {
                 if (!isUserVip()) {
                     e.preventDefault();
@@ -1100,8 +1100,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                     return;
                 }
                 trackUserActivity("download", {
-                    filename: ao.videoFile,
-                    type: "Video Conferencia MP4"
+                    filename: ao.videoDriveId ? `Google Drive: ${ao.ao} - ${ao.title}` : (ao.videoFile || "Video Conferencia"),
+                    type: "Video Conferencia"
                 });
             });
         }

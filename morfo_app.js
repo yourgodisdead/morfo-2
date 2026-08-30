@@ -2548,23 +2548,21 @@ document.addEventListener("DOMContentLoaded", async function() {
     // ==========================================
     function initGisMap() {
         const gisContainer = document.getElementById("gisMap");
-        if (!gisContainer || state.gisMap) return;
+        if (!gisContainer || state.gisMap || typeof L === "undefined") return;
 
         // Initialize Leaflet Map Centered in Venezuela
         state.gisMap = L.map('gisMap', {
             center: [8.0000, -66.0000],
             zoom: 6,
             minZoom: 5,
-            maxZoom: 9
+            maxZoom: 16,
+            zoomControl: true
         });
 
-        // Load dark/light cartography tiles base depending on active theme
-        const tileUrl = state.theme === "dark" 
-            ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' 
-            : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-
-        L.tileLayer(tileUrl, {
-            attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+        // Use standard high-reliability OpenStreetMap tile service (100% uptime, no rate-limits/API blocks)
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
         }).addTo(state.gisMap);
 
         state.gisMarkersLayer = L.layerGroup().addTo(state.gisMap);
@@ -2572,6 +2570,11 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     async function renderGisMap() {
         if (!state.gisMap || !state.gisMarkersLayer || !state.currentUser || state.currentUser.role !== "superuser") return;
+
+        // Auto-recalculate container dimensions after tab transition
+        setTimeout(() => {
+            if (state.gisMap) state.gisMap.invalidateSize();
+        }, 200);
 
         // Clear existing markers
         state.gisMarkersLayer.clearLayers();

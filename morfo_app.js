@@ -1791,6 +1791,13 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         }
 
+        if (showLoginCardBtn && loginCard && registerCard) {
+            showLoginCardBtn.addEventListener("click", () => {
+                registerCard.style.display = "none";
+                loginCard.style.display = "block";
+            });
+        }
+
         // VIP Modal Close buttons
         const closeVipBtn = document.getElementById("closeVipModalBtn");
         const vipModal = document.getElementById("vipPaywallModal");
@@ -1939,9 +1946,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                     setupAuthenticatedUI();
                     
                     // Set active course based on registration
-                    if (user.currentYear.includes("1er")) {
+                    if (user.currentYear && user.currentYear.includes("1er")) {
                         setCourse("morfo1");
-                    } else if (user.currentYear.includes("3er")) {
+                    } else if (user.currentYear && user.currentYear.includes("3er")) {
                         setCourse("morfo3");
                     } else {
                         setCourse("morfo2");
@@ -1970,9 +1977,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                         setupAuthenticatedUI();
                         
                         // Set active course based on registration
-                        if (user.currentYear.includes("1er")) {
+                        if (user.currentYear && user.currentYear.includes("1er")) {
                             setCourse("morfo1");
-                        } else if (user.currentYear.includes("3er")) {
+                        } else if (user.currentYear && user.currentYear.includes("3er")) {
                             setCourse("morfo3");
                         } else {
                             setCourse("morfo2");

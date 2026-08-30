@@ -143,9 +143,12 @@ async function db_deleteUser(email) {
  * @returns {Promise<Object>} user data de Firestore
  */
 async function db_login(email, password) {
-    const userDoc = await db_getUserByEmail(email.toLowerCase());
-    if (!userDoc) throw new Error("Usuario no encontrado");
-    if (userDoc.password !== password) throw new Error("Contraseña incorrecta");
+    const cleanEmail = (email || "").trim().toLowerCase();
+    const cleanPass = (password || "").trim();
+    const userDoc = await db_getUserByEmail(cleanEmail);
+    if (!userDoc) throw new Error("Usuario no registrado en la base de datos.");
+    const userPass = (userDoc.password || "").trim();
+    if (userPass !== cleanPass) throw new Error("Contraseña incorrecta. Verifica tus datos.");
     return userDoc;
 }
 

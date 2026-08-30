@@ -1077,9 +1077,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                 const displayLabel = `Figura ${fig.label}`;
                 const card = document.createElement("div");
                 card.className = "atlas-card";
+                const imgSrc = fig.src.startsWith("Morfo 2/") ? fig.src : `Morfo 2/${fig.src}`;
                 card.innerHTML = `
                     <div class="atlas-card-img-container" style="background: #111827; padding: 12px; display: flex; align-items: center; justify-content: center;">
-                        <img class="atlas-card-img" src="Morfo 2/${fig.src}" alt="${displayLabel}" style="object-fit: contain; max-height: 200px;" loading="lazy">
+                        <img class="atlas-card-img" src="${imgSrc}" alt="${displayLabel}" style="object-fit: contain; max-height: 200px;" loading="lazy">
                         <div class="atlas-card-overlay">🔍 Ampliar Figura</div>
                     </div>
                     <div class="atlas-card-body">
@@ -1090,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 `;
                 
                 card.addEventListener("click", () => {
-                    openLightbox("Morfo 2/" + fig.src, displayLabel, `Figura anatómica oficial Nro ${fig.label}. Del CD de estudio de medicina de segundo año.`);
+                    openLightbox(imgSrc, displayLabel, `Figura anatómica oficial Nro ${fig.label}. Del CD de estudio de medicina de segundo año.`);
                 });
                 
                 grid.appendChild(card);
@@ -1107,6 +1108,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 const card = document.createElement("div");
                 card.className = "atlas-card";
                 card.style.cursor = "default";
+                const pptHref = ppt.file.startsWith("Morfo 2/") ? ppt.file : `Morfo 2/${ppt.file}`;
                 card.innerHTML = `
                     <div class="atlas-card-body" style="gap: 12px; padding: 28px;">
                         <div style="font-size: 2.2rem;">📊</div>
@@ -1116,7 +1118,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                             <span>Formato: <strong>${ppt.format}</strong></span>
                             <span>Tamaño: <strong>${ppt.size}</strong></span>
                         </div>
-                        <a href="Morfo 2/${ppt.file}" class="download-btn" id="dlPpt_${ppt.id}" style="margin-top: 14px; width: 100%; justify-content: center; font-size: 0.85rem; font-weight: 600;">
+                        <a href="${pptHref}" download class="download-btn" id="dlPpt_${ppt.id}" style="margin-top: 14px; width: 100%; justify-content: center; font-size: 0.85rem; font-weight: 600;">
                             📥 Descargar Presentación
                         </a>
                     </div>

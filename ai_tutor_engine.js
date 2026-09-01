@@ -348,7 +348,7 @@ const TOPIC_KNOWLEDGE_BASE = [
 /**
  * Generador Maestro de Respuestas del Asistente Académico de IA
  */
-export function getAiTutorResponse(userQuery, activeCourse) {
+function getAiTutorResponse(userQuery, activeCourse) {
     if (!userQuery || userQuery.trim().length === 0) {
         return "Por favor ingresa una pregunta o tema médico que desees consultar.";
     }
@@ -458,3 +458,5 @@ export function getAiTutorResponse(userQuery, activeCourse) {
 
     return response;
 }
+
+window.getAiTutorResponse = getAiTutorResponse;

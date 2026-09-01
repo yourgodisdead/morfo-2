@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     initAuth();
     initNavigation();
     initThemeToggle();
+    initInicioBooksCarousel();
     initInicioTabs();
     initWeekSelector();
     initOrientadoras();
@@ -407,6 +408,260 @@ document.addEventListener("DOMContentLoaded", async function() {
             }
             if (mobileThemeBtn) mobileThemeBtn.textContent = "☀️";
         }
+    }
+
+    // ==========================================
+    // INICIO MEDICAL 3D BOOKS CAROUSEL
+    // ==========================================
+    function initInicioBooksCarousel() {
+        const track = document.getElementById("carouselTrack");
+        const viewport = document.getElementById("carouselViewport");
+        const prevBtn = document.getElementById("carouselPrevBtn");
+        const nextBtn = document.getElementById("carouselNextBtn");
+        const playPauseBtn = document.getElementById("carouselPlayPauseBtn");
+        const playIcon = document.getElementById("carouselPlayIcon");
+        const pagination = document.getElementById("carouselPagination");
+        const counterInfo = document.getElementById("carouselCounterInfo");
+
+        if (!track || typeof BIBLIOGRAFIAS_DATA === "undefined" || !Array.isArray(BIBLIOGRAFIAS_DATA)) {
+            return;
+        }
+
+        // Map Category to Theme Classes
+        function getCategoryThemeClass(cat) {
+            const c = (cat || "").toLowerCase();
+            if (c.includes("interna")) return "book-theme-internal";
+            if (c.includes("semiolog")) return "book-theme-semiology";
+            if (c.includes("cirug")) return "book-theme-surgery";
+            if (c.includes("trauma") || c.includes("fractura")) return "book-theme-trauma";
+            if (c.includes("obstetric") || c.includes("gineco") || c.includes("parto")) return "book-theme-obgyn";
+            return "book-theme-internal";
+        }
+
+        // Render 3D Book Cover Cards
+        track.innerHTML = "";
+        BIBLIOGRAFIAS_DATA.forEach((book, idx) => {
+            const card = document.createElement("div");
+            const themeClass = getCategoryThemeClass(book.category);
+            card.className = `carousel-book-card ${themeClass}`;
+            card.setAttribute("data-index", idx);
+
+            const isAller = Array.isArray(book.chapters) && book.chapters.length > 0;
+
+            let actionHtml = "";
+            if (isAller) {
+                actionHtml = `
+                    <button type="button" class="cbook-btn-download" id="cbookAllerBtn_${book.id}" style="width: 100%;">
+                        📚 Explorar Capítulos (${book.chapters.length})
+                    </button>
+                `;
+            } else {
+                actionHtml = `
+                    <a href="${book.file}" download class="cbook-btn-download" id="cbookDl_${book.id}" title="Descargar libro en PDF">
+                        📥 Descargar PDF
+                    </a>
+                    <a href="${book.file}" target="_blank" class="cbook-btn-read" id="cbookRead_${book.id}" title="Leer en el navegador">
+                        👁️ Leer en Línea
+                    </a>
+                `;
+            }
+
+            card.innerHTML = `
+                <div class="cbook-header">
+                    <div class="cbook-badges-row">
+                        <span class="cbook-category-badge">${book.category}</span>
+                        <span class="cbook-size-badge">💾 ${book.size || 'PDF'}</span>
+                    </div>
+                    <div class="cbook-icon-seal">${book.icon || '📖'}</div>
+                </div>
+
+                <div class="cbook-body">
+                    <h3 class="cbook-title" title="${book.title}">${book.title}</h3>
+                    <div class="cbook-author" title="${book.author}">✍️ ${book.author}</div>
+                    <div class="cbook-edition-tag">🏷️ ${book.edition || 'Edición Oficial'}</div>
+                </div>
+
+                <div class="cbook-footer">
+                    ${actionHtml}
+                </div>
+            `;
+
+            // Click listener for Aller or tracking
+            const allerBtn = card.querySelector(`#cbookAllerBtn_${book.id}`);
+            if (allerBtn) {
+                allerBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    showSection("biblioteca");
+                    setTimeout(() => {
+                        const openAllerMain = document.getElementById(`openAllerBtn_${book.id}`);
+                        if (openAllerMain) openAllerMain.click();
+                    }, 150);
+                });
+            }
+
+            const dlBtn = card.querySelector(`#cbookDl_${book.id}`);
+            if (dlBtn) {
+                dlBtn.addEventListener("click", () => {
+                    trackUserActivity("book_download", { bookId: book.id, bookTitle: book.title, source: "inicio_carousel" });
+                });
+            }
+
+            track.appendChild(card);
+        });
+
+        // Generate Pagination Dots
+        if (pagination) {
+            pagination.innerHTML = "";
+            BIBLIOGRAFIAS_DATA.forEach((_, idx) => {
+                const dot = document.createElement("div");
+                dot.className = `carousel-dot ${idx === 0 ? 'active' : ''}`;
+                dot.setAttribute("data-index", idx);
+                dot.addEventListener("click", () => {
+                    goToSlide(idx);
+                });
+                pagination.appendChild(dot);
+            });
+        }
+
+        // Carousel State & Dynamics
+        let currentIndex = 0;
+        const totalItems = BIBLIOGRAFIAS_DATA.length;
+        let autoplayInterval = null;
+        let isPlaying = true;
+
+        function getCardStep() {
+            const firstCard = track.querySelector(".carousel-book-card");
+            if (!firstCard) return 275;
+            const style = window.getComputedStyle(track);
+            const gap = parseFloat(style.gap) || 20;
+            return firstCard.offsetWidth + gap;
+        }
+
+        function getMaxIndex() {
+            if (!viewport) return totalItems - 1;
+            const viewportWidth = viewport.offsetWidth;
+            const step = getCardStep();
+            const visibleCount = Math.max(1, Math.floor(viewportWidth / step));
+            return Math.max(0, totalItems - visibleCount);
+        }
+
+        function updateCarouselUI() {
+            const step = getCardStep();
+            const maxIdx = getMaxIndex();
+            if (currentIndex > maxIdx) currentIndex = maxIdx;
+            if (currentIndex < 0) currentIndex = 0;
+
+            track.style.transform = `translateX(-${currentIndex * step}px)`;
+
+            // Update Dots
+            if (pagination) {
+                const dots = pagination.querySelectorAll(".carousel-dot");
+                dots.forEach((dot, idx) => {
+                    if (idx === currentIndex) {
+                        dot.classList.add("active");
+                    } else {
+                        dot.classList.remove("active");
+                    }
+                });
+            }
+
+            // Update Counter
+            if (counterInfo) {
+                counterInfo.textContent = `Libro ${currentIndex + 1} de ${totalItems}`;
+            }
+        }
+
+        function nextSlide() {
+            const maxIdx = getMaxIndex();
+            if (currentIndex >= maxIdx) {
+                currentIndex = 0;
+            } else {
+                currentIndex++;
+            }
+            updateCarouselUI();
+        }
+
+        function prevSlide() {
+            const maxIdx = getMaxIndex();
+            if (currentIndex <= 0) {
+                currentIndex = maxIdx;
+            } else {
+                currentIndex--;
+            }
+            updateCarouselUI();
+        }
+
+        function goToSlide(idx) {
+            currentIndex = idx;
+            updateCarouselUI();
+        }
+
+        function startAutoplay() {
+            stopAutoplay();
+            autoplayInterval = setInterval(nextSlide, 3600);
+            isPlaying = true;
+            if (playIcon) playIcon.textContent = "⏸️";
+        }
+
+        function stopAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+            }
+            isPlaying = false;
+            if (playIcon) playIcon.textContent = "▶️";
+        }
+
+        // Navigation Controls
+        if (nextBtn) nextBtn.addEventListener("click", () => { nextSlide(); });
+        if (prevBtn) prevBtn.addEventListener("click", () => { prevSlide(); });
+        if (playPauseBtn) {
+            playPauseBtn.addEventListener("click", () => {
+                if (isPlaying) stopAutoplay();
+                else startAutoplay();
+            });
+        }
+
+        // Mouse Hover Pause/Resume
+        if (viewport) {
+            viewport.addEventListener("mouseenter", stopAutoplay);
+            viewport.addEventListener("mouseleave", () => {
+                if (!isPlaying && playPauseBtn) startAutoplay();
+            });
+        }
+
+        // Touch Drag & Swipe Support
+        let startX = 0;
+        let isSwiping = false;
+
+        if (viewport) {
+            viewport.addEventListener("touchstart", (e) => {
+                startX = e.touches[0].clientX;
+                isSwiping = true;
+                stopAutoplay();
+            }, { passive: true });
+
+            viewport.addEventListener("touchend", (e) => {
+                if (!isSwiping) return;
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                if (Math.abs(diff) > 45) {
+                    if (diff > 0) nextSlide();
+                    else prevSlide();
+                }
+                isSwiping = false;
+                startAutoplay();
+            }, { passive: true });
+        }
+
+        // Resize responsive listener
+        window.addEventListener("resize", () => {
+            updateCarouselUI();
+        });
+
+        // Initialize display and start auto motion
+        updateCarouselUI();
+        startAutoplay();
     }
 
     // ==========================================

@@ -8,20 +8,21 @@
     <!-- Meta tags for SEO & Metadata -->
     <meta name="description" content="Portal educativo interactivo de Morfofisiolog&iacute;a Humana II para estudiantes de medicina de segundo a&ntilde;o. Contenidos de clases, atlas anat&oacute;mico interactivo y autoevaluaciones.">
     <meta name="author" content="Medicina Integral Comunitaria">
-    <link rel="shortcut icon" href="mic.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../Logo/morfo_logo.png" type="image/png">
+    <link rel="icon" href="../Logo/morfo_logo.png" type="image/png">
 
     <!-- Design System Stylesheet -->
-    <link rel="stylesheet" href="morfo2/morfo2_styles.css">
+    <link rel="stylesheet" href="morfo2/morfo2_styles.css?v=2">
 
     <!-- Leaflet GIS Mapping CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <!-- Local Static Databases (classic scripts, loaded before module) -->
-    <script src="morfo2/static_pages_data.js?v=5"></script>
+    <script src="morfo2/static_pages_data.js?v=4"></script>
     <script src="morfo2/gallery_data.js?v=3"></script>
-    <script src="morfo2/laminarios_data.js?v=5"></script>
-    <script src="morfo2/extracted_data.js?v=3"></script>
+    <script src="morfo2/laminarios_data.js?v=4"></script>
+    <script src="morfo2/extracted_data.js?v=2"></script>
 
     <!-- Firebase Config -->
     <script src="morfo2/firebase_config.js"></script>
@@ -34,9 +35,14 @@
     <!-- LOGIN SCREEN OVERLAY -->
     <div class="login-overlay active" id="loginOverlay">
         <div class="login-card">
-            <div class="brand-section" style="justify-content: center; margin-bottom: 20px;">
-                <div class="brand-logo">MII</div>
-                <h1 class="brand-title">Morfo II</h1>
+            <div class="brand-section login-brand-header" style="justify-content: center; margin-bottom: 20px;">
+                <div class="brand-logo large">
+                    <img src="../Logo/morfo_logo.png" alt="Morfo Logo" class="brand-logo-img">
+                </div>
+                <div class="brand-text-block">
+                    <h1 class="brand-title">MORFO II</h1>
+                    <span class="brand-subtitle">CONOCIMIENTO DIGITAL</span>
+                </div>
             </div>
             <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 6px;">Iniciar Sesión</h2>
             <p style="text-align: center; color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 20px;">Ingresa tus credenciales para acceder al portal médico</p>
@@ -70,9 +76,14 @@
 
     <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar" id="sidebar">
-        <div class="brand-section">
-            <div class="brand-logo">MII</div>
-            <h1 class="brand-title">Morfo II</h1>
+        <div class="brand-section sidebar-brand-header">
+            <div class="brand-logo">
+                <img src="../Logo/morfo_logo.png" alt="Morfo Logo" class="brand-logo-img">
+            </div>
+            <div class="brand-text-block">
+                <h1 class="brand-title">MORFO II</h1>
+                <span class="brand-subtitle">CONOCIMIENTO DIGITAL</span>
+            </div>
         </div>
 
         <!-- USER SIDEBAR PROFILE HEADER -->

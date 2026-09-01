@@ -8,7 +8,8 @@
     <!-- Meta tags for SEO & Metadata -->
     <meta name="description" content="Portal educativo interactivo de Morfofisiología Humana I, II y III para estudiantes de medicina. Contenidos de clases, atlas anatómico interactivo y autoevaluaciones.">
     <meta name="author" content="Medicina Integral Comunitaria">
-    <link rel="shortcut icon" href="Morfo 2/mic.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="Logo/morfo_logo.png" type="image/png">
+    <link rel="icon" href="Logo/morfo_logo.png" type="image/png">
 
     <!-- Design System Stylesheet -->
     <link rel="stylesheet" href="morfo_styles.css?v=3">
@@ -51,9 +52,14 @@
     <!-- LOGIN SCREEN OVERLAY -->
     <div class="login-overlay active" id="loginOverlay">
         <div class="login-card">
-            <div class="brand-section" style="justify-content: center; margin-bottom: 20px;">
-                <div class="brand-logo" id="loginBrandLogo">MH</div>
-                <h1 class="brand-title" id="loginBrandTitle">Morfo Portal</h1>
+            <div class="brand-section login-brand-header">
+                <div class="brand-logo large" id="loginBrandLogo">
+                    <img src="Logo/morfo_logo.png" alt="Morfo Logo" class="brand-logo-img">
+                </div>
+                <div class="brand-text-block">
+                    <h1 class="brand-title" id="loginBrandTitle">MORFO</h1>
+                    <span class="brand-subtitle">CONOCIMIENTO DIGITAL</span>
+                </div>
             </div>
             <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 6px;">Iniciar Sesión</h2>
             <p style="text-align: center; color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 20px;">Ingresa tus credenciales para acceder al portal médico</p>
@@ -85,9 +91,14 @@
 
         <!-- SELF REGISTRATION CARD -->
         <div class="login-card" id="registerCard" style="display: none; max-width: 460px;">
-            <div class="brand-section" style="justify-content: center; margin-bottom: 16px;">
-                <div class="brand-logo">MH</div>
-                <h1 class="brand-title">Morfo Portal</h1>
+            <div class="brand-section login-brand-header">
+                <div class="brand-logo large">
+                    <img src="Logo/morfo_logo.png" alt="Morfo Logo" class="brand-logo-img">
+                </div>
+                <div class="brand-text-block">
+                    <h1 class="brand-title">MORFO</h1>
+                    <span class="brand-subtitle">CONOCIMIENTO DIGITAL</span>
+                </div>
             </div>
             <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 4px; font-size: 1.25rem;">Inscripción de Estudiante</h2>
             <p style="text-align: center; color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 16px;">Crea tu cuenta para acceder a Morfo I, II y III, bibliotecas, laminarios y tutor IA.</p>
@@ -185,8 +196,13 @@
             <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
         </button>
         <div class="mobile-header-brand">
-            <div class="brand-logo mini" id="mobileBrandLogo">MH</div>
-            <span class="mobile-brand-title" id="mobileBrandTitle">Portal Morfo</span>
+            <div class="brand-logo mini" id="mobileBrandLogo">
+                <img src="Logo/morfo_logo.png" alt="Morfo Logo" class="brand-logo-img">
+            </div>
+            <div class="mobile-brand-text">
+                <span class="mobile-brand-title" id="mobileBrandTitle">MORFO</span>
+                <span class="mobile-brand-sub">PORTAL DIGITAL</span>
+            </div>
         </div>
         <div class="mobile-header-actions">
             <button class="mobile-theme-btn" id="mobileThemeBtn" aria-label="Cambiar Tema" title="Cambiar Tema">🌙</button>
@@ -201,9 +217,14 @@
         <!-- Close Button (Mobile Only) -->
         <button class="sidebar-mobile-close" id="sidebarMobileClose" aria-label="Cerrar Menú">&times;</button>
 
-        <div class="brand-section">
-            <div class="brand-logo" id="sidebarBrandLogo">MH</div>
-            <h1 class="brand-title" id="sidebarBrandTitle">Portal Morfo</h1>
+        <div class="brand-section sidebar-brand-header">
+            <div class="brand-logo" id="sidebarBrandLogo">
+                <img src="Logo/morfo_logo.png" alt="Morfo Logo" class="brand-logo-img">
+            </div>
+            <div class="brand-text-block">
+                <h1 class="brand-title" id="sidebarBrandTitle">MORFO</h1>
+                <span class="brand-subtitle">CONOCIMIENTO DIGITAL</span>
+            </div>
         </div>
 
         <!-- SUBJECT/COURSE SELECTOR -->
@@ -283,6 +304,44 @@
 
         <!-- SECTION: INICIO / PORTADA -->
         <section class="content-section active" id="inicioSection">
+
+            <!-- MEDICAL LIBRARY 3D BOOKS CAROUSEL -->
+            <div class="library-carousel-section" id="inicioBooksCarousel">
+                <div class="carousel-top-bar">
+                    <div class="carousel-title-group">
+                        <span class="carousel-pill-tag">
+                            <span class="pulse-dot"></span> BIBLIOTECA MÉDICA DIGITAL
+                        </span>
+                        <h2 class="carousel-heading">Tratados y Libros de Consulta Oficiales</h2>
+                        <p class="carousel-subheading">Descarga directa de textos guías para Morfofisiología I, II, III, Medicina Interna, Cirugía, Semiología y Obstetricia.</p>
+                    </div>
+                    <div class="carousel-nav-controls">
+                        <button class="carousel-control-btn" id="carouselPrevBtn" aria-label="Libro anterior" title="Anterior">
+                            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                        </button>
+                        <button class="carousel-control-btn play-pause-btn" id="carouselPlayPauseBtn" aria-label="Pausar o reanudar carrusel" title="Pausar / Reanudar">
+                            <span class="play-pause-icon" id="carouselPlayIcon">⏸️</span>
+                        </button>
+                        <button class="carousel-control-btn" id="carouselNextBtn" aria-label="Siguiente libro" title="Siguiente">
+                            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="carousel-viewport" id="carouselViewport">
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- Javascript will dynamically render all 3D book covers -->
+                    </div>
+                </div>
+
+                <div class="carousel-bottom-bar">
+                    <div class="carousel-counter-info" id="carouselCounterInfo">Libro 1 de 13</div>
+                    <div class="carousel-pagination" id="carouselPagination">
+                        <!-- Dots generated dynamically -->
+                    </div>
+                </div>
+            </div>
+
             <header class="hero-banner" id="inicioHeroBanner">
                 <!-- Javascript will render custom hero tag, title, subtitle based on selected course -->
             </header>

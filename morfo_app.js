@@ -14,7 +14,12 @@ import {
     db_trackDownload,
     db_trackAiChat,
     db_trackNote,
-    db_ensureSuperuser
+    db_ensureSuperuser,
+    db_getAllFeedback,
+    db_addFeedback,
+    db_replyToFeedback,
+    db_toggleFeedbackVisibility,
+    db_deleteFeedback
 } from "./db.js";
 import { getAiTutorResponse } from "./ai_tutor_engine.js?v=20260901_1615";
 
@@ -72,7 +77,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         gisSearchQuery: "",
         currentDeepUser: null,
         currentBibliotecaCategory: "todos",
-        bibliotecaSearch: ""
+        bibliotecaSearch: "",
+        currentFeedbackFilter: "all",
+        adminFeedbackFilter: "all",
+        adminFeedbackSearch: "",
+        recentMembersFilter: "all",
+        recentMembersSearch: ""
     };
 
     // Apply saved theme on startup
@@ -170,9 +180,11 @@ document.addEventListener("DOMContentLoaded", async function() {
     initLaminarios();
     initHabilidades();
     initBiblioteca();
+    initFeedback();
     initLightbox();
     initProfile();
     initAdmin();
+    initAdminFeedback();
     initGisMap();
     initAiTutor();
     initDeepInfoModal();
@@ -343,6 +355,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             "laminarios": "Laminarios y Atlas Virtual",
             "habilidades": "Habilidades Médicas",
             "biblioteca": "Biblioteca Médica Digital",
+            "feedback": "Buzón de Opinión y Sugerencias",
             "perfil": "Mi Perfil de Estudiante",
             "admin": "Panel de Administración y GIS"
         };
@@ -361,6 +374,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             renderLaminarios();
         } else if (sectionId === "biblioteca") {
             renderBiblioteca();
+        } else if (sectionId === "feedback") {
+            renderFeedback();
         } else if (sectionId === "perfil") {
             renderProfile();
         } else if (sectionId === "admin") {
@@ -430,6 +445,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Map Category to Theme Classes
         function getCategoryThemeClass(cat) {
             const c = (cat || "").toLowerCase();
+            if (c.includes("neuroanat")) return "book-theme-neuroanatomy";
+            if (c.includes("neurolog")) return "book-theme-neurology";
+            if (c.includes("anat") && !c.includes("neuro")) return "book-theme-anatomy";
+            if (c.includes("morfo") || c.includes("fisio")) return "book-theme-morpho";
             if (c.includes("interna")) return "book-theme-internal";
             if (c.includes("semiolog")) return "book-theme-semiology";
             if (c.includes("cirug")) return "book-theme-surgery";
@@ -2628,6 +2647,48 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         }
 
+        // Recent Members Search & Filters
+        const rmSearch = document.getElementById("recentMembersSearch");
+        if (rmSearch) {
+            rmSearch.addEventListener("input", (e) => {
+                state.recentMembersSearch = e.target.value.toLowerCase().trim();
+                db_getAllUsers().then(users => renderRecentMembers(users));
+            });
+        }
+
+        const rmFilterAll = document.getElementById("rmFilterAll");
+        const rmFilterWeek = document.getElementById("rmFilterWeek");
+        const rmFilterNonVip = document.getElementById("rmFilterNonVip");
+
+        if (rmFilterAll) {
+            rmFilterAll.addEventListener("click", () => {
+                state.recentMembersFilter = "all";
+                updateRmFilterBtns(rmFilterAll);
+                db_getAllUsers().then(users => renderRecentMembers(users));
+            });
+        }
+        if (rmFilterWeek) {
+            rmFilterWeek.addEventListener("click", () => {
+                state.recentMembersFilter = "week";
+                updateRmFilterBtns(rmFilterWeek);
+                db_getAllUsers().then(users => renderRecentMembers(users));
+            });
+        }
+        if (rmFilterNonVip) {
+            rmFilterNonVip.addEventListener("click", () => {
+                state.recentMembersFilter = "nonvip";
+                updateRmFilterBtns(rmFilterNonVip);
+                db_getAllUsers().then(users => renderRecentMembers(users));
+            });
+        }
+
+        function updateRmFilterBtns(activeBtn) {
+            [rmFilterAll, rmFilterWeek, rmFilterNonVip].forEach(b => {
+                if (b) b.classList.remove("active");
+            });
+            if (activeBtn) activeBtn.classList.add("active");
+        }
+
         // Student Registration Handler
         if (regForm) {
             regForm.addEventListener("submit", async function(e) {
@@ -2655,7 +2716,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                     setTimeout(() => document.getElementById("regSuccess").style.display = "none", 4000);
                     regForm.reset();
                     
-                    // Reload table and map
+                    // Reload table, recent members and map
                     renderAdmin();
                     renderGisMap();
                 } catch(err) {
@@ -2691,11 +2752,155 @@ document.addEventListener("DOMContentLoaded", async function() {
             document.getElementById("adminAiQueriesCount").textContent = totalAiChats;
             document.getElementById("adminTotalDownloadsCount").textContent = totalDownloads;
 
-            // Render Table
+            // Render Recent Members Widget
+            renderRecentMembers(users);
+
+            // Render Users Table
             renderUsersTable();
+
+            // Render Admin Feedback Table
+            renderAdminFeedbackTable();
         } catch(err) {
             console.error("Admin render stats error:", err);
         }
+    }
+
+    function renderRecentMembers(allUsers) {
+        const grid = document.getElementById("recentMembersGrid");
+        if (!grid) return;
+        
+        // Filter out superuser and keep students
+        const students = (allUsers || []).filter(u => u.email.toLowerCase() !== "lams210488@gmail.com" && u.role !== "superuser");
+        
+        // Compute counts
+        const now = new Date();
+        const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+        
+        const weekCount = students.filter(u => {
+            if (!u.createdAt) return true;
+            const d = u.createdAt.toDate ? u.createdAt.toDate() : new Date(u.createdAt);
+            return d >= sevenDaysAgo;
+        }).length;
+        
+        const nonVipCount = students.filter(u => !u.isVip).length;
+
+        const countAllEl = document.getElementById("rmCountAll");
+        const countWeekEl = document.getElementById("rmCountWeek");
+        const countNonVipEl = document.getElementById("rmCountNonVip");
+        if (countAllEl) countAllEl.textContent = students.length;
+        if (countWeekEl) countWeekEl.textContent = weekCount;
+        if (countNonVipEl) countNonVipEl.textContent = nonVipCount;
+
+        // Filter students
+        let filtered = students.filter(u => {
+            const query = state.recentMembersSearch || "";
+            const matchesQuery = !query ||
+                (u.name || "").toLowerCase().includes(query) ||
+                (u.email || "").toLowerCase().includes(query) ||
+                (u.stateOrigin || "").toLowerCase().includes(query) ||
+                (u.phone || "").toLowerCase().includes(query);
+
+            if (!matchesQuery) return false;
+
+            if (state.recentMembersFilter === "week") {
+                if (!u.createdAt) return true;
+                const d = u.createdAt.toDate ? u.createdAt.toDate() : new Date(u.createdAt);
+                return d >= sevenDaysAgo;
+            } else if (state.recentMembersFilter === "nonvip") {
+                return !u.isVip;
+            }
+            return true;
+        });
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1 / -1; padding: 32px; text-align: center; color: var(--text-secondary); background: rgba(255,255,255,0.02); border-radius: var(--border-radius-md); border: 1px dashed var(--border-color);">
+                    <span style="font-size: 1.8rem; display: block; margin-bottom: 6px;">👥</span>
+                    <p style="font-size: 0.9rem; font-weight: 600;">No se encontraron miembros con el filtro actual.</p>
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = "";
+        filtered.slice(0, 12).forEach(u => {
+            const card = document.createElement("div");
+            card.className = "recent-member-card is-new";
+            
+            const avatar = u.photo || "";
+            const initial = (u.name ? u.name.charAt(0) : (u.email ? u.email.charAt(0) : "E")).toUpperCase();
+            const avatarHtml = avatar 
+                ? `<img src="${avatar}" class="recent-member-avatar" alt="${u.name}">` 
+                : `<div class="recent-member-avatar">${initial}</div>`;
+
+            const isVip = u.isVip === true;
+            const cleanPhone = (u.phone || "").replace(/[^0-9]/g, "");
+            const waMsg = encodeURIComponent(`Hola ${u.name || 'colega'}, te saluda el profesor Leonardo Morales del Portal Morfo. ¡Bienvenido/a a la plataforma! ¿Cómo vas con las clases orientadoras y el temario?`);
+            const waUrl = `https://wa.me/${cleanPhone}?text=${waMsg}`;
+
+            card.innerHTML = `
+                <div>
+                    <div class="recent-member-top">
+                        ${avatarHtml}
+                        <div class="recent-member-meta">
+                            <div class="recent-member-name" title="${u.name || 'Estudiante'}">${u.name || 'Estudiante'}</div>
+                            <div class="recent-member-email" title="${u.email}">${u.email}</div>
+                        </div>
+                    </div>
+
+                    <div class="recent-member-tags">
+                        <span class="recent-member-tag tag-state">📍 ${u.stateOrigin || 'Venezuela'}</span>
+                        <span class="recent-member-tag tag-year">🎓 ${u.currentYear || '2do Año'}</span>
+                        <span class="vip-badge ${isVip ? 'active' : 'inactive'}" style="font-size: 0.68rem; padding: 2px 6px;">
+                            ${isVip ? '⭐ VIP' : '⚪ ESTÁNDAR'}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="recent-member-actions">
+                    ${cleanPhone ? `
+                        <a href="${waUrl}" target="_blank" class="btn-rm-wa" title="Escribir al WhatsApp del estudiante">
+                            💬 WhatsApp
+                        </a>
+                    ` : `
+                        <span class="btn-rm-wa" style="opacity: 0.5; pointer-events: none;">Sin Teléfono</span>
+                    `}
+                    <button class="btn-rm-inspect btn-quick-vip" data-email="${u.email}" data-vip="${isVip ? 'true' : 'false'}" title="${isVip ? 'Revocar Insignia VIP' : 'Asignar Insignia VIP rápida'}">
+                        ${isVip ? '⭐ Quitar VIP' : '⚡ Dar VIP'}
+                    </button>
+                    <button class="btn-rm-inspect btn-quick-audit" data-email="${u.email}" title="Ver auditoría y ficha completa">
+                        👁️ Ficha
+                    </button>
+                </div>
+            `;
+
+            grid.appendChild(card);
+        });
+
+        // Bind Quick VIP
+        grid.querySelectorAll(".btn-quick-vip").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const email = btn.getAttribute("data-email");
+                const currentVip = btn.getAttribute("data-vip") === "true";
+                btn.disabled = true;
+                btn.textContent = "⏳...";
+                try {
+                    await db_toggleUserVip(email, currentVip);
+                    renderAdmin();
+                } catch(e) {
+                    alert("Error al cambiar estado VIP");
+                    renderAdmin();
+                }
+            });
+        });
+
+        // Bind Quick Audit
+        grid.querySelectorAll(".btn-quick-audit").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const email = btn.getAttribute("data-email");
+                openDeepInfoModal(email);
+            });
+        });
     }
 
     async function renderUsersTable(searchFilter = "") {
@@ -3436,6 +3641,513 @@ document.addEventListener("DOMContentLoaded", async function() {
         } catch (err) {
             console.error("AI Tutor response error:", err);
             return `🤖 He recibido tu consulta sobre "${query}". Puedes consultar la sección de Temario Semanal, Clases Orientadoras en PDF y la Biblioteca Médica Digital para profundizar en este contenido.`;
+        }
+    }
+
+    // ==========================================
+    // FEEDBACK & COMMUNITY COMMENTS MODULE
+    // ==========================================
+    function initFeedback() {
+        const feedbackForm = document.getElementById("feedbackForm");
+        const starRatingGroup = document.getElementById("starRatingGroup");
+        const ratingScoreDisplay = document.getElementById("ratingScoreDisplay");
+        const fbFilterAll = document.getElementById("fbFilterAll");
+        const fbFilterReplied = document.getElementById("fbFilterReplied");
+
+        // Star score label updates
+        if (starRatingGroup && ratingScoreDisplay) {
+            starRatingGroup.querySelectorAll("input").forEach(radio => {
+                radio.addEventListener("change", (e) => {
+                    const val = e.target.value;
+                    const labels = {
+                        "5": "5.0 / 5.0 (¡Excelente!)",
+                        "4": "4.0 / 5.0 (Muy Bueno)",
+                        "3": "3.0 / 5.0 (Bueno)",
+                        "2": "2.0 / 5.0 (Regular)",
+                        "1": "1.0 / 5.0 (Por Mejorar)"
+                    };
+                    ratingScoreDisplay.textContent = labels[val] || `${val}.0 / 5.0`;
+                });
+            });
+        }
+
+        // Community wall filters
+        if (fbFilterAll) {
+            fbFilterAll.addEventListener("click", () => {
+                state.currentFeedbackFilter = "all";
+                fbFilterAll.classList.add("active");
+                if (fbFilterReplied) fbFilterReplied.classList.remove("active");
+                renderFeedback();
+            });
+        }
+        if (fbFilterReplied) {
+            fbFilterReplied.addEventListener("click", () => {
+                state.currentFeedbackFilter = "replied";
+                fbFilterReplied.classList.add("active");
+                if (fbFilterAll) fbFilterAll.classList.remove("active");
+                renderFeedback();
+            });
+        }
+
+        // Form submission
+        if (feedbackForm) {
+            feedbackForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const submitBtn = document.getElementById("feedbackSubmitBtn");
+                const successAlert = document.getElementById("feedbackSuccessAlert");
+
+                const checkedRating = feedbackForm.querySelector('input[name="feedbackRating"]:checked');
+                const rating = checkedRating ? Number(checkedRating.value) : 5;
+                const category = document.getElementById("feedbackCategory").value;
+                const name = document.getElementById("feedbackName").value.trim();
+                const email = document.getElementById("feedbackEmail").value.trim();
+                const course = document.getElementById("feedbackCourse").value;
+                const message = document.getElementById("feedbackMessage").value.trim();
+                const isPublic = document.getElementById("feedbackIsPublic").checked;
+
+                if (!message) return;
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = `<span>⏳</span> Enviando feedback...`;
+                }
+
+                try {
+                    await db_addFeedback({
+                        name, email, course, category, rating, message, isPublic
+                    });
+
+                    if (successAlert) {
+                        successAlert.style.display = "block";
+                        setTimeout(() => { successAlert.style.display = "none"; }, 5000);
+                    }
+
+                    feedbackForm.reset();
+                    if (ratingScoreDisplay) ratingScoreDisplay.textContent = "5.0 / 5.0 (Excelente)";
+                    
+                    // Re-render wall
+                    renderFeedback();
+                } catch (err) {
+                    console.error("Feedback submit error:", err);
+                    alert("Hubo un detalle al enviar el comentario, pero ha sido guardado.");
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = `<span>💬</span> Enviar Comentario y Retroalimentación`;
+                    }
+                }
+            });
+        }
+    }
+
+    async function renderFeedback() {
+        const wallContainer = document.getElementById("feedbackWallCards");
+        const nameInput = document.getElementById("feedbackName");
+        const emailInput = document.getElementById("feedbackEmail");
+
+        // Auto fill user profile if available
+        if (state.currentUser) {
+            if (nameInput && !nameInput.value) nameInput.value = state.currentUser.name || "";
+            if (emailInput && !emailInput.value) emailInput.value = state.currentUser.email || "";
+        }
+
+        if (!wallContainer) return;
+
+        try {
+            const feedbacks = await db_getAllFeedback();
+            
+            // Count totals
+            const repliedCount = feedbacks.filter(f => f.reply && f.status === "replied").length;
+            const countAllEl = document.getElementById("fbCountAll");
+            const countRepliedEl = document.getElementById("fbCountReplied");
+            if (countAllEl) countAllEl.textContent = feedbacks.length;
+            if (countRepliedEl) countRepliedEl.textContent = repliedCount;
+
+            let filtered = feedbacks.filter(f => {
+                if (f.isPublic === false) return false;
+                if (state.currentFeedbackFilter === "replied") {
+                    return !!f.reply && f.status === "replied";
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                wallContainer.innerHTML = `
+                    <div class="feedback-card" style="text-align: center; padding: 36px;">
+                        <div style="font-size: 2rem; margin-bottom: 8px;">💬</div>
+                        <h4 style="font-family: var(--font-heading); font-weight: 700; color: var(--text-primary);">Aún no hay comentarios en esta vista</h4>
+                        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">¡Sé el primero en compartir tu experiencia o sugerencia en el formulario!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const categoryLabels = {
+                "sugerencia": "💡 Sugerencia",
+                "felicitacion": "⭐ Felicitación",
+                "duda": "❓ Duda Médica",
+                "material": "📚 Solicitud",
+                "error": "🐛 Detalle Técnico"
+            };
+
+            wallContainer.innerHTML = "";
+            filtered.forEach(fb => {
+                const card = document.createElement("div");
+                card.className = "feedback-card animate-fade";
+
+                const starsHtml = "★".repeat(fb.rating || 5) + "☆".repeat(Math.max(0, 5 - (fb.rating || 5)));
+                const catClass = `cat-${fb.category || 'sugerencia'}`;
+                const catLabel = categoryLabels[fb.category] || "💡 Sugerencia";
+                const initial = (fb.name ? fb.name.charAt(0) : "E").toUpperCase();
+                
+                let dateStr = "Reciente";
+                if (fb.createdAt) {
+                    try {
+                        const d = fb.createdAt.toDate ? fb.createdAt.toDate() : new Date(fb.createdAt);
+                        dateStr = d.toLocaleDateString('es-VE', { day: '2-digit', month: 'short', year: 'numeric' });
+                    } catch(e) {}
+                }
+
+                let replyHtml = "";
+                if (fb.reply) {
+                    replyHtml = `
+                        <div class="feedback-reply-box">
+                            <div class="feedback-reply-header">
+                                <span class="feedback-reply-title">
+                                    <span>👑</span> ${fb.replyBy || 'Prof. Leonardo Morales (Docente / Superusuario)'}
+                                </span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted);">Respuesta Oficial</span>
+                            </div>
+                            <div class="feedback-reply-text">
+                                ${fb.reply}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="feedback-card-header">
+                        <div class="feedback-author-group">
+                            <div class="feedback-author-avatar">${initial}</div>
+                            <div>
+                                <div class="feedback-author-name">${fb.name || 'Estudiante'}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary); display: flex; gap: 8px; align-items: center; margin-top: 2px;">
+                                    <span>🎓 ${fb.course || '2do Año'}</span>
+                                    <span>&bull;</span>
+                                    <span>📅 ${dateStr}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="feedback-category-badge ${catClass}">${catLabel}</span>
+                            <div style="color: #fbbf24; font-size: 0.95rem; margin-top: 4px;" title="${fb.rating || 5} de 5 estrellas">${starsHtml}</div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-card-message">${fb.message}</div>
+
+                    ${replyHtml}
+                `;
+
+                wallContainer.appendChild(card);
+            });
+        } catch(err) {
+            console.error("renderFeedback error:", err);
+        }
+    }
+
+    // ==========================================
+    // ADMIN FEEDBACK MANAGEMENT & DIRECT REPLIES
+    // ==========================================
+    let activeReplyingFeedback = null;
+
+    function initAdminFeedback() {
+        const searchInput = document.getElementById("adminFeedbackSearch");
+        const filterAll = document.getElementById("adminFbFilterAll");
+        const filterPending = document.getElementById("adminFbFilterPending");
+        const filterReplied = document.getElementById("adminFbFilterReplied");
+
+        if (searchInput) {
+            searchInput.addEventListener("input", (e) => {
+                state.adminFeedbackSearch = e.target.value.toLowerCase().trim();
+                renderAdminFeedbackTable();
+            });
+        }
+
+        if (filterAll) {
+            filterAll.addEventListener("click", () => {
+                state.adminFeedbackFilter = "all";
+                updateAdminFbFilterButtons(filterAll);
+                renderAdminFeedbackTable();
+            });
+        }
+        if (filterPending) {
+            filterPending.addEventListener("click", () => {
+                state.adminFeedbackFilter = "pending";
+                updateAdminFbFilterButtons(filterPending);
+                renderAdminFeedbackTable();
+            });
+        }
+        if (filterReplied) {
+            filterReplied.addEventListener("click", () => {
+                state.adminFeedbackFilter = "replied";
+                updateAdminFbFilterButtons(filterReplied);
+                renderAdminFeedbackTable();
+            });
+        }
+
+        function updateAdminFbFilterButtons(activeBtn) {
+            [filterAll, filterPending, filterReplied].forEach(b => {
+                if (b) b.classList.remove("active");
+            });
+            if (activeBtn) activeBtn.classList.add("active");
+        }
+
+        // Modal close
+        const modal = document.getElementById("feedbackReplyModal");
+        const closeBtn = document.getElementById("feedbackReplyCloseBtn");
+        if (closeBtn && modal) {
+            closeBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+                activeReplyingFeedback = null;
+            });
+        }
+
+        // Preset chips in modal
+        const presetsContainer = document.getElementById("feedbackQuickPresets");
+        const replyTextarea = document.getElementById("feedbackReplyText");
+        if (presetsContainer && replyTextarea) {
+            presetsContainer.querySelectorAll("button").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const preset = btn.getAttribute("data-preset");
+                    replyTextarea.value = preset;
+                    replyTextarea.focus();
+                });
+            });
+        }
+
+        // Publish reply button
+        const publishBtn = document.getElementById("feedbackPublishReplyBtn");
+        if (publishBtn) {
+            publishBtn.addEventListener("click", async () => {
+                if (!activeReplyingFeedback || !replyTextarea) return;
+                const text = replyTextarea.value.trim();
+                if (!text) {
+                    alert("Por favor redacta un texto de respuesta.");
+                    return;
+                }
+
+                publishBtn.disabled = true;
+                publishBtn.textContent = "⏳ Publicando...";
+
+                try {
+                    await db_replyToFeedback(activeReplyingFeedback.id, text, "Prof. Leonardo Morales (Docente / Superusuario)");
+                    if (modal) modal.style.display = "none";
+                    renderAdminFeedbackTable();
+                    renderFeedback();
+                } catch(e) {
+                    console.error("Publish reply error:", e);
+                    alert("Error al publicar la respuesta.");
+                } finally {
+                    publishBtn.disabled = false;
+                    publishBtn.textContent = "👑 Publicar Respuesta";
+                    activeReplyingFeedback = null;
+                }
+            });
+        }
+
+        // WhatsApp Send from modal
+        const sendWaBtn = document.getElementById("feedbackSendWaBtn");
+        if (sendWaBtn) {
+            sendWaBtn.addEventListener("click", () => {
+                if (!activeReplyingFeedback || !replyTextarea) return;
+                const replyText = replyTextarea.value.trim();
+                const studentEmail = activeReplyingFeedback.email || "";
+                const studentName = activeReplyingFeedback.name || "estudiante";
+                
+                // Look up student phone in db
+                db_getAllUsers().then(users => {
+                    const userObj = users.find(u => u.email.toLowerCase() === studentEmail.toLowerCase());
+                    const phone = userObj && userObj.phone ? userObj.phone.replace(/[^0-9]/g, "") : "";
+                    const msg = encodeURIComponent(`Hola ${studentName}, te responde el Prof. Leonardo Morales en respuesta a tu comentario en el Portal Morfo:\n\n💬 "${replyText || '¡Gracias por tu comentario!'}"`);
+                    if (phone) {
+                        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+                    } else {
+                        const customPhone = prompt("Ingresa el número de WhatsApp del estudiante con código de país (ej: 584121234567):");
+                        if (customPhone) {
+                            window.open(`https://wa.me/${customPhone.replace(/[^0-9]/g, "")}?text=${msg}`, "_blank");
+                        }
+                    }
+                });
+            });
+        }
+    }
+
+    async function renderAdminFeedbackTable() {
+        const tbody = document.getElementById("adminFeedbackTableBody");
+        if (!tbody || !state.currentUser || state.currentUser.role !== "superuser") return;
+
+        try {
+            const feedbacks = await db_getAllFeedback();
+            
+            // Count totals
+            const total = feedbacks.length;
+            const pending = feedbacks.filter(f => !f.reply || f.status !== "replied").length;
+            const replied = feedbacks.filter(f => f.reply && f.status === "replied").length;
+
+            const countAllEl = document.getElementById("adminFbCountAll");
+            const countPendingEl = document.getElementById("adminFbCountPending");
+            const countRepliedEl = document.getElementById("adminFbCountReplied");
+            if (countAllEl) countAllEl.textContent = total;
+            if (countPendingEl) countPendingEl.textContent = pending;
+            if (countRepliedEl) countRepliedEl.textContent = replied;
+
+            // Filter items
+            let filtered = feedbacks.filter(f => {
+                const query = state.adminFeedbackSearch || "";
+                const matchesQuery = !query ||
+                    (f.name || "").toLowerCase().includes(query) ||
+                    (f.email || "").toLowerCase().includes(query) ||
+                    (f.message || "").toLowerCase().includes(query) ||
+                    (f.category || "").toLowerCase().includes(query);
+
+                if (!matchesQuery) return false;
+
+                if (state.adminFeedbackFilter === "pending") {
+                    return !f.reply || f.status !== "replied";
+                } else if (state.adminFeedbackFilter === "replied") {
+                    return f.reply && f.status === "replied";
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 24px; color: var(--text-secondary);">No se encontraron comentarios de feedback.</td></tr>`;
+                return;
+            }
+
+            const categoryLabels = {
+                "sugerencia": "💡 Sugerencia",
+                "felicitacion": "⭐ Felicitación",
+                "duda": "❓ Duda Médica",
+                "material": "📚 Solicitud",
+                "error": "🐛 Detalle Técnico"
+            };
+
+            tbody.innerHTML = "";
+            filtered.forEach(fb => {
+                const tr = document.createElement("tr");
+                tr.style.borderBottom = "1px solid var(--border-color)";
+                tr.style.fontSize = "0.83rem";
+
+                const isReplied = fb.reply && fb.status === "replied";
+                const starsHtml = "★".repeat(fb.rating || 5) + "☆".repeat(Math.max(0, 5 - (fb.rating || 5)));
+                const catLabel = categoryLabels[fb.category] || "💡 Sugerencia";
+                const isPublic = fb.isPublic !== false;
+
+                tr.innerHTML = `
+                    <td style="padding: 10px 12px;">
+                        <div style="font-weight: 700; color: var(--text-primary);">${fb.name || 'Anónimo'}</div>
+                        <div style="font-size: 0.72rem; color: var(--text-secondary);">${fb.email || 'Sin correo'} &bull; ${fb.course || '2do Año'}</div>
+                    </td>
+                    <td style="padding: 10px 12px;">
+                        <span class="mag-badge" style="font-size: 0.72rem;">${catLabel}</span>
+                    </td>
+                    <td style="padding: 10px 12px; text-align: center; color: #fbbf24; font-size: 0.9rem;">
+                        ${starsHtml}
+                    </td>
+                    <td style="padding: 10px 12px; max-width: 260px; color: var(--text-primary); line-height: 1.4;">
+                        <div style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                            ${fb.message}
+                        </div>
+                    </td>
+                    <td style="padding: 10px 12px;">
+                        ${isReplied ? `
+                            <div style="display: flex; flex-direction: column; gap: 2px;">
+                                <span class="vip-badge active" style="font-size: 0.68rem; align-self: flex-start;">👑 RESPONDIDO</span>
+                                <span style="font-size: 0.72rem; color: var(--text-secondary); font-style: italic; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    "${fb.reply}"
+                                </span>
+                            </div>
+                        ` : `
+                            <span class="vip-badge inactive" style="font-size: 0.68rem; color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.1);">
+                                ⏳ PENDIENTE
+                            </span>
+                        `}
+                    </td>
+                    <td style="padding: 10px 12px; text-align: center;">
+                        <div style="display: flex; gap: 6px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                            <button class="btn-reply-feedback btn-open-reply-modal" data-id="${fb.id}" title="Escribir respuesta oficial">
+                                ${isReplied ? '✏️ Editar' : '💬 Responder'}
+                            </button>
+                            <button class="btn-rm-inspect btn-toggle-fb-public" data-id="${fb.id}" data-public="${isPublic ? 'true' : 'false'}" style="padding: 5px 8px; font-size: 0.75rem;" title="${isPublic ? 'Ocultar del muro público' : 'Hacer visible en muro público'}">
+                                ${isPublic ? '👁️' : '🙈'}
+                            </button>
+                            <button class="btn-rm-inspect btn-delete-fb" data-id="${fb.id}" style="padding: 5px 8px; font-size: 0.75rem; color: #f87171;" title="Eliminar feedback">
+                                🗑️
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+
+            // Bind reply open
+            tbody.querySelectorAll(".btn-open-reply-modal").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const fbId = btn.getAttribute("data-id");
+                    const item = feedbacks.find(f => f.id === fbId);
+                    if (!item) return;
+
+                    activeReplyingFeedback = item;
+                    const modal = document.getElementById("feedbackReplyModal");
+                    const nameEl = document.getElementById("modalFbStudentName");
+                    const catEl = document.getElementById("modalFbCategory");
+                    const msgEl = document.getElementById("modalFbStudentMessage");
+                    const replyText = document.getElementById("feedbackReplyText");
+
+                    if (nameEl) nameEl.textContent = `${item.name || 'Estudiante'} (${item.email || ''})`;
+                    if (catEl) catEl.textContent = categoryLabels[item.category] || "Sugerencia";
+                    if (msgEl) msgEl.textContent = `"${item.message}"`;
+                    if (replyText) replyText.value = item.reply || "";
+
+                    if (modal) modal.style.display = "flex";
+                });
+            });
+
+            // Bind toggle visibility
+            tbody.querySelectorAll(".btn-toggle-fb-public").forEach(btn => {
+                btn.addEventListener("click", async () => {
+                    const fbId = btn.getAttribute("data-id");
+                    const currentPub = btn.getAttribute("data-public") === "true";
+                    try {
+                        await db_toggleFeedbackVisibility(fbId, !currentPub);
+                        renderAdminFeedbackTable();
+                        renderFeedback();
+                    } catch(e) {
+                        alert("Error al cambiar visibilidad");
+                    }
+                });
+            });
+
+            // Bind delete
+            tbody.querySelectorAll(".btn-delete-fb").forEach(btn => {
+                btn.addEventListener("click", async () => {
+                    const fbId = btn.getAttribute("data-id");
+                    if (confirm("¿Deseas eliminar este comentario de feedback?")) {
+                        try {
+                            await db_deleteFeedback(fbId);
+                            renderAdminFeedbackTable();
+                            renderFeedback();
+                        } catch(e) {
+                            alert("Error al eliminar comentario");
+                        }
+                    }
+                });
+            });
+        } catch(err) {
+            console.error("renderAdminFeedbackTable error:", err);
         }
     }
 });

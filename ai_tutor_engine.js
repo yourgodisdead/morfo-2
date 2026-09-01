@@ -342,6 +342,38 @@ const TOPIC_KNOWLEDGE_BASE = [
 - **Ciclo Menstrual**: Fase proliferativa (estrógenos) -> Ovulación (pico LH día 14) -> Fase secretora (progesterona).`,
         keyPedagogicalGuideline: "En evaluaciones sobre ciclo ovárico vs. endometrial, recuerda que el estrógeno ovárico comanda la proliferación endometrial y la progesterona la secreción de glucógeno.",
         exactResourceRef: "Morfo III > Temario Semanal > Semanas 13 a 16 y Biblioteca Médica (Obstetricia Moderna - Juan Aller y SEGO)."
+    },
+
+    // --- TRATADOS MÉDICOS Y BIBLIOTECA DIGITAL ---
+    {
+        id: "neuroanatomia_afifi_fustinoni",
+        keywords: ["neuroanatomia", "neurologia", "afifi", "fustinoni", "netter neurologia", "reflejo", "pares craneales examen", "sensibilidad", "motilidad", "babinski", "ataxia", "via piramidal", "haz corticoespinal", "cerebelo"],
+        course: "morfo2",
+        week: "Semana 5 a 10 / Clínica",
+        topicTitle: "Neuroanatomía Funcional y Semiología del Sistema Nervioso",
+        explanation: `🧠 **Bases Neuroanatómicas y Examen Neurológico (Afifi, Netter & Fustinoni)**:
+- **Vías Motoras y Sensitivas**:
+  - *Vía Piramidal (Corticoespinal)*: Motilidad voluntaria. Decusa en el 85-90% a nivel de las pirámides bulbares. Signo de lesión de 1ª motoneurona: espasticidad, hiperreflexia y signo de Babinski (+).
+  - *Vía Espinotalámica*: Termoalgesia (dolor y temperatura).
+  - *Cordones Posteriores (Goll y Burdach)*: Sensibilidad propioceptiva consciente, vibratoria (palestesia) y tacto epicrítico.
+- **Semiología Neurológica de Fustinoni**:
+  - Examen de los 12 pares craneales.
+  - Tono muscular (espasticidad en navaja vs rigidez en rueda dentada).
+  - Coordinación y taxia (pruebas índice-nariz, talón-rodilla, signo de Romberg).`,
+        keyPedagogicalGuideline: "Para correlación clínica en guardias y revistas: consulta 'Neuroanatomía Funcional' de Afifi y 'Semiología del Sistema Nervioso' de Fustinoni en la Biblioteca Médica Digital.",
+        exactResourceRef: "Biblioteca Médica Digital > Neuroanatomía (Afifi) & Semiología y Neurología (Fustinoni & Netter)."
+    },
+    {
+        id: "anatomia_saladin_netter",
+        keywords: ["netter", "saladin", "atlas", "anatomia", "forma y funcion", "morfofisiologia saladin", "osteologia", "miologia", "artrologia", "visceras", "torax", "abdomen"],
+        course: "morfo1",
+        week: "General Morfo I, II y III",
+        topicTitle: "Anatomía Humana e Integración Fisiológica (Netter & Saladin)",
+        explanation: `🫀 **Atlas de Netter & Tratado de Saladin**:
+- **Atlas de Anatomía Humana de Frank H. Netter**: Láminas ilustradas de referencia mundial con relaciones topográficas precisas de cabeza, cuello, dorso, tórax, abdomen, pelvis y miembros.
+- **Saladin (Anatomía y Fisiología)**: Enfoque unificador entre estructura anatómica macro/microscópica y función fisiológica celular y de sistemas orgánicos.`,
+        keyPedagogicalGuideline: "Utiliza el Atlas de Netter para ubicación topográfica espacial y el Saladin para comprender la relación causa-efecto entre morfología y fisiología.",
+        exactResourceRef: "Biblioteca Médica Digital > Atlas de Anatomía Humana (Netter) & Anatomía y Fisiología (Saladin)."
     }
 ];
 

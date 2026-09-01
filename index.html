@@ -272,6 +272,10 @@
                 <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
                 <span>Biblioteca Médica</span>
             </a>
+            <a class="nav-item" data-section="feedback" id="navFeedback">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h10v2H7zm0-3h10v2H7z"/></svg>
+                <span>Buzón de Opinión</span>
+            </a>
             <a class="nav-item" data-section="perfil" id="navProfile" style="display:none;">
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
                 <span>Mi Perfil</span>
@@ -509,9 +513,14 @@
                 </div>
                 
                 <div class="filter-pills-container" id="bibliotecaCategoryFilters" style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <button class="filter-pill active" data-category="todos">Todos los Libros (13)</button>
+                    <button class="filter-pill active" data-category="todos">Todos los Libros (18)</button>
+                    <button class="filter-pill" data-category="Anatomía Humana">Anatomía</button>
+                    <button class="filter-pill" data-category="Neuroanatomía">Neuroanatomía</button>
+                    <button class="filter-pill" data-category="Morfofisiología y Anatomía">Morfofisiología</button>
+                    <button class="filter-pill" data-category="Neurología Clínica">Neurología</button>
+                    <button class="filter-pill" data-category="Semiología y Neurología">Semiología Neurológica</button>
                     <button class="filter-pill" data-category="Medicina Interna">Medicina Interna</button>
-                    <button class="filter-pill" data-category="Semiología y Propedéutica">Semiología</button>
+                    <button class="filter-pill" data-category="Semiología y Propedéutica">Semiología Clásica</button>
                     <button class="filter-pill" data-category="Cirugía">Cirugía General</button>
                     <button class="filter-pill" data-category="Traumatología">Traumatología</button>
                     <button class="filter-pill" data-category="Obstetricia y Ginecología">Obstetricia & Ginecología</button>
@@ -677,6 +686,126 @@
             </div>
         </section>
 
+        <!-- SECTION: BUZÓN DE OPINIÓN Y FEEDBACK -->
+        <section class="content-section" id="feedbackSection">
+            <header class="hero-banner">
+                <span class="hero-tag">Buzón de Opinión & Retroalimentación</span>
+                <h2 class="hero-title">Comentarios, Sugerencias y Feedback Oportuno</h2>
+                <p class="hero-subtitle">Tu opinión impulsa la evolución del Portal Morfo. Comparte tus sugerencias, dudas académicas o valoraciones para recibir retroalimentación oportuna y directa del equipo docente.</p>
+            </header>
+
+            <div class="feedback-grid-layout">
+                <!-- Feedback Submission Form -->
+                <div class="feedback-form-card">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                        <span style="font-size: 1.5rem;">✍️</span>
+                        <div>
+                            <h3 style="font-family: var(--font-heading); font-weight: 700; font-size: 1.15rem; color: var(--text-primary); margin: 0;">Deja tu Opinión o Consulta</h3>
+                            <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0;">Recibirás respuesta oportuna en el portal o vía WhatsApp</p>
+                        </div>
+                    </div>
+
+                    <form id="feedbackForm" style="display: flex; flex-direction: column; gap: 14px;">
+                        <!-- Rating Selector -->
+                        <div>
+                            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 4px;">¿Cómo evalúas tu experiencia en Morfo?</label>
+                            <div class="star-rating-container">
+                                <div class="star-rating-stars" id="starRatingGroup">
+                                    <input type="radio" id="star5" name="feedbackRating" value="5" checked><label for="star5" title="5 estrellas - ¡Excelente!">★</label>
+                                    <input type="radio" id="star4" name="feedbackRating" value="4"><label for="star4" title="4 estrellas - Muy Bueno">★</label>
+                                    <input type="radio" id="star3" name="feedbackRating" value="3"><label for="star3" title="3 estrellas - Bueno">★</label>
+                                    <input type="radio" id="star2" name="feedbackRating" value="2"><label for="star2" title="2 estrellas - Regular">★</label>
+                                    <input type="radio" id="star1" name="feedbackRating" value="1"><label for="star1" title="1 estrella - Por mejorar">★</label>
+                                </div>
+                                <span class="rating-score-text" id="ratingScoreDisplay">5.0 / 5.0 (Excelente)</span>
+                            </div>
+                        </div>
+
+                        <!-- Category Selection -->
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Categoría del Mensaje *</label>
+                            <select id="feedbackCategory" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                <option value="sugerencia" selected>💡 Sugerencia de Función o Contenido</option>
+                                <option value="felicitacion">⭐ Felicitación / Agradecimiento</option>
+                                <option value="duda">❓ Consulta o Duda Médica/Académica</option>
+                                <option value="material">📚 Solicitud de Nuevo Libro / Guía</option>
+                                <option value="error">🐛 Reporte de Detalle Técnico</option>
+                            </select>
+                        </div>
+
+                        <!-- Author Name & Email -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Tu Nombre *</label>
+                                <input type="text" id="feedbackName" required class="search-input" style="padding-left: 12px; font-size: 0.85rem;" placeholder="Ej: María González">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Tu Correo *</label>
+                                <input type="email" id="feedbackEmail" required class="search-input" style="padding-left: 12px; font-size: 0.85rem;" placeholder="correo@estudiante.com">
+                            </div>
+                        </div>
+
+                        <!-- Course Selection -->
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Nivel / Año Cursante *</label>
+                            <select id="feedbackCourse" required class="search-input" style="padding-left: 10px; font-size: 0.88rem;">
+                                <option value="1er Año (Morfo I)">1er Año (Morfo I)</option>
+                                <option value="2do Año (Morfo II)" selected>2do Año (Morfo II)</option>
+                                <option value="3er Año (Morfo III)">3er Año (Morfo III)</option>
+                                <option value="4to - 6to Año / Clínicas">4to - 6to Año / Clínicas</option>
+                                <option value="Médico General / Egresado">Médico General / Egresado</option>
+                            </select>
+                        </div>
+
+                        <!-- Comment / Feedback Textarea -->
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Tu Mensaje o Sugerencia *</label>
+                            <textarea id="feedbackMessage" rows="4" required class="search-input" style="padding: 10px 12px; font-size: 0.88rem; resize: vertical; min-height: 90px;" placeholder="Cuéntanos qué te ha parecido la plataforma, qué libro te gustaría ver, o tu consulta médica..."></textarea>
+                        </div>
+
+                        <!-- Public Visibility Checkbox -->
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                            <input type="checkbox" id="feedbackIsPublic" checked style="accent-color: var(--accent-color); width: 16px; height: 16px; cursor: pointer;">
+                            <label for="feedbackIsPublic" style="font-size: 0.78rem; color: var(--text-secondary); cursor: pointer;">
+                                Mostrar en el muro público de comentarios de la comunidad
+                            </label>
+                        </div>
+
+                        <!-- Success Alert -->
+                        <div id="feedbackSuccessAlert" style="display: none; padding: 12px; border-radius: var(--border-radius-sm); background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-size: 0.85rem; font-weight: 600; text-align: center;">
+                            🎉 ¡Muchas gracias por tu comentario! Ha sido registrado y el docente te responderá oportunamente.
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="auth-submit" id="feedbackSubmitBtn" style="width: 100%; margin-top: 4px; display: inline-flex; justify-content: center; align-items: center; gap: 8px;">
+                            <span>💬</span> Enviar Comentario y Retroalimentación
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Community Feedback Wall -->
+                <div class="feedback-wall-container">
+                    <div style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: var(--border-radius-lg); padding: 20px 24px; box-shadow: var(--neo-elevated);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                            <div>
+                                <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.2rem; color: var(--text-primary);">💬 Muro de la Comunidad Morfo</h3>
+                                <p style="font-size: 0.78rem; color: var(--text-secondary);">Opiniones y respuestas de los docentes en tiempo real</p>
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="filter-pill active" id="fbFilterAll" data-fb-filter="all">Todos (<span id="fbCountAll">0</span>)</button>
+                                <button class="filter-pill" id="fbFilterReplied" data-fb-filter="replied">Con Respuesta Docente 👑 (<span id="fbCountReplied">0</span>)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic List of Feedback Cards -->
+                    <div id="feedbackWallCards" style="display: flex; flex-direction: column; gap: 16px;">
+                        <!-- Javascript rendered feedback cards -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- SECTION: ADMINISTRACIÓN & MAPA GIS -->
         <section class="content-section" id="adminSection">
             <header class="hero-banner">
@@ -706,6 +835,32 @@
                     <div class="card-icon" style="margin: 0 auto; width: 48px; height: 48px; font-size: 1.5rem; background: rgba(245, 158, 11, 0.12); color: #f59e0b;">📥</div>
                     <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Descargas Registradas</span>
                     <div id="adminTotalDownloadsCount" style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-heading); color: #f59e0b;">0</div>
+                </div>
+            </div>
+
+            <!-- RECENT MEMBERS QUICK DASHBOARD (SUPERUSER WIDGET) -->
+            <div class="recent-members-container" id="recentMembersContainer">
+                <div class="recent-members-header">
+                    <div class="recent-members-title-group">
+                        <h3>
+                            <span>⚡</span> Nuevos Miembros y Recientes Incorporaciones
+                            <span class="pulse-dot" style="width: 8px; height: 8px;"></span>
+                        </h3>
+                        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Visualización rápida de los últimos estudiantes registrados en la plataforma. Contacta vía WhatsApp, audita su actividad o asigna Insignia VIP en 1-clic.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 6px;" id="recentMembersFilters">
+                            <button class="filter-pill active" data-rm-filter="all" id="rmFilterAll">Todos los Nuevos (<span id="rmCountAll">0</span>)</button>
+                            <button class="filter-pill" data-rm-filter="week" id="rmFilterWeek">Últimos 7 Días (<span id="rmCountWeek">0</span>)</button>
+                            <button class="filter-pill" data-rm-filter="nonvip" id="rmFilterNonVip">Pendientes VIP (<span id="rmCountNonVip">0</span>)</button>
+                        </div>
+                        <input type="text" id="recentMembersSearch" class="search-input" style="padding: 7px 12px; font-size: 0.82rem; width: 170px;" placeholder="Buscar miembro...">
+                    </div>
+                </div>
+
+                <!-- Grid of recent member cards -->
+                <div class="recent-members-grid" id="recentMembersGrid">
+                    <!-- Javascript rendered recent member cards -->
                 </div>
             </div>
 
@@ -872,6 +1027,46 @@
                         </thead>
                         <tbody id="usersTableBody">
                             <!-- Javascript rendered users -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ADMIN FEEDBACK & USER REPLIES MANAGEMENT CARD -->
+            <div class="admin-feedback-manager-card" id="adminFeedbackCard">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 20px;">
+                    <div>
+                        <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--text-primary); display: flex; align-items: center; gap: 10px;">
+                            <span>💬</span> Centro de Gestión de Feedback y Respuestas a Estudiantes
+                        </h3>
+                        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">
+                            Revisa las sugerencias, dudas y valoraciones enviadas por los estudiantes. Responde oportunamente de forma oficial o vía WhatsApp directo.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 6px;">
+                            <button class="filter-pill active" id="adminFbFilterAll" data-admin-fb-filter="all">Todos (<span id="adminFbCountAll">0</span>)</button>
+                            <button class="filter-pill" id="adminFbFilterPending" data-admin-fb-filter="pending" style="color: #fbbf24;">Pendientes (<span id="adminFbCountPending">0</span>)</button>
+                            <button class="filter-pill" id="adminFbFilterReplied" data-admin-fb-filter="replied" style="color: #34d399;">Respondidos (<span id="adminFbCountReplied">0</span>)</button>
+                        </div>
+                        <input type="text" id="adminFeedbackSearch" class="search-input" style="padding: 7px 12px; font-size: 0.82rem; width: 180px;" placeholder="Buscar en feedback...">
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto; width: 100%;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="adminFeedbackTable">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-secondary); font-weight: 600; font-size: 0.82rem;">
+                                <th style="padding: 10px 12px;">Estudiante</th>
+                                <th style="padding: 10px 12px;">Categoría</th>
+                                <th style="padding: 10px 12px; text-align: center;">Rating</th>
+                                <th style="padding: 10px 12px;">Mensaje / Sugerencia</th>
+                                <th style="padding: 10px 12px;">Estado / Respuesta</th>
+                                <th style="padding: 10px 12px; text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminFeedbackTableBody">
+                            <!-- Javascript rendered feedback rows -->
                         </tbody>
                     </table>
                 </div>
@@ -1141,6 +1336,64 @@
             </div>
             <div class="chapter-list-grid" id="allerChaptersContainer">
                 <!-- Javascript rendered chapters -->
+            </div>
+        </div>
+    </div>
+    <!-- FEEDBACK REPLY MODAL (SUPERUSER / DOCENTE) -->
+    <div class="deep-info-modal-backdrop" id="feedbackReplyModal" style="z-index: 2800;">
+        <div class="deep-info-modal-card" style="max-width: 600px;">
+            <div class="deep-info-header" style="background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(59, 130, 246, 0.2));">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                        💬
+                    </div>
+                    <div>
+                        <h3 style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">
+                            Responder a Estudiante
+                        </h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">
+                            Tu respuesta aparecerá en el portal oficial y también podrás enviarla por WhatsApp
+                        </p>
+                    </div>
+                </div>
+                <button id="feedbackReplyCloseBtn" class="lightbox-close-btn" style="position: static;" aria-label="Cerrar">&times;</button>
+            </div>
+
+            <div style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+                <!-- Student original comment quote -->
+                <div style="background: rgba(255,255,255,0.04); border-left: 3px solid var(--accent-color); padding: 12px 14px; border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <strong id="modalFbStudentName" style="color: var(--text-primary); font-size: 0.88rem;">Estudiante</strong>
+                        <span id="modalFbCategory" class="mag-badge" style="font-size: 0.7rem;">Sugerencia</span>
+                    </div>
+                    <div id="modalFbStudentMessage" style="font-size: 0.85rem; color: var(--text-secondary); font-style: italic;">"Comentario..."</div>
+                </div>
+
+                <!-- Fast Preset Responses -->
+                <div>
+                    <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 6px;">💡 Respuestas Rápidas Sugeridas:</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px;" id="feedbackQuickPresets">
+                        <button type="button" class="filter-pill" style="font-size: 0.75rem;" data-preset="¡Muchas gracias por tu sugerencia! La hemos tomado en cuenta para la próxima actualización de materiales.">✨ Agradecer sugerencia</button>
+                        <button type="button" class="filter-pill" style="font-size: 0.75rem;" data-preset="Hola colega, hemos habilitado este tratado en la Biblioteca Médica Digital para tu consulta y descarga directa.">📚 Libro disponible</button>
+                        <button type="button" class="filter-pill" style="font-size: 0.75rem;" data-preset="Excelente consulta académica. Te recomendamos revisar el tema en las Clases Orientadoras y consultar con el Tutor IA para profundizar.">🩺 Guía de estudio</button>
+                    </div>
+                </div>
+
+                <!-- Admin Response Textarea -->
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Redacta la Respuesta Oficial *</label>
+                    <textarea id="feedbackReplyText" rows="4" class="search-input" style="padding: 12px; font-size: 0.88rem; resize: vertical;" placeholder="Escribe tu mensaje de retroalimentación oportuna..."></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px;">
+                    <button type="button" id="feedbackSendWaBtn" class="btn-rm-wa" style="padding: 10px 18px; font-size: 0.85rem;">
+                        📱 Enviar por WhatsApp
+                    </button>
+                    <button type="button" id="feedbackPublishReplyBtn" class="download-btn" style="padding: 10px 20px; font-size: 0.88rem;">
+                        👑 Publicar Respuesta
+                    </button>
+                </div>
             </div>
         </div>
     </div>

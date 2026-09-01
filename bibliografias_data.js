@@ -386,5 +386,65 @@ var BIBLIOGRAFIAS_DATA = [
         "size": "0.15 MB"
       }
     ]
+  },
+  {
+    "id": "netter_anatomia",
+    "title": "Atlas de Anatomía Humana",
+    "author": "Frank H. Netter, MD",
+    "category": "Anatomía Humana",
+    "edition": "4ª Edición",
+    "file": "Bibliografias/Netter – Atlas de Anatomía Humana, 4ª Edición ( PDFDrive ).pdf",
+    "size": "59.8 MB",
+    "description": "El atlas anatómico de referencia mundial. Ilustraciones magistrales y relaciones topográficas de cabeza y cuello, dorso, tórax, abdomen, pelvis y miembros con enfoque clínico.",
+    "icon": "🫀",
+    "badge": "Atlas Ilustrado"
+  },
+  {
+    "id": "saladin_anatomia_fisiologia",
+    "title": "Anatomía y Fisiología: La Unidad entre Forma y Función",
+    "author": "Kenneth S. Saladin",
+    "category": "Morfofisiología y Anatomía",
+    "edition": "6ª Edición",
+    "file": "Bibliografias/morfofisiliologia-saladin-anatomia-y-fisiologia.pdf",
+    "size": "40.4 MB",
+    "description": "Tratado integrador fundamental de la anatomía y fisiología médica. Fundamento indispensable para Morfofisiología I, II y III con esquemas histológicos, celulares y de sistemas orgánicos.",
+    "icon": "🔬",
+    "badge": "Morfofisiología Integral"
+  },
+  {
+    "id": "afifi_neuroanatomia",
+    "title": "Neuroanatomía Funcional: Texto y Atlas",
+    "author": "Adel K. Afifi, Ronald A. Bergman",
+    "category": "Neuroanatomía",
+    "edition": "2ª Edición",
+    "file": "Bibliografias/NeuroanatomIa Funcional. Texto y Atlas. Afifi.pdf",
+    "size": "29.4 MB",
+    "description": "Correlación funcional y clínica del sistema nervioso central y periférico. Aborda cortes axiales y sagitales, resonancias magnéticas, vías sensitivo-motoras y diagnóstico topográfico.",
+    "icon": "⚡",
+    "badge": "Neuroanatomía Clínica"
+  },
+  {
+    "id": "netter_neurologia",
+    "title": "Neurología Esencial de Netter",
+    "author": "Karl E. Misulis, Thomas C. Head (Ilustraciones: Frank H. Netter)",
+    "category": "Neurología Clínica",
+    "edition": "2ª Edición",
+    "file": "Bibliografias/Neurologia_Netter.pdf",
+    "size": "12.3 MB",
+    "description": "Compendio clínico ilustrado de neurología aplicada. Diagnóstico rápido, exploración neurológica y manejo terapéutico de ictus, cefaleas, epilepsia, pares craneales y trastornos neuromusculares.",
+    "icon": "🩺",
+    "badge": "Neurología Clínica"
+  },
+  {
+    "id": "fustinoni_neurologia",
+    "title": "Semiología del Sistema Nervioso (Fustinoni)",
+    "author": "Osvaldo Fustinoni, J. C. Fustinoni",
+    "category": "Semiología y Neurología",
+    "edition": "14ª Edición",
+    "file": "Bibliografias/Fustinoni.pdf",
+    "size": "55.3 MB",
+    "description": "Obra cumbre de la exploración clínica y semiológica del sistema nervioso. Examen minucioso de pares craneales, motilidad, taxia, tono, sensibilidad, reflejos y síndromes neurológicos clásicos.",
+    "icon": "🧠",
+    "badge": "Semiología Neurológica"
   }
 ];

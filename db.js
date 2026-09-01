@@ -277,6 +277,143 @@ async function db_trackNote(email, entry) {
 }
 
 // ============================================================
+//  FEEDBACK & COMUNICACIÓN CON USUARIOS
+// ============================================================
+
+/**
+ * Obtener todos los comentarios y feedbacks
+ * @returns {Promise<Array>}
+ */
+async function db_getAllFeedback() {
+    try {
+        const q = query(collection(db, "feedbacks"), orderBy("createdAt", "desc"), limit(150));
+        const snap = await getDocs(q);
+        const list = [];
+        snap.forEach(docSnap => {
+            list.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        if (list.length > 0) {
+            localStorage.setItem("morfo_feedbacks_cache", JSON.stringify(list));
+            return list;
+        }
+    } catch (err) {
+        console.warn("[Morfo DB] db_getAllFeedback fallback to local cache:", err);
+    }
+    const cached = localStorage.getItem("morfo_feedbacks_cache");
+    return cached ? JSON.parse(cached) : [];
+}
+
+/**
+ * Crear un nuevo comentario de feedback
+ * @param {Object} data
+ * @returns {Promise<Object>}
+ */
+async function db_addFeedback(data) {
+    const feedbackDoc = {
+        name: data.name || "Estudiante Anónimo",
+        email: (data.email || "").toLowerCase(),
+        course: data.course || "2do Año",
+        category: data.category || "sugerencia", // sugerencia, felicitacion, duda, error, material
+        rating: Number(data.rating) || 5,
+        message: data.message || "",
+        isPublic: data.isPublic !== false,
+        status: "pending", // pending, replied
+        reply: null,
+        replyBy: null,
+        repliedAt: null,
+        createdAt: new Date().toISOString()
+    };
+
+    try {
+        const colRef = collection(db, "feedbacks");
+        const docRef = doc(colRef);
+        await setDoc(docRef, { ...feedbackDoc, createdAt: serverTimestamp() });
+        feedbackDoc.id = docRef.id;
+    } catch (err) {
+        console.warn("[Morfo DB] db_addFeedback online error, saving local:", err);
+        feedbackDoc.id = "fb_" + Date.now();
+    }
+
+    // Actualizar cache local
+    const cached = JSON.parse(localStorage.getItem("morfo_feedbacks_cache") || "[]");
+    cached.unshift(feedbackDoc);
+    localStorage.setItem("morfo_feedbacks_cache", JSON.stringify(cached));
+    return feedbackDoc;
+}
+
+/**
+ * Responder oportunamente a un comentario de feedback (Superusuario)
+ * @param {string} feedbackId
+ * @param {string} replyText
+ * @param {string} adminName
+ * @returns {Promise<void>}
+ */
+async function db_replyToFeedback(feedbackId, replyText, adminName = "Prof. Leonardo Morales (Docente / Superusuario)") {
+    const replyData = {
+        reply: replyText,
+        replyBy: adminName,
+        repliedAt: new Date().toISOString(),
+        status: "replied"
+    };
+
+    try {
+        const docRef = doc(db, "feedbacks", feedbackId);
+        await updateDoc(docRef, { ...replyData, repliedAt: serverTimestamp() });
+    } catch (err) {
+        console.warn("[Morfo DB] db_replyToFeedback error, updating local cache:", err);
+    }
+
+    // Actualizar cache local
+    const cached = JSON.parse(localStorage.getItem("morfo_feedbacks_cache") || "[]");
+    const item = cached.find(f => f.id === feedbackId);
+    if (item) {
+        item.reply = replyText;
+        item.replyBy = adminName;
+        item.repliedAt = replyData.repliedAt;
+        item.status = "replied";
+        localStorage.setItem("morfo_feedbacks_cache", JSON.stringify(cached));
+    }
+}
+
+/**
+ * Alternar visibilidad pública de un comentario
+ * @param {string} feedbackId
+ * @param {boolean} isPublic
+ * @returns {Promise<void>}
+ */
+async function db_toggleFeedbackVisibility(feedbackId, isPublic) {
+    try {
+        const docRef = doc(db, "feedbacks", feedbackId);
+        await updateDoc(docRef, { isPublic });
+    } catch (err) {
+        console.warn("[Morfo DB] db_toggleFeedbackVisibility error:", err);
+    }
+    const cached = JSON.parse(localStorage.getItem("morfo_feedbacks_cache") || "[]");
+    const item = cached.find(f => f.id === feedbackId);
+    if (item) {
+        item.isPublic = isPublic;
+        localStorage.setItem("morfo_feedbacks_cache", JSON.stringify(cached));
+    }
+}
+
+/**
+ * Eliminar un comentario de feedback
+ * @param {string} feedbackId
+ * @returns {Promise<void>}
+ */
+async function db_deleteFeedback(feedbackId) {
+    try {
+        const docRef = doc(db, "feedbacks", feedbackId);
+        await deleteDoc(docRef);
+    } catch (err) {
+        console.warn("[Morfo DB] db_deleteFeedback error:", err);
+    }
+    let cached = JSON.parse(localStorage.getItem("morfo_feedbacks_cache") || "[]");
+    cached = cached.filter(f => f.id !== feedbackId);
+    localStorage.setItem("morfo_feedbacks_cache", JSON.stringify(cached));
+}
+
+// ============================================================
 //  SUPERUSUARIO INICIAL (seed si no existe)
 // ============================================================
 async function db_ensureSuperuser() {
@@ -317,5 +454,10 @@ export {
     db_trackDownload,
     db_trackAiChat,
     db_trackNote,
-    db_ensureSuperuser
+    db_ensureSuperuser,
+    db_getAllFeedback,
+    db_addFeedback,
+    db_replyToFeedback,
+    db_toggleFeedbackVisibility,
+    db_deleteFeedback
 };

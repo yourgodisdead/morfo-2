@@ -1390,9 +1390,12 @@ body {
         font-size: 0.82rem !important;
     }
 
-    .ai-tutor-fab {
-        bottom: 20px !important;
+    #aiTutorWidget {
+        bottom: 82px !important;
         right: 16px !important;
+    }
+
+    .ai-tutor-fab {
         padding: 10px 16px !important;
         font-size: 0.85rem !important;
     }
@@ -2525,7 +2528,7 @@ body {
 
 #aiTutorWidget {
     position: fixed;
-    bottom: 28px;
+    bottom: 92px;
     right: 28px;
     z-index: 1000;
 }

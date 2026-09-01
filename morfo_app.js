@@ -16,7 +16,7 @@ import {
     db_trackNote,
     db_ensureSuperuser
 } from "./db.js";
-import { getAiTutorResponse } from "./ai_tutor_engine.js";
+import { getAiTutorResponse } from "./ai_tutor_engine.js?v=20260901_1615";
 
 document.addEventListener("DOMContentLoaded", async function() {
     // Ensure superuser exists in Firestore
@@ -2198,8 +2198,16 @@ document.addEventListener("DOMContentLoaded", async function() {
                 e.preventDefault();
                 const email = loginEmail.value.trim();
                 const pass = loginPassword.value;
+                const submitBtn = loginForm.querySelector("button[type='submit']");
+                const originalBtnText = submitBtn ? submitBtn.textContent : "Ingresar";
 
                 try {
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = "⏳ Verificando credenciales...";
+                    }
+                    if (loginError) loginError.style.display = "none";
+
                     const user = await db_login(email, pass);
                     
                     // Create dynamic session token
@@ -2234,6 +2242,11 @@ document.addEventListener("DOMContentLoaded", async function() {
                     console.error("Login error:", err);
                     loginError.style.display = "block";
                     loginError.textContent = err.message || "Credenciales incorrectas";
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                    }
                 }
             });
         }

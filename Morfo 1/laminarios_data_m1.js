@@ -1277,6 +1277,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Columna Vertebral y Tórax",
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 12/orien416.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 16DIA.pdf",
     "description": "Vértebras, articulaciones de la columna y caja torácica.",
     "topics": [
       "Columna vertebral",
@@ -1291,6 +1292,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Huesos de los Miembros",
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 13/orien417.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 17DIA.pdf",
     "description": "Esqueleto apendicular superior e inferior.",
     "topics": [
       "Miembro superior",
@@ -1305,6 +1307,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Músculo Esquelético General",
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 14/orien418.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 18DIA.pdf",
     "description": "Características morfofuncionales de los músculos esqueléticos.",
     "topics": [
       "Musculatura",
@@ -1319,6 +1322,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Músculos de Cabeza y Cuello",
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 14/orien419.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 19DIA.pdf",
     "description": "Músculos de la mímica, masticatorios y del cuello.",
     "topics": [
       "Músculos faciales",
@@ -1333,6 +1337,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Músculos del Tronco",
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 15/orien420.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 20DIA.pdf",
     "description": "Músculos del dorso, tórax, abdomen y diafragma.",
     "topics": [
       "Dorso",
@@ -1347,6 +1352,7 @@ var CLASES_ORIENTADORAS_M1 = [
     "title": "Músculos de los Miembros",
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 15/orien421.pdf",
+    "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 21DIA.pdf",
     "description": "Músculos del miembro superior e inferior.",
     "topics": [
       "Miembro superior",

@@ -80,12 +80,18 @@
                 <button type="submit" class="download-btn" style="justify-content: center; margin-top: 6px; width: 100%;">Ingresar</button>
             </form>
 
-            <!-- REGISTRATION CALL-TO-ACTION -->
+            <!-- REGISTRATION CALL-TO-ACTION & SUPPORT -->
             <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color); text-align: center;">
                 <span style="font-size: 0.84rem; color: var(--text-secondary);">¿No tienes una cuenta aún?</span>
                 <button type="button" id="showRegisterCardBtn" class="download-btn" style="margin-top: 10px; width: 100%; justify-content: center; background: rgba(var(--accent-color-rgb), 0.12); border: 1px solid var(--accent-color); color: var(--accent-hover); font-weight: 600; font-size: 0.88rem;">
                     ✍️ Inscribirse en el Portal
                 </button>
+                <div style="margin-top: 14px;">
+                    <a href="https://wa.me/584129031966?text=Hola%20profesor%20Leonardo%2C%20necesito%20soporte%20t%C3%A9cnico%20para%20ingresar%20al%20Portal%20Morfo." target="_blank" rel="noopener noreferrer" class="whatsapp-support-login-link" title="Contactar soporte por WhatsApp">
+                        <span class="wa-status-dot"></span>
+                        <span>💬 Soporte Técnico WhatsApp (+58 412 9031966)</span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -280,6 +286,15 @@
         </nav>
 
         <div class="sidebar-footer">
+            <!-- Technical support WhatsApp button -->
+            <a href="https://wa.me/584129031966?text=Hola%20profesor%20Leonardo%2C%20necesito%20soporte%20t%C3%A9cnico%20en%20el%20Portal%20Morfo." target="_blank" rel="noopener noreferrer" class="sidebar-support-btn" id="sidebarSupportBtn" title="Contactar Soporte Técnico vía WhatsApp">
+                <span class="support-icon-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.27-2.42 5.82a8.173 8.173 0 0 1-5.82 2.42c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.174 8.174 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24m4.51 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.19 3.7 2.46 1.07 2.46.71 2.91.67.44-.04 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
+                </span>
+                <span class="support-btn-text">Soporte WhatsApp</span>
+                <span class="support-status-dot" title="En línea"></span>
+            </a>
+
             <!-- Theme toggle button -->
             <button class="theme-toggle-btn" id="themeToggleBtn">
                 <span class="theme-icon"></span>
@@ -1194,6 +1209,17 @@
             </div>
         </div>
     </div>
+
+    <!-- FLOATING WHATSAPP TECHNICAL SUPPORT BUTTON -->
+    <aside class="whatsapp-floating-widget" id="whatsappFloatingWidget">
+        <a href="https://wa.me/584129031966?text=Hola%20profesor%20Leonardo%2C%20necesito%20soporte%20t%C3%A9cnico%20en%20el%20Portal%20Morfo." target="_blank" rel="noopener noreferrer" class="whatsapp-floating-btn" id="whatsappFloatingBtn" title="Contactar Soporte Técnico vía WhatsApp (+58 412 9031966)" aria-label="Soporte Técnico WhatsApp">
+            <span class="wa-fab-icon">
+                <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.27-2.42 5.82a8.173 8.173 0 0 1-5.82 2.42c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.174 8.174 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24m4.51 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.19 3.7 2.46 1.07 2.46.71 2.91.67.44-.04 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
+            </span>
+            <span class="wa-fab-label">Soporte WhatsApp</span>
+            <span class="wa-fab-pulse"></span>
+        </a>
+    </aside>
 
 </body>
 </html>

@@ -1997,7 +1997,7 @@ body {
 
 #aiTutorWidget {
     position: fixed;
-    bottom: 92px;
+    bottom: 28px;
     right: 28px;
     z-index: 1000;
 }
@@ -2673,7 +2673,7 @@ body {
 
 @media (max-width: 768px) {
     #aiTutorWidget {
-        bottom: 82px !important;
+        bottom: 20px !important;
         right: 16px !important;
     }
 

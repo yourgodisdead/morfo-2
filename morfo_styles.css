@@ -1391,7 +1391,7 @@ body {
     }
 
     #aiTutorWidget {
-        bottom: 82px !important;
+        bottom: 20px !important;
         right: 16px !important;
     }
 
@@ -2528,7 +2528,7 @@ body {
 
 #aiTutorWidget {
     position: fixed;
-    bottom: 92px;
+    bottom: 28px;
     right: 28px;
     z-index: 1000;
 }

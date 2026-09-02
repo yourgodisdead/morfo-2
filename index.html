@@ -104,8 +104,16 @@
                 </div>
             </div>
             <h2 style="font-family: var(--font-heading); font-weight: 700; text-align: center; margin-bottom: 4px; font-size: 1.25rem;">Inscripción de Estudiante</h2>
-            <p style="text-align: center; color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 16px;">Crea tu cuenta para acceder a Morfo I, II y III, bibliotecas, laminarios y tutor IA.</p>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.82rem; margin-bottom: 12px;">Crea tu cuenta para acceder a Morfo I, II y III, bibliotecas, laminarios y tutor IA.</p>
             
+            <!-- VIP PROMO CALLOUT -->
+            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(217, 119, 6, 0.08)); border: 1px solid rgba(245, 158, 11, 0.45); border-radius: var(--border-radius-sm); padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.5rem; flex-shrink: 0;" class="vip-crown-icon">👑</span>
+                <div style="font-size: 0.82rem; line-height: 1.35; color: #fbbf24;">
+                    <strong>¡Promo Activa!</strong> Los primeros <strong>100 estudiantes</strong> en registrarse reciben su <strong>Pase VIP Automático</strong> de por vida.
+                </div>
+            </div>
+
             <form id="selfRegisterForm" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 11px;">
                 <div style="display: flex; flex-direction: column; gap: 4px;">
                     <label for="selfRegName" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Nombre y Apellido *</label>
@@ -320,6 +328,57 @@
 
         <!-- SECTION: INICIO / PORTADA -->
         <section class="content-section active" id="inicioSection">
+
+            <!-- NOTICIA & PROMO VIP: PRIMEROS 100 ESTUDIANTES -->
+            <div class="vip-promo-news-banner" id="vipPromoNewsBanner">
+                <div class="vip-promo-banner-glow"></div>
+                <div class="vip-promo-banner-content">
+                    <div class="vip-promo-badge-group">
+                        <span class="vip-promo-tag">
+                            <span class="pulse-dot"></span> 📢 NOTICIA DE LANZAMIENTO
+                        </span>
+                        <span class="vip-promo-status-badge" id="vipPromoStatusBadge">
+                            <span class="vip-crown-icon">👑</span> Promoción VIP Activa
+                        </span>
+                    </div>
+
+                    <div class="vip-promo-info-row">
+                        <div class="vip-promo-text-col">
+                            <h2 class="vip-promo-title">
+                                ¡Pases VIP de por vida a los primeros 100 estudiantes en registrarse!
+                            </h2>
+                            <p class="vip-promo-desc">
+                                Celebramos la apertura de la plataforma. Todos los primeros 100 estudiantes inscritos obtienen <strong>acceso VIP completo</strong>: clases orientadoras completas, diapositivas y guías descargables, biblioteca médica oficial y tutor IA ilimitado.
+                            </p>
+                        </div>
+
+                        <div class="vip-promo-stats-box" id="vipPromoStatsBox">
+                            <div class="vip-promo-quota-number">
+                                <span id="vipPromoCountDisplay">0</span><span class="vip-quota-total">/100</span>
+                            </div>
+                            <div class="vip-promo-quota-label">Pases VIP Asignados</div>
+                            <div class="vip-promo-progress-track">
+                                <div class="vip-promo-progress-fill" id="vipPromoProgressBar" style="width: 0%;"></div>
+                            </div>
+                            <div class="vip-promo-remaining-text" id="vipPromoRemainingText">
+                                Calculando cupos disponibles...
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vip-promo-footer-actions">
+                        <div class="vip-promo-perks">
+                            <span class="perk-item">🎬 Clases Orientadoras Full</span>
+                            <span class="perk-item">📥 Descargas Ilimitadas</span>
+                            <span class="perk-item">📖 Biblioteca Médica 3D</span>
+                            <span class="perk-item">🤖 Tutor IA Morfofisiología</span>
+                        </div>
+                        <div class="vip-promo-action-btns" id="vipPromoActionBtns">
+                            <!-- Injected dynamically based on auth state -->
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- MEDICAL LIBRARY 3D BOOKS CAROUSEL -->
             <div class="library-carousel-section" id="inicioBooksCarousel">
@@ -813,6 +872,63 @@
                 <h2 class="hero-title">Centro de Gestión y Mapa GIS Geoespacial</h2>
                 <p class="hero-subtitle">Visualiza la distribución geográfica de los estudiantes en Venezuela, audita su actividad de navegación y registra nuevos usuarios en la plataforma.</p>
             </header>
+
+            <!-- VIP PROMO STATS DASHBOARD (SUPERUSER WIDGET) -->
+            <div class="card vip-admin-promo-widget" id="adminVipPromoWidget" style="padding: 24px 28px; margin-bottom: 28px; border: 1px solid rgba(245, 158, 11, 0.45); background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(0,0,0,0.45)); position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%); pointer-events: none;"></div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 18px; border-bottom: 1px solid rgba(245, 158, 11, 0.2); padding-bottom: 14px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 1.5rem;" class="vip-crown-icon">👑</span>
+                            <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: #fbbf24; margin: 0;">
+                                Promoción Pases VIP: Primeros 100 Estudiantes
+                            </h3>
+                            <span class="vip-badge active" id="adminVipPromoStatusBadge">ACTIVA</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+                            Auditoría y control de cupos de la promoción de lanzamiento: asignación automática para los primeros 100 estudiantes registrados.
+                        </p>
+                    </div>
+                    <button type="button" class="btn-toggle-vip grant" id="btnSyncAllVip" style="padding: 8px 16px; font-size: 0.82rem; border-radius: var(--border-radius-sm); cursor: pointer;">
+                        <span>🔄</span> Sincronizar VIPs (Primeros 100)
+                    </button>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--border-radius-sm); padding: 16px; text-align: center;">
+                        <span style="font-size: 0.78rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Pases VIP Asignados</span>
+                        <div id="adminVipPromoClaimed" style="font-size: 2rem; font-weight: 900; color: #fbbf24; font-family: var(--font-heading); margin-top: 4px;">0 / 100</div>
+                        <span style="font-size: 0.72rem; color: var(--text-muted);">de la cuota promocional</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--border-radius-sm); padding: 16px; text-align: center;">
+                        <span style="font-size: 0.78rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Cupos VIP Restantes</span>
+                        <div id="adminVipPromoRemaining" style="font-size: 2rem; font-weight: 900; color: #10b981; font-family: var(--font-heading); margin-top: 4px;">100</div>
+                        <span style="font-size: 0.72rem; color: var(--text-muted);">cupos disponibles</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--border-radius-sm); padding: 16px; text-align: center;">
+                        <span style="font-size: 0.78rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Porcentaje de Meta</span>
+                        <div id="adminVipPromoPercent" style="font-size: 2rem; font-weight: 900; color: #3b82f6; font-family: var(--font-heading); margin-top: 4px;">0%</div>
+                        <span style="font-size: 0.72rem; color: var(--text-muted);">alcance de los 100 pases</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--border-radius-sm); padding: 16px; text-align: center;">
+                        <span style="font-size: 0.78rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Total Estudiantes VIP</span>
+                        <div id="adminVipTotalStudents" style="font-size: 2rem; font-weight: 900; color: var(--text-primary); font-family: var(--font-heading); margin-top: 4px;">0</div>
+                        <span style="font-size: 0.72rem; color: var(--text-muted);">con insignia activa</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar & Status Line -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">
+                        <span>Progreso de Asignación Automática</span>
+                        <span id="adminVipProgressLabel" style="color: #fbbf24;">0 de 100 pases VIP asignados</span>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.1); height: 12px; border-radius: 6px; overflow: hidden; position: relative;">
+                        <div id="adminVipProgressBar" style="background: linear-gradient(90deg, #f59e0b, #fbbf24); height: 100%; width: 0%; border-radius: 6px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Top Stats Cards -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 32px;">

@@ -68,7 +68,7 @@ async function db_getUserByEmail(email) {
 }
 
 /**
- * Crear un nuevo usuario en Firestore (desde el panel del superusuario)
+ * Crear un nuevo usuario en Firestore (desde el panel del superusuario o auto-registro)
  * @param {Object} userData - datos del nuevo usuario
  * @returns {Promise<void>}
  */
@@ -76,7 +76,22 @@ async function db_createUser(userData) {
     // Strict: role siempre "usuario" salvo que sea el superusuario
     const isSuper = userData.email.toLowerCase() === "lams210488@gmail.com";
     const safeRole = isSuper ? "superuser" : (userData.role === "superuser" ? "usuario" : (userData.role || "usuario"));
-    const isVip = isSuper ? true : (userData.isVip === true);
+    
+    // Promoción de Lanzamiento: Primeros 100 estudiantes obtienen Pase VIP automático
+    let isVip = isSuper ? true : (userData.isVip === true);
+    if (!isSuper && !isVip) {
+        try {
+            const allUsers = await db_getAllUsers();
+            const studentCount = allUsers.filter(u => u.email.toLowerCase() !== "lams210488@gmail.com" && u.role !== "superuser").length;
+            if (studentCount < 100) {
+                isVip = true;
+            }
+        } catch (err) {
+            console.warn("[Morfo DB] Error al verificar cupo de promoción VIP:", err);
+            isVip = true; // Ante cualquier eventualidad, asegurar beneficio al estudiante
+        }
+    }
+
     const userDoc = {
         name: userData.name || "",
         phone: userData.phone || "",
@@ -414,6 +429,98 @@ async function db_deleteFeedback(feedbackId) {
 }
 
 // ============================================================
+//  VIP PROMO & ACCESS SYNCHRONIZATION (PRIMEROS 100 USUARIOS)
+// ============================================================
+
+/**
+ * Asegurar que todos los estudiantes registrados (hasta los primeros 100) tengan VIP activo
+ * @returns {Promise<Object>} Resumen de sincronización
+ */
+async function db_syncVipForFirst100Users() {
+    try {
+        const allUsers = await db_getAllUsers();
+        const students = allUsers.filter(u => u.email.toLowerCase() !== "lams210488@gmail.com" && u.role !== "superuser");
+        
+        // Ordenar estudiantes por fecha de creación ascendente
+        students.sort((a, b) => {
+            const dateA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : (a.createdAt ? new Date(a.createdAt).getTime() : 0);
+            const dateB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : (b.createdAt ? new Date(b.createdAt).getTime() : 0);
+            return dateA - dateB;
+        });
+
+        // Los primeros 100 estudiantes califican para el Pase VIP promocional
+        const first100 = students.slice(0, 100);
+        let updatedCount = 0;
+
+        for (const student of first100) {
+            if (student.isVip !== true) {
+                try {
+                    await db_updateUser(student.email, { isVip: true });
+                    student.isVip = true;
+                    updatedCount++;
+                } catch (err) {
+                    console.warn(`[Morfo DB] Error al otorgar VIP a ${student.email}:`, err);
+                }
+            }
+        }
+
+        if (updatedCount > 0) {
+            console.log(`[VIP Promo] Se activó automáticamente el Pase VIP a ${updatedCount} estudiantes ya registrados.`);
+        }
+
+        const currentVipCount = students.filter(s => s.isVip === true).length;
+        return {
+            totalStudents: students.length,
+            vipStudents: currentVipCount,
+            first100Count: first100.length,
+            updatedCount: updatedCount,
+            promoLimit: 100,
+            promoRemaining: Math.max(0, 100 - first100.length)
+        };
+    } catch (err) {
+        console.warn("[Morfo DB] Error al sincronizar VIPs para primeros 100:", err);
+        return null;
+    }
+}
+
+/**
+ * Obtener estadísticas globales de la promoción de los primeros 100 pases VIP
+ * @returns {Promise<Object>}
+ */
+async function db_getVipPromoStats() {
+    try {
+        const allUsers = await db_getAllUsers();
+        const students = allUsers.filter(u => u.email.toLowerCase() !== "lams210488@gmail.com" && u.role !== "superuser");
+        const vipStudents = students.filter(s => s.isVip === true);
+        const promoLimit = 100;
+        const promoClaimed = Math.min(promoLimit, students.length);
+        const promoRemaining = Math.max(0, promoLimit - promoClaimed);
+        const promoPercent = Math.min(100, Math.round((promoClaimed / promoLimit) * 100));
+
+        return {
+            totalStudents: students.length,
+            vipStudentsCount: vipStudents.length,
+            promoLimit: promoLimit,
+            promoClaimed: promoClaimed,
+            promoRemaining: promoRemaining,
+            promoPercent: promoPercent,
+            isPromoActive: promoRemaining > 0
+        };
+    } catch (err) {
+        console.warn("[Morfo DB] Error al obtener estadísticas VIP Promo:", err);
+        return {
+            totalStudents: 0,
+            vipStudentsCount: 0,
+            promoLimit: 100,
+            promoClaimed: 0,
+            promoRemaining: 100,
+            promoPercent: 0,
+            isPromoActive: true
+        };
+    }
+}
+
+// ============================================================
 //  SUPERUSUARIO INICIAL (seed si no existe)
 // ============================================================
 async function db_ensureSuperuser() {
@@ -436,6 +543,13 @@ async function db_ensureSuperuser() {
     } else if (existing.isVip !== true) {
         await db_updateUser(superEmail, { isVip: true });
     }
+
+    // Sincronizar automáticamente el beneficio VIP para los usuarios registrados
+    try {
+        await db_syncVipForFirst100Users();
+    } catch (e) {
+        console.warn("[Morfo DB] Sync VIP promo warning:", e);
+    }
 }
 
 // Exportar funciones
@@ -455,6 +569,8 @@ export {
     db_trackAiChat,
     db_trackNote,
     db_ensureSuperuser,
+    db_syncVipForFirst100Users,
+    db_getVipPromoStats,
     db_getAllFeedback,
     db_addFeedback,
     db_replyToFeedback,

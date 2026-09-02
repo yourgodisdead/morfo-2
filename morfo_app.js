@@ -15,6 +15,8 @@ import {
     db_trackAiChat,
     db_trackNote,
     db_ensureSuperuser,
+    db_syncVipForFirst100Users,
+    db_getVipPromoStats,
     db_getAllFeedback,
     db_addFeedback,
     db_replyToFeedback,
@@ -24,8 +26,13 @@ import {
 import { getAiTutorResponse } from "./ai_tutor_engine.js?v=20260901_1615";
 
 document.addEventListener("DOMContentLoaded", async function() {
-    // Ensure superuser exists in Firestore
-    try { await db_ensureSuperuser(); } catch(e) { console.warn("db_ensureSuperuser:", e); }
+    // Ensure superuser exists and synchronize VIP promo
+    try { 
+        await db_ensureSuperuser(); 
+        updateInicioPromoBanner();
+    } catch(e) { 
+        console.warn("db_ensureSuperuser:", e); 
+    }
 
     // Venezuela 24 Federal Entities Geographic Data for Leaflet GIS Map
     const VENEZUELA_STATES_DATA = {
@@ -121,6 +128,83 @@ document.addEventListener("DOMContentLoaded", async function() {
     function closeVipPaywallModal() {
         const modal = document.getElementById("vipPaywallModal");
         if (modal) modal.style.display = "none";
+    }
+
+    async function updateInicioPromoBanner() {
+        const banner = document.getElementById("vipPromoNewsBanner");
+        if (!banner) return;
+
+        try {
+            const stats = await db_getVipPromoStats();
+            const countDisplay = document.getElementById("vipPromoCountDisplay");
+            const progressBar = document.getElementById("vipPromoProgressBar");
+            const remainingText = document.getElementById("vipPromoRemainingText");
+            const actionBtns = document.getElementById("vipPromoActionBtns");
+            const statusBadge = document.getElementById("vipPromoStatusBadge");
+
+            if (countDisplay) countDisplay.textContent = stats.promoClaimed;
+            if (progressBar) progressBar.style.width = `${stats.promoPercent}%`;
+
+            if (remainingText) {
+                if (stats.promoRemaining > 0) {
+                    remainingText.innerHTML = `⚡ <strong>¡Solo quedan ${stats.promoRemaining} cupos VIP disponibles!</strong>`;
+                    remainingText.style.color = "#10b981";
+                } else {
+                    remainingText.innerHTML = `🎉 <strong>¡Meta de 100 cupos promocionales completada!</strong>`;
+                    remainingText.style.color = "#fbbf24";
+                }
+            }
+
+            if (statusBadge) {
+                statusBadge.innerHTML = stats.promoRemaining > 0 
+                    ? `<span class="vip-crown-icon">👑</span> Promoción VIP Activa (${stats.promoRemaining} cupos)`
+                    : `<span class="vip-crown-icon">👑</span> 100 Pases VIP Asignados`;
+            }
+
+            if (actionBtns) {
+                if (!state.currentUser) {
+                    actionBtns.innerHTML = `
+                        <button type="button" class="vip-promo-btn" id="btnBannerRegister">
+                            <span>🚀</span> Inscríbete y Asegura tu Pase VIP
+                        </button>
+                    `;
+                    const btnReg = document.getElementById("btnBannerRegister");
+                    if (btnReg) {
+                        btnReg.addEventListener("click", () => {
+                            const overlay = document.getElementById("loginOverlay");
+                            const loginCard = document.getElementById("loginCard");
+                            const regCard = document.getElementById("registerCard");
+                            if (overlay) overlay.classList.add("active");
+                            if (loginCard) loginCard.style.display = "none";
+                            if (regCard) regCard.style.display = "block";
+                        });
+                    }
+                } else {
+                    const isVip = isUserVip();
+                    if (isVip) {
+                        actionBtns.innerHTML = `
+                            <div class="vip-promo-active-user-badge">
+                                <span>👑</span> Tienes tu Pase VIP Activo
+                            </div>
+                        `;
+                    } else {
+                        actionBtns.innerHTML = `
+                            <button type="button" class="vip-promo-btn" id="btnBannerClaimVip">
+                                <span>⚡</span> Solicitar Pase VIP
+                            </button>
+                        `;
+                        const btnClaim = document.getElementById("btnBannerClaimVip");
+                        if (btnClaim) {
+                            btnClaim.addEventListener("click", () => {
+                                showVipPaywallModal("tu Pase VIP Promocional");
+                            });
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn("[VIP Promo Banner] Error updating banner:", err);
+        }
     }
 
     // DOM Elements
@@ -2332,6 +2416,9 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         // Complete Profile check
         checkProfileCompleteness();
+
+        // Update VIP Promo Banner in Inicio section
+        updateInicioPromoBanner();
     }
 
     if (logoutBtn) {
@@ -2733,7 +2820,64 @@ document.addEventListener("DOMContentLoaded", async function() {
         try {
             const users = await db_getAllUsers();
             
-            // Calculate Stats Cards
+            // Calculate VIP Promo Statistics (Primeros 100 Estudiantes)
+            const students = (users || []).filter(u => u.email.toLowerCase() !== "lams210488@gmail.com" && u.role !== "superuser");
+            const vipStudents = students.filter(u => u.isVip === true);
+            const promoLimit = 100;
+            const promoClaimed = Math.min(promoLimit, students.length);
+            const promoRemaining = Math.max(0, promoLimit - promoClaimed);
+            const promoPercent = Math.min(100, Math.round((promoClaimed / promoLimit) * 100));
+
+            const adminClaimedEl = document.getElementById("adminVipPromoClaimed");
+            const adminRemainingEl = document.getElementById("adminVipPromoRemaining");
+            const adminPercentEl = document.getElementById("adminVipPromoPercent");
+            const adminTotalEl = document.getElementById("adminVipTotalStudents");
+            const adminLabelEl = document.getElementById("adminVipProgressLabel");
+            const adminBarEl = document.getElementById("adminVipProgressBar");
+            const adminStatusBadge = document.getElementById("adminVipPromoStatusBadge");
+
+            if (adminClaimedEl) adminClaimedEl.textContent = `${promoClaimed} / 100`;
+            if (adminRemainingEl) adminRemainingEl.textContent = `${promoRemaining}`;
+            if (adminPercentEl) adminPercentEl.textContent = `${promoPercent}%`;
+            if (adminTotalEl) adminTotalEl.textContent = `${vipStudents.length}`;
+            if (adminLabelEl) adminLabelEl.textContent = `${promoClaimed} de 100 pases VIP asignados (${promoRemaining} cupos disponibles)`;
+            if (adminBarEl) adminBarEl.style.width = `${promoPercent}%`;
+            if (adminStatusBadge) {
+                if (promoRemaining > 0) {
+                    adminStatusBadge.className = "vip-badge active";
+                    adminStatusBadge.textContent = `ACTIVA (${promoRemaining} DISPONIBLES)`;
+                } else {
+                    adminStatusBadge.className = "vip-badge active";
+                    adminStatusBadge.textContent = "COMPLETADA (100/100)";
+                }
+            }
+
+            // Bind Sync VIPs button
+            const btnSyncAllVip = document.getElementById("btnSyncAllVip");
+            if (btnSyncAllVip && !btnSyncAllVip.dataset.listenerBound) {
+                btnSyncAllVip.dataset.listenerBound = "true";
+                btnSyncAllVip.addEventListener("click", async () => {
+                    btnSyncAllVip.disabled = true;
+                    const originalText = btnSyncAllVip.innerHTML;
+                    btnSyncAllVip.innerHTML = "<span>⏳</span> Sincronizando...";
+                    try {
+                        const res = await db_syncVipForFirst100Users();
+                        if (res) {
+                            alert(`✅ Sincronización VIP completada.\n\n• Total estudiantes: ${res.totalStudents}\n• Estudiantes con VIP activo: ${res.vipStudents}\n• Actualizados en este proceso: ${res.updatedCount}\n• Cupos restantes de la promo: ${res.promoRemaining}`);
+                        }
+                        await renderAdmin();
+                        await updateInicioPromoBanner();
+                    } catch (err) {
+                        console.error("Error sincronizando VIPs:", err);
+                        alert("Error al sincronizar los Pases VIP.");
+                    } finally {
+                        btnSyncAllVip.disabled = false;
+                        btnSyncAllVip.innerHTML = originalText;
+                    }
+                });
+            }
+
+            // Calculate General Stats Cards
             document.getElementById("adminUserCount").textContent = users.length;
             
             const statesSet = new Set(users.map(u => u.stateOrigin).filter(Boolean));

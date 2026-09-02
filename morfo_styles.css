@@ -4604,4 +4604,276 @@ body {
     box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
 }
 
+/* ============================================================
+   VIP PROMOTION NEWS BANNER & ADMIN KPI WIDGET STYLES
+   ============================================================ */
+
+.vip-promo-news-banner {
+    position: relative;
+    background: linear-gradient(135deg, rgba(28, 20, 7, 0.95), rgba(15, 23, 42, 0.95));
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    border-radius: var(--border-radius-lg);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(245, 158, 11, 0.12);
+    transition: all var(--transition-normal);
+}
+
+[data-theme="light"] .vip-promo-news-banner {
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border-color: rgba(217, 119, 6, 0.35);
+    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.12);
+}
+
+.vip-promo-banner-glow {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+    animation: vipPulseGlow 4s infinite alternate ease-in-out;
+}
+
+@keyframes vipPulseGlow {
+    0% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+    100% { transform: scale(1.2) translate(-15px, 15px); opacity: 1; }
+}
+
+.vip-promo-banner-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.vip-promo-badge-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.vip-promo-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #000000;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.vip-promo-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.5);
+    color: #fbbf24;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+[data-theme="light"] .vip-promo-status-badge {
+    background: rgba(217, 119, 6, 0.1);
+    color: #b45309;
+    border-color: rgba(217, 119, 6, 0.3);
+}
+
+.vip-promo-info-row {
+    display: grid;
+    grid-template-columns: 1fr 290px;
+    gap: 24px;
+    align-items: center;
+}
+
+@media (max-width: 900px) {
+    .vip-promo-info-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.vip-promo-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.3;
+    margin: 0 0 8px 0;
+    background: linear-gradient(135deg, #ffffff 40%, #fbbf24 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .vip-promo-title {
+    background: linear-gradient(135deg, #78350f 0%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.vip-promo-desc {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+[data-theme="light"] .vip-promo-desc {
+    color: #4b5563;
+}
+
+.vip-promo-stats-box {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--border-radius-md);
+    padding: 16px 18px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+[data-theme="light"] .vip-promo-stats-box {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(217, 119, 6, 0.25);
+}
+
+.vip-promo-quota-number {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fbbf24;
+    line-height: 1;
+}
+
+[data-theme="light"] .vip-promo-quota-number {
+    color: #d97706;
+}
+
+.vip-quota-total {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.vip-promo-quota-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.vip-promo-progress-track {
+    background: rgba(255, 255, 255, 0.1);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 4px 0;
+}
+
+[data-theme="light"] .vip-promo-progress-track {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.vip-promo-progress-fill {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vip-promo-remaining-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #10b981;
+}
+
+.vip-promo-footer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(245, 158, 11, 0.18);
+}
+
+.vip-promo-perks {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.perk-item {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+[data-theme="light"] .perk-item {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+    color: #4b5563;
+}
+
+.vip-promo-btn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #000000 !important;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 8px 18px;
+    border-radius: var(--border-radius-sm);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.vip-promo-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+}
+
+.vip-promo-active-user-badge {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #10b981;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: var(--border-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.vip-admin-promo-widget {
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+
 

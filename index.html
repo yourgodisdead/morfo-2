@@ -12,7 +12,7 @@
     <link rel="icon" href="Logo/morfo_logo.png" type="image/png">
 
     <!-- Design System Stylesheet -->
-    <link rel="stylesheet" href="morfo_styles.css?v=4">
+    <link rel="stylesheet" href="morfo_styles.css?v=20260904_0230">
 
     <!-- Leaflet GIS Mapping CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -39,10 +39,10 @@
     <script src="bibliografias_data.js?v=20260901_1615"></script>
 
     <!-- Firebase Config -->
-    <script src="firebase_config.js?v=20260901_1615"></script>
+    <script src="firebase_config.js?v=20260904_0230"></script>
 
     <!-- SPA Logic Controller (ES Module for Firebase imports) -->
-    <script type="module" src="morfo_app.js?v=20260902_2230"></script>
+    <script type="module" src="morfo_app.js?v=20260904_0230"></script>
 </head>
 <body>
 
@@ -287,6 +287,10 @@
             <a class="nav-item" data-section="perfil" id="navProfile" style="display:none;">
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
                 <span>Mi Perfil</span>
+            </a>
+            <a class="nav-item" data-section="evaluaciones" id="navEvaluaciones" style="display:none;">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                <span>Panel de Evaluaciones</span>
             </a>
             <a class="nav-item" data-section="admin" id="navAdmin" style="display:none;">
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -1187,6 +1191,124 @@
                     </table>
                 </div>
             </div>
+        </section>
+
+        <!-- SECTION: EVALUACIONES Y MÉTRICAS DE RENDIMIENTO (SUPERUSUARIO) -->
+        <section class="content-section" id="evaluacionesSection">
+            <header class="hero-banner">
+                <span class="hero-tag" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.4); color: #c4b5fd;">
+                    Panel Exclusivo Superusuario
+                </span>
+                <h2 class="hero-title">Centro de Evaluación y Métricas de Rendimiento</h2>
+                <p class="hero-subtitle">
+                    Auditoría en tiempo real del valor pedagógico, nivel de dominio y respuestas emitidas por los estudiantes en las preguntas de consolidación y tutoría.
+                </p>
+            </header>
+
+            <!-- KPI STATS CARDS -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px;">
+                <div class="card eval-kpi-card" style="padding: 22px; text-align: center; border: 1px solid rgba(139, 92, 246, 0.35); background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(0,0,0,0.4));">
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Promedio General</span>
+                    <div id="evalKpiAvgScore" style="font-size: 2.3rem; font-weight: 900; font-family: var(--font-heading); color: #a78bfa; margin: 4px 0;">--</div>
+                    <span style="font-size: 0.72rem; color: var(--text-muted);">escala de 1 a 10 puntos</span>
+                </div>
+
+                <div class="card eval-kpi-card" style="padding: 22px; text-align: center; border: 1px solid rgba(16, 185, 129, 0.35); background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(0,0,0,0.4));">
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Tasa de Excelencia (≥ 7)</span>
+                    <div id="evalKpiHighRate" style="font-size: 2.3rem; font-weight: 900; font-family: var(--font-heading); color: #34d399; margin: 4px 0;">--%</div>
+                    <span style="font-size: 0.72rem; color: var(--text-muted);" id="evalKpiHighCount">0 respuestas</span>
+                </div>
+
+                <div class="card eval-kpi-card" style="padding: 22px; text-align: center; border: 1px solid rgba(239, 68, 68, 0.35); background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(0,0,0,0.4));">
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">En Riesgo Pedagógico (&lt; 5)</span>
+                    <div id="evalKpiLowRate" style="font-size: 2.3rem; font-weight: 900; font-family: var(--font-heading); color: #f87171; margin: 4px 0;">--%</div>
+                    <span style="font-size: 0.72rem; color: var(--text-muted);" id="evalKpiLowCount">0 respuestas</span>
+                </div>
+
+                <div class="card eval-kpi-card" style="padding: 22px; text-align: center; border: 1px solid rgba(59, 130, 246, 0.35); background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(0,0,0,0.4));">
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Total Evaluaciones</span>
+                    <div id="evalKpiTotalEvals" style="font-size: 2.3rem; font-weight: 900; font-family: var(--font-heading); color: #60a5fa; margin: 4px 0;">0</div>
+                    <span style="font-size: 0.72rem; color: var(--text-muted);">respuestas auditadas</span>
+                </div>
+
+                <div class="card eval-kpi-card" style="padding: 22px; text-align: center; border: 1px solid rgba(245, 158, 11, 0.35); background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(0,0,0,0.4));">
+                    <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Alumnos Evaluados</span>
+                    <div id="evalKpiStudentsCount" style="font-size: 2.3rem; font-weight: 900; font-family: var(--font-heading); color: #fbbf24; margin: 4px 0;">0</div>
+                    <span style="font-size: 0.72rem; color: var(--text-muted);">estudiantes activos</span>
+                </div>
+            </div>
+
+            <!-- PERFORMANCE DISTRIBUTION BAR -->
+            <div class="card" style="padding: 20px 24px; margin-bottom: 28px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                    <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">Distribución de Desempeño Académico</span>
+                    <div style="display: flex; gap: 14px; font-size: 0.78rem;">
+                        <span style="display: flex; align-items: center; gap: 6px; color: #34d399;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Sobresaliente (8-10): <strong id="distribHighLabel">0%</strong></span>
+                        <span style="display: flex; align-items: center; gap: 6px; color: #fbbf24;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span> Regular (5-7): <strong id="distribMidLabel">0%</strong></span>
+                        <span style="display: flex; align-items: center; gap: 6px; color: #f87171;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display: inline-block;"></span> Requiere Refuerzo (&lt;5): <strong id="distribLowLabel">0%</strong></span>
+                    </div>
+                </div>
+                <div style="height: 14px; border-radius: 7px; background: rgba(255,255,255,0.06); display: flex; overflow: hidden; border: 1px solid var(--border-color);">
+                    <div id="distribHighBar" style="background: linear-gradient(90deg, #10b981, #059669); width: 0%; transition: width 0.6s;"></div>
+                    <div id="distribMidBar" style="background: linear-gradient(90deg, #f59e0b, #d97706); width: 0%; transition: width 0.6s;"></div>
+                    <div id="distribLowBar" style="background: linear-gradient(90deg, #ef4444, #dc2626); width: 0%; transition: width 0.6s;"></div>
+                </div>
+            </div>
+
+            <!-- STUDENTS EVALUATION DIRECTORY & AUDIT TABLE -->
+            <div class="card" style="padding: 28px; margin-bottom: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 20px;">
+                    <div>
+                        <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.3rem; color: var(--text-primary); display: flex; align-items: center; gap: 10px;">
+                            <span>📊</span> Expediente y Auditoría de Respuestas por Alumno
+                        </h3>
+                        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">
+                            Inspecciona cada respuesta enviada por los alumnos, audita la calificación pedagógica de la IA y contacta al estudiante para retroalimentación.
+                        </p>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 6px;">
+                            <button class="filter-pill active" id="evalCourseFilterAll" data-eval-course="all">Todas las Materias</button>
+                            <button class="filter-pill" id="evalCourseFilterM1" data-eval-course="morfo1">Morfo I</button>
+                            <button class="filter-pill" id="evalCourseFilterM2" data-eval-course="morfo2">Morfo II</button>
+                            <button class="filter-pill" id="evalCourseFilterM3" data-eval-course="morfo3">Morfo III</button>
+                        </div>
+                        <select id="evalGradeFilter" class="search-input" style="padding: 7px 12px; font-size: 0.82rem; min-width: 150px;">
+                            <option value="all">Todas las Notas</option>
+                            <option value="high">🌟 Excelencia (≥ 8 pts)</option>
+                            <option value="mid">⚖️ Regular (5 a 7 pts)</option>
+                            <option value="low">⚠️ Requiere Refuerzo (&lt; 5 pts)</option>
+                        </select>
+                        <input type="text" id="evalStudentSearch" class="search-input" style="padding: 7px 12px; font-size: 0.82rem; width: 170px;" placeholder="Buscar estudiante...">
+                        <button type="button" class="btn-toggle-vip grant" id="btnRefreshEvaluations" style="padding: 7px 12px; font-size: 0.8rem; border-radius: var(--border-radius-sm); cursor: pointer;" title="Recargar evaluaciones">
+                            <span>🔄</span> Actualizar
+                        </button>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto; width: 100%;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="evaluationsStudentsTable">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-secondary); font-weight: 600; font-size: 0.82rem;">
+                                <th style="padding: 10px 14px;">Estudiante</th>
+                                <th style="padding: 10px 14px;">Año / Estado</th>
+                                <th style="padding: 10px 14px; text-align: center;">Respuestas</th>
+                                <th style="padding: 10px 14px; text-align: center;">Promedio (1-10)</th>
+                                <th style="padding: 10px 14px; text-align: center;">Nivel de Dominio</th>
+                                <th style="padding: 10px 14px; text-align: center;">Última Actividad</th>
+                                <th style="padding: 10px 14px; text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="evaluationsStudentsTableBody">
+                            <!-- Javascript rendered student evaluation summary rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STUDENT EVALUATION DETAIL MODAL CONTAINER -->
+            <div id="studentEvalDetailModalWrapper"></div>
         </section>
 
     </main>

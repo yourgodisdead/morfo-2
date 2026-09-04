@@ -291,6 +291,135 @@ async function db_trackNote(email, entry) {
     }
 }
 
+/**
+ * Registrar evaluación pedagógica de una respuesta estudiantil
+ * @param {string} email
+ * @param {Object} evalData - { questionText, studentAnswer, score, course, week, verdictBadge, verdictTitle, critiqueHtml, praiseHtml, matchedKeywords, missingKeywords }
+ * @returns {Promise<Object>}
+ */
+async function db_trackEvaluation(email, evalData) {
+    const emailKey = (email || "anonimo@morfo.com").toLowerCase();
+    const evalId = "eval_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7);
+    
+    let studentName = evalData.studentName;
+    let studentPhone = evalData.studentPhone;
+    let studentYear = evalData.studentYear;
+    let stateOrigin = evalData.stateOrigin;
+    
+    const record = {
+        id: evalId,
+        studentEmail: emailKey,
+        studentName: studentName || "Estudiante",
+        studentPhone: studentPhone || "",
+        studentYear: studentYear || "Año Cursante",
+        stateOrigin: stateOrigin || "Venezuela",
+        course: evalData.course || "morfo1",
+        week: evalData.week || 1,
+        questionText: evalData.questionText || "",
+        studentAnswer: evalData.studentAnswer || "",
+        score: Number(evalData.score) || 0,
+        verdictBadge: evalData.verdictBadge || "Evaluado",
+        verdictTitle: evalData.verdictTitle || "Respuesta Evaluada",
+        critiqueHtml: evalData.critiqueHtml || "",
+        praiseHtml: evalData.praiseHtml || "",
+        matchedKeywords: evalData.matchedKeywords || [],
+        missingKeywords: evalData.missingKeywords || [],
+        createdAt: new Date().toISOString()
+    };
+
+    // 1. Guardar en users/{email}.activityLog.evaluations
+    try {
+        const userRef = doc(db, "users", emailKey);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            record.studentName = userData.name || record.studentName;
+            record.studentPhone = userData.phone || record.studentPhone;
+            record.studentYear = userData.currentYear || record.studentYear;
+            record.stateOrigin = userData.stateOrigin || record.stateOrigin;
+
+            const log = userData.activityLog || {};
+            const evals = log.evaluations || [];
+            evals.unshift(record);
+            if (evals.length > 100) evals.pop();
+            await updateDoc(userRef, { "activityLog.evaluations": evals });
+        }
+    } catch (e) {
+        console.warn("[Morfo DB] Error updating user evaluations log:", e);
+    }
+
+    // 2. Guardar en coleccion raiz "evaluations"
+    try {
+        const evalRef = doc(collection(db, "evaluations"), evalId);
+        await setDoc(evalRef, { ...record, createdAt: serverTimestamp() });
+    } catch (e) {
+        console.warn("[Morfo DB] Error saving to evaluations collection:", e);
+    }
+
+    // 3. Guardar en cache local para acceso instantaneo
+    try {
+        const cached = JSON.parse(localStorage.getItem("morfo_evaluations_cache") || "[]");
+        cached.unshift(record);
+        if (cached.length > 200) cached.pop();
+        localStorage.setItem("morfo_evaluations_cache", JSON.stringify(cached));
+    } catch (e) {
+        console.warn("[Morfo DB] Error updating local evaluations cache:", e);
+    }
+
+    return record;
+}
+
+/**
+ * Obtener todas las evaluaciones registradas en la plataforma (Superusuario)
+ * @returns {Promise<Array>}
+ */
+async function db_getAllEvaluations() {
+    let list = [];
+    try {
+        const q = query(collection(db, "evaluations"), orderBy("createdAt", "desc"), limit(250));
+        const snap = await getDocs(q);
+        snap.forEach(docSnap => {
+            const data = docSnap.data();
+            list.push({ id: docSnap.id, ...data });
+        });
+        if (list.length > 0) {
+            localStorage.setItem("morfo_evaluations_cache", JSON.stringify(list));
+            return list;
+        }
+    } catch (err) {
+        console.warn("[Morfo DB] Error fetching from evaluations collection, trying users activityLog:", err);
+    }
+
+    // Fallback: extraer desde activityLog.evaluations de todos los usuarios
+    try {
+        const users = await db_getAllUsers();
+        users.forEach(u => {
+            const evals = u.activityLog?.evaluations || [];
+            evals.forEach(ev => {
+                if (!list.some(item => item.id === ev.id)) {
+                    list.push({
+                        ...ev,
+                        studentName: ev.studentName || u.name,
+                        studentPhone: ev.studentPhone || u.phone,
+                        studentYear: ev.studentYear || u.currentYear,
+                        stateOrigin: ev.stateOrigin || u.stateOrigin
+                    });
+                }
+            });
+        });
+        if (list.length > 0) {
+            list.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            localStorage.setItem("morfo_evaluations_cache", JSON.stringify(list));
+            return list;
+        }
+    } catch (err) {
+        console.warn("[Morfo DB] Error aggregating evaluations from users:", err);
+    }
+
+    const cached = localStorage.getItem("morfo_evaluations_cache");
+    return cached ? JSON.parse(cached) : [];
+}
+
 // ============================================================
 //  FEEDBACK & COMUNICACIÓN CON USUARIOS
 // ============================================================
@@ -575,5 +704,7 @@ export {
     db_addFeedback,
     db_replyToFeedback,
     db_toggleFeedbackVisibility,
-    db_deleteFeedback
+    db_deleteFeedback,
+    db_trackEvaluation,
+    db_getAllEvaluations
 };

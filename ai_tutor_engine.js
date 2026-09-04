@@ -429,16 +429,17 @@ export function getAiTutorResponse(userQuery, activeCourse) {
         response += `#### 📍 ¿Dónde encontrarlo en el Portal Morfo?\n`;
         response += `- 🎓 **Materia y Ubicación**: ${bestTopic.exactResourceRef}\n`;
 
+        const _res = (p) => (typeof window !== "undefined" && window.resolveMediaUrl ? window.resolveMediaUrl(p) : p);
         if (matchingAos.length > 0) {
             const firstAo = matchingAos[0];
             let extraLinks = [];
-            if (firstAo.slidesFile) extraLinks.push(`[📊 Diapositiva Explicativa](${firstAo.slidesFile})`);
-            if (firstAo.consolidationFile) extraLinks.push(`[📝 Respuestas / Consolidación](${firstAo.consolidationFile})`);
+            if (firstAo.slidesFile) extraLinks.push(`[📊 Diapositiva Explicativa](${_res(firstAo.slidesFile)})`);
+            if (firstAo.consolidationFile) extraLinks.push(`[📝 Respuestas / Consolidación](${_res(firstAo.consolidationFile)})`);
             if (firstAo.videoDriveId || firstAo.videoDriveUrl) {
                 const vidUrl = firstAo.videoDriveId ? `https://drive.google.com/file/d/${firstAo.videoDriveId}/view?usp=sharing` : firstAo.videoDriveUrl;
                 extraLinks.push(`[🎥 Video Conferencia](${vidUrl})`);
             }
-            response += `- 📑 **Clase Orientadora Oficial (PDF)**: [${firstAo.ao}: ${firstAo.title}](${firstAo.pdfFile})${extraLinks.length > 0 ? ` | ${extraLinks.join(' | ')}` : ''}\n`;
+            response += `- 📑 **Clase Orientadora Oficial (PDF)**: [${firstAo.ao}: ${firstAo.title}](${_res(firstAo.pdfFile)})${extraLinks.length > 0 ? ` | ${extraLinks.join(' | ')}` : ''}\n`;
         }
 
         if (matchingLaminas.length > 0) {
@@ -452,6 +453,7 @@ export function getAiTutorResponse(userQuery, activeCourse) {
 
         response += `\n💡 **Clave Pedagógica para Evaluaciones**:\n> ${bestTopic.keyPedagogicalGuideline}\n`;
     } else {
+        const _res = (p) => (typeof window !== "undefined" && window.resolveMediaUrl ? window.resolveMediaUrl(p) : p);
         // Dynamic search based on extracted files and books
         response += `### 🩺 Orientación de Contenidos: "${userQuery}"\n\n`;
         response += `He rastreado la base de datos de Morfofisiología I, II y III, laminarios y biblioteca médica para tu consulta:\n\n`;
@@ -463,13 +465,13 @@ export function getAiTutorResponse(userQuery, activeCourse) {
             response += `#### 📑 Clases Orientadoras Directas (PDF):\n`;
             matchingAos.forEach(ao => {
                 let aoExtras = [];
-                if (ao.slidesFile) aoExtras.push(`[📊 Diapositiva](${ao.slidesFile})`);
-                if (ao.consolidationFile) aoExtras.push(`[📝 Consolidación](${ao.consolidationFile})`);
+                if (ao.slidesFile) aoExtras.push(`[📊 Diapositiva](${_res(ao.slidesFile)})`);
+                if (ao.consolidationFile) aoExtras.push(`[📝 Consolidación](${_res(ao.consolidationFile)})`);
                 if (ao.videoDriveId || ao.videoDriveUrl) {
                     const vidUrl = ao.videoDriveId ? `https://drive.google.com/file/d/${ao.videoDriveId}/view?usp=sharing` : ao.videoDriveUrl;
                     aoExtras.push(`[🎥 Video](${vidUrl})`);
                 }
-                response += `- **${ao.ao}**: [${ao.title}](${ao.pdfFile})${aoExtras.length > 0 ? ` &bull; ${aoExtras.join(' &bull; ')}` : ''}\n`;
+                response += `- **${ao.ao}**: [${ao.title}](${_res(ao.pdfFile)})${aoExtras.length > 0 ? ` &bull; ${aoExtras.join(' &bull; ')}` : ''}\n`;
             });
             response += `\n`;
         }

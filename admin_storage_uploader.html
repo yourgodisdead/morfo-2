@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morfo Portal - Sincronizador a Firebase Storage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0b0f19;
+            --bg-card: rgba(18, 24, 38, 0.85);
+            --border-card: rgba(99, 102, 241, 0.2);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 36px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 24px;
+            margin-bottom: 28px;
+        }
+
+        .badge-cloud {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+            color: #c4b5fd;
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .upload-zone {
+            border: 2px dashed rgba(99, 102, 241, 0.4);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(99, 102, 241, 0.03);
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            transition: width 0.3s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .log-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            height: 250px;
+            overflow-y: auto;
+            padding: 12px 16px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            white-space: pre-wrap;
+            margin-top: 16px;
+        }
+
+        .log-entry {
+            margin-bottom: 4px;
+        }
+        .log-success { color: #34d399; }
+        .log-error { color: #f87171; }
+        .log-info { color: #60a5fa; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div>
+            <h1>☁️ Sincronizador a Firebase Storage</h1>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px;">
+                Carga masiva de PDFs y diapositivas al Bucket de Nube (morfo2-portal.firebasestorage.app)
+            </p>
+        </div>
+        <span class="badge-cloud">Bucket Conectado</span>
+    </div>
+
+    <!-- Instrucciones -->
+    <div class="card" style="border-left: 4px solid var(--accent);">
+        <h3 style="font-size: 1rem; margin-bottom: 8px;">📋 Instrucciones para el Administrador</h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+            1. Haz clic abajo para seleccionar la carpeta raíz del proyecto (o las carpetas <code>Morfo 1</code>, <code>Morfo 2</code>, <code>Morfo 3</code>, <code>Bibliografias</code>).<br>
+            2. El navegador detectará todos los archivos PDF y mantendrá la estructura exacta de rutas relativas requerida por el portal.<br>
+            3. Haz clic en <strong>"Iniciar Sincronización Nube"</strong> para subirlos de forma segura a Firebase Storage.
+        </p>
+    </div>
+
+    <!-- Zona de Selección de Archivos -->
+    <div class="card">
+        <div class="upload-zone" id="dropZone" onclick="document.getElementById('folderInput').click()">
+            <div style="font-size: 2.5rem; margin-bottom: 12px;">📁</div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Seleccionar Carpeta con Archivos</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                Haz clic aquí para seleccionar una carpeta completa o subcarpetas con PDFs
+            </p>
+            <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-val" id="statFound">0</div>
+                <div class="stat-lbl">PDFs Detectados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="statUploaded" style="color: var(--success);">0</div>
+                <div class="stat-lbl">Subidos con Éxito</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="statErrors" style="color: var(--danger);">0</div>
+                <div class="stat-lbl">Errores</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="statSize">0 MB</div>
+                <div class="stat-lbl">Peso Total</div>
+            </div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-secondary);">
+            <span id="progressText">Listo para seleccionar archivos</span>
+            <span id="progressPercent">0%</span>
+        </div>
+
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-success" id="startUploadBtn" disabled>
+                🚀 Iniciar Sincronización Nube
+            </button>
+            <button class="btn" id="pauseUploadBtn" style="background: rgba(255,255,255,0.1);" disabled>
+                ⏸️ Pausar
+            </button>
+            <a href="index.html" class="btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); text-decoration: none;">
+                ⬅️ Volver al Portal Morfo
+            </a>
+        </div>
+    </div>
+
+    <!-- Registro en Vivo -->
+    <div class="card">
+        <h3 style="font-size: 0.95rem; margin-bottom: 8px;">Consola de Sincronización</h3>
+        <div class="log-box" id="logBox">Esperando selección de carpeta...</div>
+    </div>
+</div>
+
+<script src="firebase_config.js"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const storage = getStorage(app);
+
+    let selectedFiles = [];
+    let isUploading = false;
+    let isPaused = false;
+    let uploadIndex = 0;
+    let successCount = 0;
+    let errorCount = 0;
+
+    const folderInput = document.getElementById("folderInput");
+    const statFound = document.getElementById("statFound");
+    const statUploaded = document.getElementById("statUploaded");
+    const statErrors = document.getElementById("statErrors");
+    const statSize = document.getElementById("statSize");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const progressPercent = document.getElementById("progressPercent");
+    const startUploadBtn = document.getElementById("startUploadBtn");
+    const pauseUploadBtn = document.getElementById("pauseUploadBtn");
+    const logBox = document.getElementById("logBox");
+
+    function log(msg, type = "info") {
+        const span = document.createElement("div");
+        span.className = `log-entry log-${type}`;
+        span.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        logBox.appendChild(span);
+        logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    folderInput.addEventListener("change", (e) => {
+        const files = Array.from(e.target.files);
+        // Filter for PDFs or target documents
+        selectedFiles = files.filter(f => f.name.toLowerCase().endsWith(".pdf"));
+        
+        let totalBytes = 0;
+        selectedFiles.forEach(f => totalBytes += f.size);
+        const totalMb = (totalBytes / (1024 * 1024)).toFixed(1);
+
+        statFound.textContent = selectedFiles.length;
+        statSize.textContent = `${totalMb} MB`;
+        statUploaded.textContent = "0";
+        statErrors.textContent = "0";
+        uploadIndex = 0;
+        successCount = 0;
+        errorCount = 0;
+
+        if (selectedFiles.length > 0) {
+            startUploadBtn.disabled = false;
+            log(`Se detectaron ${selectedFiles.length} documentos PDF listos (${totalMb} MB).`, "info");
+        } else {
+            startUploadBtn.disabled = true;
+            log("No se detectaron archivos .pdf en la carpeta seleccionada.", "error");
+        }
+    });
+
+    startUploadBtn.addEventListener("click", async () => {
+        if (selectedFiles.length === 0) return;
+        isUploading = true;
+        isPaused = false;
+        startUploadBtn.disabled = true;
+        pauseUploadBtn.disabled = false;
+        log(`Iniciando subida al bucket: ${FIREBASE_CONFIG.storageBucket}`, "info");
+
+        // Concurrent pool
+        const CONCURRENCY = 3;
+        const pool = [];
+
+        async function uploadNext() {
+            if (uploadIndex >= selectedFiles.length || isPaused) return;
+            const currentIndex = uploadIndex++;
+            const file = selectedFiles[currentIndex];
+            
+            // Resolve relative storage path
+            // webkitRelativePath format is folder/subfolder/file.pdf
+            let path = file.webkitRelativePath || file.name;
+            
+            // Normalize path separators
+            path = path.replace(/\\/g, "/");
+
+            // Strip root project folder name if user selected root 'Morfo'
+            if (path.startsWith("Morfo/")) {
+                path = path.substring(6);
+            }
+
+            try {
+                const storageRef = ref(storage, path);
+                const metadata = { contentType: "application/pdf" };
+                const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+                await new Promise((resolve, reject) => {
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            // Per-file progress
+                        },
+                        (error) => {
+                            errorCount++;
+                            statErrors.textContent = errorCount;
+                            log(`❌ Error al subir "${path}": ${error.message}`, "error");
+                            resolve(); // Continue with next
+                        },
+                        () => {
+                            successCount++;
+                            statUploaded.textContent = successCount;
+                            log(`✅ Subido con éxito: ${path}`, "success");
+                            resolve();
+                        }
+                    );
+                });
+            } catch (err) {
+                errorCount++;
+                statErrors.textContent = errorCount;
+                log(`❌ Excepción en "${path}": ${err.message}`, "error");
+            }
+
+            // Update overall progress
+            const processed = successCount + errorCount;
+            const pct = Math.round((processed / selectedFiles.length) * 100);
+            progressBar.style.width = `${pct}%`;
+            progressPercent.textContent = `${pct}%`;
+            progressText.textContent = `Procesando: ${processed} de ${selectedFiles.length} (${pct}%)`;
+
+            // Process next file
+            if (!isPaused && uploadIndex < selectedFiles.length) {
+                await uploadNext();
+            }
+        }
+
+        // Launch concurrent workers
+        for (let i = 0; i < CONCURRENCY && i < selectedFiles.length; i++) {
+            pool.push(uploadNext());
+        }
+
+        await Promise.all(pool);
+
+        if (successCount + errorCount >= selectedFiles.length) {
+            isUploading = false;
+            pauseUploadBtn.disabled = true;
+            log(`🎉 Sincronización finalizada: ${successCount} archivos subidos, ${errorCount} errores.`, "success");
+            alert(`Sincronización finalizada con éxito: ${successCount} archivos listos en Firebase Storage.`);
+        }
+    });
+
+    pauseUploadBtn.addEventListener("click", () => {
+        isPaused = !isPaused;
+        pauseUploadBtn.textContent = isPaused ? "▶️ Reanudar" : "⏸️ Pausar";
+        if (!isPaused && isUploading) {
+            log("Reanudando sincronización...", "info");
+            startUploadBtn.click();
+        } else {
+            log("Sincronización pausada por el usuario.", "info");
+        }
+    });
+</script>
+
+</body>
+</html>

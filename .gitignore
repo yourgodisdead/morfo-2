@@ -19,3 +19,10 @@ dwt/
 *.mkv
 *.avi
 *.mov
+
+# Ignorar documentos PDF y archivos pesados (migrados a Firebase Storage)
+*.pdf
+*.PDF
+*.zip
+*.rar
+

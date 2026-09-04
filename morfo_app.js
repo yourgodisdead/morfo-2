@@ -21,11 +21,16 @@ import {
     db_addFeedback,
     db_replyToFeedback,
     db_toggleFeedbackVisibility,
-    db_deleteFeedback
+    db_deleteFeedback,
+    db_trackEvaluation,
+    db_getAllEvaluations
 } from "./db.js";
 import { getAiTutorResponse, evaluateConsolidationAnswer } from "./ai_tutor_engine.js?v=20260902_2200";
 
 document.addEventListener("DOMContentLoaded", async function() {
+    // Helper to route media files to Firebase Storage or local
+    const _res = (path) => (typeof window !== "undefined" && window.resolveMediaUrl ? window.resolveMediaUrl(path) : path);
+
     // Ensure superuser exists and synchronize VIP promo
     try { 
         await db_ensureSuperuser(); 
@@ -89,7 +94,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         adminFeedbackFilter: "all",
         adminFeedbackSearch: "",
         recentMembersFilter: "all",
-        recentMembersSearch: ""
+        recentMembersSearch: "",
+        evalCourseFilter: "all",
+        evalGradeFilter: "all",
+        evalStudentSearch: "",
+        evaluationsCache: []
     };
 
     // Apply saved theme on startup
@@ -234,6 +243,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const logoutBtn = document.getElementById("logoutBtn");
     const navProfile = document.getElementById("navProfile");
     const navAdmin = document.getElementById("navAdmin");
+    const navEvaluaciones = document.getElementById("navEvaluaciones");
 
     // Course Buttons DOM
     const btnCourseM1 = document.getElementById("btnCourseM1");
@@ -265,6 +275,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     initHabilidades();
     initBiblioteca();
     initFeedback();
+    initEvaluaciones();
     initLightbox();
     initProfile();
     initAdmin();
@@ -441,7 +452,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             "biblioteca": "Biblioteca Médica Digital",
             "feedback": "Buzón de Opinión y Sugerencias",
             "perfil": "Mi Perfil de Estudiante",
-            "admin": "Panel de Administración y GIS"
+            "admin": "Panel de Administración y GIS",
+            "evaluaciones": "Panel de Evaluaciones y Rendimiento"
         };
         trackUserActivity("navigation", {
             section: sectionId,
@@ -465,6 +477,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         } else if (sectionId === "admin") {
             renderAdmin();
             renderGisMap();
+        } else if (sectionId === "evaluaciones") {
+            renderEvaluacionesPanel();
         }
     }
 
@@ -559,11 +573,12 @@ document.addEventListener("DOMContentLoaded", async function() {
                     </button>
                 `;
             } else {
+                const bookUrl = window.resolveMediaUrl ? window.resolveMediaUrl(book.file) : book.file;
                 actionHtml = `
-                    <a href="${book.file}" download class="cbook-btn-download" id="cbookDl_${book.id}" title="Descargar libro en PDF">
+                    <a href="${bookUrl}" download class="cbook-btn-download" id="cbookDl_${book.id}" title="Descargar libro en PDF">
                         📥 Descargar PDF
                     </a>
-                    <a href="${book.file}" target="_blank" class="cbook-btn-read" id="cbookRead_${book.id}" title="Leer en el navegador">
+                    <a href="${bookUrl}" target="_blank" class="cbook-btn-read" id="cbookRead_${book.id}" title="Leer en el navegador">
                         👁️ Leer en Línea
                     </a>
                 `;
@@ -1070,6 +1085,23 @@ document.addEventListener("DOMContentLoaded", async function() {
                                         week: state.currentWeek,
                                         score: evalResult.score
                                     });
+                                    db_trackEvaluation(state.currentUser.email, {
+                                        studentName: state.currentUser.name,
+                                        studentPhone: state.currentUser.phone,
+                                        studentYear: state.currentUser.currentYear,
+                                        stateOrigin: state.currentUser.stateOrigin,
+                                        course: state.currentCourse,
+                                        week: state.currentWeek,
+                                        questionText: qRaw,
+                                        studentAnswer: rawAnswer,
+                                        score: evalResult.score,
+                                        verdictBadge: evalResult.verdictBadge,
+                                        verdictTitle: evalResult.verdictTitle,
+                                        critiqueHtml: evalResult.critiqueHtml,
+                                        praiseHtml: evalResult.praiseHtml,
+                                        matchedKeywords: evalResult.matchedKeywords,
+                                        missingKeywords: evalResult.missingKeywords
+                                    });
                                 }
 
                                 showConsolidationAiModal(evalResult, qTitle);
@@ -1103,17 +1135,17 @@ document.addEventListener("DOMContentLoaded", async function() {
             const weekAos = aosRef.filter(ao => ao.week === state.currentWeek);
             weekAos.forEach(ao => {
                 html += `
-                    <a href="${ao.pdfFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(var(--accent-color-rgb), 0.12), rgba(var(--accent-color-rgb), 0.05)); border-color: var(--accent-color); color: var(--accent-hover);">
+                    <a href="${_res(ao.pdfFile)}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(var(--accent-color-rgb), 0.12), rgba(var(--accent-color-rgb), 0.05)); border-color: var(--accent-color); color: var(--accent-hover);">
                         <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
                         <span>${ao.ao}: ${ao.title} (Clase Orientadora)</span>
                     </a>
                     ${ao.slidesFile ? `
-                    <a href="${ao.slidesFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(99, 102, 241, 0.08)); border-color: rgba(139, 92, 246, 0.4); color: var(--accent-hover);">
+                    <a href="${_res(ao.slidesFile)}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(99, 102, 241, 0.08)); border-color: rgba(139, 92, 246, 0.4); color: var(--accent-hover);">
                         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
                         <span>${ao.ao}: Diapositiva Explicativa</span>
                     </a>` : ''}
                     ${ao.consolidationFile ? `
-                    <a href="${ao.consolidationFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(5, 150, 105, 0.08)); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7;">
+                    <a href="${_res(ao.consolidationFile)}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(5, 150, 105, 0.08)); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7;">
                         <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
                         <span>${ao.ao}: Respuestas / Consolidación</span>
                     </a>` : ''}
@@ -1483,19 +1515,19 @@ document.addEventListener("DOMContentLoaded", async function() {
                     </div>
 
                     <div style="display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap;">
-                        <a href="${ao.pdfFile}" target="_blank" class="download-btn btn-primary" id="viewPDFBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;">
+                        <a href="${_res(ao.pdfFile)}" target="_blank" class="download-btn btn-primary" id="viewPDFBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;">
                             <span>👁️</span> Visualizar Conferencia Completa (PDF)
                         </a>
                         ${ao.slidesFile ? `
-                        <a href="${ao.slidesFile}" target="_blank" class="download-btn" id="viewSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
+                        <a href="${_res(ao.slidesFile)}" target="_blank" class="download-btn" id="viewSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
                             <span>📊</span> Visualizar Diapositiva Explicativa
                         </a>` : ''}
                         ${ao.consolidationFile ? `
-                        <a href="${ao.consolidationFile}" target="_blank" class="download-btn" id="viewConsolidationBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.25)); border: 1px solid rgba(16, 185, 129, 0.45); color: #6ee7b7;">
+                        <a href="${_res(ao.consolidationFile)}" target="_blank" class="download-btn" id="viewConsolidationBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.25)); border: 1px solid rgba(16, 185, 129, 0.45); color: #6ee7b7;">
                             <span>📝</span> Respuestas / Consolidación (PDF)
                         </a>` : ''}
                         ${ao.consolidationSlidesFile ? `
-                        <a href="${ao.consolidationSlidesFile}" target="_blank" class="download-btn" id="viewConsolidationSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(2, 132, 199, 0.25)); border: 1px solid rgba(14, 165, 233, 0.45); color: #7dd3fc;">
+                        <a href="${_res(ao.consolidationSlidesFile)}" target="_blank" class="download-btn" id="viewConsolidationSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(2, 132, 199, 0.25)); border: 1px solid rgba(14, 165, 233, 0.45); color: #7dd3fc;">
                             <span>📑</span> Diapositiva de Consolidación
                         </a>` : ''}
                         ${ao.videoDriveId || ao.videoDriveUrl || ao.videoFile ? `
@@ -1593,7 +1625,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         let readingCardsHtml = "";
         if (res.currentAo) {
             readingCardsHtml += `
-                <a href="${res.currentAo.pdfFile}" target="_blank" class="reading-card-link">
+                <a href="${_res(res.currentAo.pdfFile)}" target="_blank" class="reading-card-link">
                     <span class="reading-card-type">📑 Clase Orientadora Oficial</span>
                     <span class="reading-card-title">${res.currentAo.ao}: ${res.currentAo.title}</span>
                     <span class="reading-card-desc">Revisa el documento PDF oficial de la cátedra</span>
@@ -1601,7 +1633,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             `;
             if (res.currentAo.slidesFile) {
                 readingCardsHtml += `
-                    <a href="${res.currentAo.slidesFile}" target="_blank" class="reading-card-link">
+                    <a href="${_res(res.currentAo.slidesFile)}" target="_blank" class="reading-card-link">
                         <span class="reading-card-type">📊 Diapositiva Explicativa</span>
                         <span class="reading-card-title">${res.currentAo.ao} (Esquemas y Tablas)</span>
                         <span class="reading-card-desc">Material visual docente con resúmenes clave</span>
@@ -1613,7 +1645,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             res.recommendedBooks.forEach(m => {
                 const b = m.book;
                 readingCardsHtml += `
-                    <a href="${b.file}" target="_blank" class="reading-card-link">
+                    <a href="${_res(b.file)}" target="_blank" class="reading-card-link">
                         <span class="reading-card-type">📚 Biblioteca Médica</span>
                         <span class="reading-card-title">${b.title}</span>
                         <span class="reading-card-desc">Autor: ${b.author} ${m.matchingChapter ? `| Capítulo: ${m.matchingChapter}` : ''}</span>
@@ -1981,7 +2013,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                 const card = document.createElement("div");
                 card.className = "atlas-card";
                 card.style.cursor = "default";
-                const pptHref = ppt.file.startsWith("Morfo 2/") ? ppt.file : `Morfo 2/${ppt.file}`;
+                const rawPptHref = ppt.file.startsWith("Morfo 2/") ? ppt.file : `Morfo 2/${ppt.file}`;
+                const pptHref = _res(rawPptHref);
                 card.innerHTML = `
                     <div class="atlas-card-body" style="gap: 12px; padding: 28px;">
                         <div style="font-size: 2.2rem;">📊</div>
@@ -2274,10 +2307,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                 `;
             } else {
                 actionButtonsHtml = `
-                    <a href="${book.file}" target="_blank" class="book-btn-read" id="readBook_${book.id}">
+                    <a href="${_res(book.file)}" target="_blank" class="book-btn-read" id="readBook_${book.id}">
                         👁️ Leer Libro
                     </a>
-                    <a href="${book.file}" download class="book-btn-download" id="dlBook_${book.id}">
+                    <a href="${_res(book.file)}" download class="book-btn-download" id="dlBook_${book.id}">
                         📥 Descargar PDF
                     </a>
                 `;
@@ -2398,8 +2431,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                     <div class="chapter-size">Tamaño: ${ch.size}</div>
                 </div>
                 <div class="chapter-actions">
-                    <a href="${ch.file}" target="_blank" class="chapter-btn-icon chapter-btn-read" title="Leer Capítulo en PDF">👁️ Leer</a>
-                    <a href="${ch.file}" download class="chapter-btn-icon chapter-btn-dl" title="Descargar Capítulo (PDF)">📥 Bajar</a>
+                    <a href="${_res(ch.file)}" target="_blank" class="chapter-btn-icon chapter-btn-read" title="Leer Capítulo en PDF">👁️ Leer</a>
+                    <a href="${_res(ch.file)}" download class="chapter-btn-icon chapter-btn-dl" title="Descargar Capítulo (PDF)">📥 Bajar</a>
                 </div>
             `;
 
@@ -2682,8 +2715,10 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         if (state.currentUser.role === "superuser") {
             navAdmin.style.display = "flex";
+            if (navEvaluaciones) navEvaluaciones.style.display = "flex";
         } else {
             navAdmin.style.display = "none";
+            if (navEvaluaciones) navEvaluaciones.style.display = "none";
         }
 
         // Complete Profile check
@@ -4564,6 +4599,446 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         } catch(err) {
             console.error("renderAdminFeedbackTable error:", err);
+        }
+    }
+
+    // ==========================================
+    // EVALUACIONES Y MÉTRICAS PEDAGÓGICAS (SUPERUSUARIO)
+    // ==========================================
+    function initEvaluaciones() {
+        // Course Filter Pills
+        const courseFilters = [
+            { id: "evalCourseFilterAll", val: "all" },
+            { id: "evalCourseFilterM1", val: "morfo1" },
+            { id: "evalCourseFilterM2", val: "morfo2" },
+            { id: "evalCourseFilterM3", val: "morfo3" }
+        ];
+
+        courseFilters.forEach(f => {
+            const btn = document.getElementById(f.id);
+            if (btn) {
+                btn.addEventListener("click", () => {
+                    courseFilters.forEach(x => {
+                        const b = document.getElementById(x.id);
+                        if (b) b.classList.remove("active");
+                    });
+                    btn.classList.add("active");
+                    state.evalCourseFilter = f.val;
+                    renderEvaluacionesPanel();
+                });
+            }
+        });
+
+        // Grade Filter Select
+        const gradeFilter = document.getElementById("evalGradeFilter");
+        if (gradeFilter) {
+            gradeFilter.addEventListener("change", (e) => {
+                state.evalGradeFilter = e.target.value;
+                renderEvaluacionesPanel();
+            });
+        }
+
+        // Student Search Input
+        const searchInput = document.getElementById("evalStudentSearch");
+        if (searchInput) {
+            searchInput.addEventListener("input", (e) => {
+                state.evalStudentSearch = e.target.value.toLowerCase().trim();
+                renderEvaluacionesPanel();
+            });
+        }
+
+        // Refresh Button
+        const refreshBtn = document.getElementById("btnRefreshEvaluations");
+        if (refreshBtn) {
+            refreshBtn.addEventListener("click", () => {
+                renderEvaluacionesPanel(true);
+            });
+        }
+    }
+
+    async function renderEvaluacionesPanel(forceRefresh = false) {
+        if (!state.currentUser || state.currentUser.role !== "superuser") return;
+
+        try {
+            const tbody = document.getElementById("evaluationsStudentsTableBody");
+            if (!tbody) return;
+
+            // Load evaluations & users
+            const [evaluations, users] = await Promise.all([
+                db_getAllEvaluations(),
+                db_getAllUsers()
+            ]);
+
+            state.evaluationsCache = evaluations;
+
+            // Filter evaluations by course
+            const courseFiltered = evaluations.filter(ev => {
+                if (state.evalCourseFilter === "all") return true;
+                return ev.course === state.evalCourseFilter;
+            });
+
+            // Calculate KPIs
+            const totalEvals = courseFiltered.length;
+            let avgScore = 0;
+            let highCount = 0;
+            let midCount = 0;
+            let lowCount = 0;
+
+            if (totalEvals > 0) {
+                const sumScores = courseFiltered.reduce((acc, ev) => acc + (Number(ev.score) || 0), 0);
+                avgScore = (sumScores / totalEvals).toFixed(1);
+
+                highCount = courseFiltered.filter(ev => (Number(ev.score) || 0) >= 7).length;
+                midCount = courseFiltered.filter(ev => {
+                    const s = Number(ev.score) || 0;
+                    return s >= 5 && s < 7;
+                }).length;
+                lowCount = courseFiltered.filter(ev => (Number(ev.score) || 0) < 5).length;
+            }
+
+            const highRate = totalEvals > 0 ? Math.round((highCount / totalEvals) * 100) : 0;
+            const lowRate = totalEvals > 0 ? Math.round((lowCount / totalEvals) * 100) : 0;
+            const midRate = totalEvals > 0 ? Math.max(0, 100 - highRate - lowRate) : 0;
+
+            // Unique students in filtered evaluations
+            const uniqueStudentsSet = new Set(courseFiltered.map(ev => (ev.studentEmail || "").toLowerCase()));
+            const uniqueStudentsCount = uniqueStudentsSet.size;
+
+            // Update KPI DOM
+            const kpiAvg = document.getElementById("evalKpiAvgScore");
+            const kpiHigh = document.getElementById("evalKpiHighRate");
+            const kpiHighCount = document.getElementById("evalKpiHighCount");
+            const kpiLow = document.getElementById("evalKpiLowRate");
+            const kpiLowCount = document.getElementById("evalKpiLowCount");
+            const kpiTotal = document.getElementById("evalKpiTotalEvals");
+            const kpiStudents = document.getElementById("evalKpiStudentsCount");
+
+            if (kpiAvg) kpiAvg.textContent = totalEvals > 0 ? `${avgScore} / 10` : "--";
+            if (kpiHigh) kpiHigh.textContent = `${highRate}%`;
+            if (kpiHighCount) kpiHighCount.textContent = `${highCount} de ${totalEvals} respuestas`;
+            if (kpiLow) kpiLow.textContent = `${lowRate}%`;
+            if (kpiLowCount) kpiLowCount.textContent = `${lowCount} de ${totalEvals} respuestas`;
+            if (kpiTotal) kpiTotal.textContent = totalEvals;
+            if (kpiStudents) kpiStudents.textContent = uniqueStudentsCount;
+
+            // Update Distribution Bars
+            const barHigh = document.getElementById("distribHighBar");
+            const barMid = document.getElementById("distribMidBar");
+            const barLow = document.getElementById("distribLowBar");
+            const lblHigh = document.getElementById("distribHighLabel");
+            const lblMid = document.getElementById("distribMidLabel");
+            const lblLow = document.getElementById("distribLowLabel");
+
+            if (barHigh) barHigh.style.width = `${highRate}%`;
+            if (barMid) barMid.style.width = `${midRate}%`;
+            if (barLow) barLow.style.width = `${lowRate}%`;
+            if (lblHigh) lblHigh.textContent = `${highRate}% (${highCount})`;
+            if (lblMid) lblMid.textContent = `${midRate}% (${midCount})`;
+            if (lblLow) lblLow.textContent = `${lowRate}% (${lowCount})`;
+
+            // Group evaluations by student
+            const studentMap = {};
+
+            // Ensure all registered students can be listed
+            users.filter(u => u.role !== "superuser" && u.email !== "lams210488@gmail.com").forEach(u => {
+                const emailKey = u.email.toLowerCase();
+                studentMap[emailKey] = {
+                    email: emailKey,
+                    name: u.name || "Estudiante",
+                    phone: u.phone || "",
+                    currentYear: u.currentYear || "Sin año",
+                    stateOrigin: u.stateOrigin || "Venezuela",
+                    isVip: u.isVip === true,
+                    evaluations: []
+                };
+            });
+
+            // Assign course-filtered evaluations
+            courseFiltered.forEach(ev => {
+                const emailKey = (ev.studentEmail || "").toLowerCase();
+                if (!studentMap[emailKey]) {
+                    studentMap[emailKey] = {
+                        email: emailKey,
+                        name: ev.studentName || "Estudiante",
+                        phone: ev.studentPhone || "",
+                        currentYear: ev.studentYear || "1er Año",
+                        stateOrigin: ev.stateOrigin || "Venezuela",
+                        isVip: false,
+                        evaluations: []
+                    };
+                }
+                studentMap[emailKey].evaluations.push(ev);
+            });
+
+            // Calculate student metrics
+            let studentList = Object.values(studentMap).map(st => {
+                const count = st.evaluations.length;
+                let avg = 0;
+                let lastDate = null;
+                if (count > 0) {
+                    const sum = st.evaluations.reduce((acc, ev) => acc + (Number(ev.score) || 0), 0);
+                    avg = Number((sum / count).toFixed(1));
+                    st.evaluations.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+                    lastDate = st.evaluations[0].createdAt;
+                }
+                return {
+                    ...st,
+                    evalCount: count,
+                    avgScore: avg,
+                    lastDate: lastDate
+                };
+            });
+
+            // Apply Grade Filter
+            if (state.evalGradeFilter === "high") {
+                studentList = studentList.filter(st => st.evalCount > 0 && st.avgScore >= 8);
+            } else if (state.evalGradeFilter === "mid") {
+                studentList = studentList.filter(st => st.evalCount > 0 && st.avgScore >= 5 && st.avgScore < 8);
+            } else if (state.evalGradeFilter === "low") {
+                studentList = studentList.filter(st => st.evalCount > 0 && st.avgScore < 5);
+            }
+
+            // Apply Search Filter
+            if (state.evalStudentSearch) {
+                studentList = studentList.filter(st => 
+                    st.name.toLowerCase().includes(state.evalStudentSearch) ||
+                    st.email.toLowerCase().includes(state.evalStudentSearch) ||
+                    st.stateOrigin.toLowerCase().includes(state.evalStudentSearch)
+                );
+            }
+
+            // Sort: students with evaluations first (ordered by avgScore desc), then count, then name
+            studentList.sort((a, b) => {
+                if (b.evalCount !== a.evalCount) return b.evalCount - a.evalCount;
+                return b.avgScore - a.avgScore;
+            });
+
+            if (studentList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="padding: 32px; text-align: center; color: var(--text-secondary);">
+                            🔍 No se encontraron evaluaciones con los filtros seleccionados.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = "";
+            studentList.forEach(st => {
+                let badgeClass = "score-low";
+                let badgeText = "⚠️ Requiere Refuerzo";
+                if (st.evalCount === 0) {
+                    badgeClass = "";
+                    badgeText = "⚪ Sin Respuestas";
+                } else if (st.avgScore >= 8) {
+                    badgeClass = "score-high";
+                    badgeText = "🌟 Sobresaliente";
+                } else if (st.avgScore >= 5) {
+                    badgeClass = "score-mid";
+                    badgeText = "⚖️ En Desarrollo";
+                }
+
+                const dateStr = st.lastDate ? new Date(st.lastDate).toLocaleDateString("es-VE", {
+                    day: "2-digit",
+                    month: "short",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }) : "Pendiente";
+
+                const cleanPhone = st.phone ? st.phone.replace(/[^0-9]/g, "") : "";
+                const waMsg = encodeURIComponent(`Hola ${st.name}, te saluda el Prof. Leonardo Morales del Portal Morfo. He revisado tus respuestas de consolidación (Promedio actual: ${st.avgScore}/10). ¿Cómo te has sentido con los temas?`);
+                const waUrl = cleanPhone ? `https://wa.me/${cleanPhone}?text=${waMsg}` : `https://wa.me/584129031966`;
+
+                html += `
+                    <tr style="border-bottom: 1px solid var(--border-color); transition: background 0.2s;">
+                        <td style="padding: 12px 14px;">
+                            <div style="font-weight: 700; color: var(--text-primary);">${st.name}</div>
+                            <div style="font-size: 0.76rem; color: var(--text-secondary);">${st.email}</div>
+                        </td>
+                        <td style="padding: 12px 14px;">
+                            <div style="font-size: 0.85rem; font-weight: 600;">${st.currentYear}</div>
+                            <div style="font-size: 0.76rem; color: var(--text-muted);">${st.stateOrigin}</div>
+                        </td>
+                        <td style="padding: 12px 14px; text-align: center;">
+                            <span style="font-weight: 800; font-size: 1rem; color: ${st.evalCount > 0 ? 'var(--accent-hover)' : 'var(--text-muted)'};">${st.evalCount}</span>
+                        </td>
+                        <td style="padding: 12px 14px; text-align: center;">
+                            ${st.evalCount > 0 ? `
+                                <span class="eval-score-pill ${badgeClass}">
+                                    ${st.avgScore} / 10
+                                </span>
+                            ` : `<span style="color: var(--text-muted); font-size: 0.82rem;">--</span>`}
+                        </td>
+                        <td style="padding: 12px 14px; text-align: center;">
+                            <span style="font-size: 0.8rem; font-weight: 700;">${badgeText}</span>
+                        </td>
+                        <td style="padding: 12px 14px; text-align: center; font-size: 0.78rem; color: var(--text-secondary);">
+                            ${dateStr}
+                        </td>
+                        <td style="padding: 12px 14px; text-align: center;">
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                <button type="button" class="btn-eval-audit" data-student-email="${st.email}" ${st.evalCount === 0 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''} title="Ver respuestas detalladas">
+                                    <span>🔍</span> Auditar (${st.evalCount})
+                                </button>
+                                <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn-eval-wa" title="Contactar por WhatsApp">
+                                    <span>💬</span> WhatsApp
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+
+            // Bind Audit buttons
+            tbody.querySelectorAll(".btn-eval-audit").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const email = btn.getAttribute("data-student-email");
+                    if (email) showStudentEvaluationAuditModal(email);
+                });
+            });
+
+        } catch (err) {
+            console.error("renderEvaluacionesPanel error:", err);
+        }
+    }
+
+    function showStudentEvaluationAuditModal(studentEmail) {
+        const wrapper = document.getElementById("studentEvalDetailModalWrapper");
+        if (!wrapper) return;
+
+        const studentEvals = (state.evaluationsCache || []).filter(ev => 
+            (ev.studentEmail || "").toLowerCase() === studentEmail.toLowerCase()
+        );
+
+        studentEvals.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+        const studentName = studentEvals[0]?.studentName || "Estudiante";
+        const studentYear = studentEvals[0]?.studentYear || "";
+        const studentState = studentEvals[0]?.stateOrigin || "";
+        const studentPhone = studentEvals[0]?.studentPhone || "";
+
+        const cleanPhone = studentPhone ? studentPhone.replace(/[^0-9]/g, "") : "";
+        const waMsg = encodeURIComponent(`Hola ${studentName}, te escribe el Prof. Leonardo Morales sobre tus evaluaciones de consolidación en el Portal Morfo.`);
+        const waUrl = cleanPhone ? `https://wa.me/${cleanPhone}?text=${waMsg}` : `https://wa.me/584129031966`;
+
+        let evalCardsHtml = "";
+        if (studentEvals.length === 0) {
+            evalCardsHtml = `<p class="text-muted" style="text-align: center; padding: 20px;">No hay respuestas registradas para este estudiante.</p>`;
+        } else {
+            studentEvals.forEach((ev, idx) => {
+                const s = Number(ev.score) || 0;
+                const borderClass = s >= 7 ? "border-high" : (s >= 5 ? "border-mid" : "border-low");
+                const pillClass = s >= 7 ? "score-high" : (s >= 5 ? "score-mid" : "score-low");
+
+                const dateStr = ev.createdAt ? new Date(ev.createdAt).toLocaleDateString("es-VE", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }) : "Fecha no disponible";
+
+                const matchedHtml = (ev.matchedKeywords && ev.matchedKeywords.length > 0)
+                    ? ev.matchedKeywords.map(k => `<span class="topic-pill" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">✓ ${k}</span>`).join(" ")
+                    : '<span style="color: var(--text-muted); font-size: 0.78rem;">Ninguno detectado</span>';
+
+                const missingHtml = (ev.missingKeywords && ev.missingKeywords.length > 0)
+                    ? ev.missingKeywords.map(k => `<span class="topic-pill" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3);">✗ ${k}</span>`).join(" ")
+                    : '<span style="color: #34d399; font-size: 0.78rem;">¡Sin omisiones críticas!</span>';
+
+                evalCardsHtml += `
+                    <div class="eval-item-card ${borderClass}">
+                        <div class="eval-item-meta">
+                            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                <span class="ao-badge" style="font-size: 0.75rem; padding: 3px 8px;">${ev.course ? ev.course.toUpperCase() : 'MORFO'}</span>
+                                <span class="mag-badge" style="font-size: 0.75rem;">Semana ${ev.week || 1}</span>
+                                <span style="font-size: 0.78rem; color: var(--text-muted);">${dateStr}</span>
+                            </div>
+                            <span class="eval-score-pill ${pillClass}">
+                                Calificación: ${s} / 10
+                            </span>
+                        </div>
+
+                        <div>
+                            <div style="font-size: 0.75rem; font-weight: 700; color: var(--accent-hover); text-transform: uppercase; margin-bottom: 2px;">Pregunta Formulada:</div>
+                            <div class="eval-item-question">${ev.questionText || "Pregunta de Consolidación"}</div>
+                        </div>
+
+                        <div>
+                            <div style="font-size: 0.75rem; font-weight: 700; color: #fbbf24; text-transform: uppercase; margin-bottom: 2px;">Respuesta Textual del Estudiante:</div>
+                            <div class="eval-item-answer">${ev.studentAnswer ? ev.studentAnswer.replace(/\n/g, "<br>") : "<em>(Respuesta en blanco)</em>"}</div>
+                        </div>
+
+                        <div class="eval-item-feedback">
+                            <div>
+                                <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary);">Conceptos Médicos Dominados:</span>
+                                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;">${matchedHtml}</div>
+                            </div>
+                            <div style="margin-top: 6px;">
+                                <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary);">Términos que Omitió / A Reforzar:</span>
+                                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;">${missingHtml}</div>
+                            </div>
+                            ${ev.critiqueHtml ? `
+                                <div style="margin-top: 8px; padding: 10px; border-radius: var(--border-radius-sm); background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; font-size: 0.82rem; color: var(--text-primary);">
+                                    <strong>💡 Diagnóstico Docente:</strong> ${ev.critiqueHtml}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        const modalHtml = `
+            <div class="eval-audit-overlay" id="evalAuditModal">
+                <div class="eval-audit-card">
+                    <div class="eval-audit-header">
+                        <div>
+                            <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.25rem; margin: 0; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                                <span>📋</span> Expediente Evaluativo: ${studentName}
+                            </h3>
+                            <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 4px 0 0 0;">
+                                ${studentEmail} | ${studentYear} | ${studentState} (${studentEvals.length} respuestas registradas)
+                            </p>
+                        </div>
+                        <button type="button" class="ai-eval-close-btn" id="closeEvalAuditModalBtn" title="Cerrar">&times;</button>
+                    </div>
+
+                    <div class="eval-audit-body">
+                        ${evalCardsHtml}
+                    </div>
+
+                    <div style="padding: 16px 26px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn-eval-wa" style="padding: 8px 18px; font-size: 0.85rem;">
+                            <span>💬</span> Enviar Orientación por WhatsApp al Estudiante
+                        </a>
+                        <button type="button" class="btn-ai-modal-primary" id="btnAcceptEvalAudit">
+                            Cerrar Expediente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        wrapper.innerHTML = modalHtml;
+
+        const modalEl = document.getElementById("evalAuditModal");
+        const closeBtn = document.getElementById("closeEvalAuditModalBtn");
+        const acceptBtn = document.getElementById("btnAcceptEvalAudit");
+
+        const closeModal = () => {
+            if (wrapper) wrapper.innerHTML = "";
+        };
+
+        if (closeBtn) closeBtn.addEventListener("click", closeModal);
+        if (acceptBtn) acceptBtn.addEventListener("click", closeModal);
+        if (modalEl) {
+            modalEl.addEventListener("click", (e) => {
+                if (e.target === modalEl) closeModal();
+            });
         }
     }
 });

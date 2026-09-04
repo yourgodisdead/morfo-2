@@ -1068,6 +1068,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 1/orien12.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 2DIA.pdf",
+    "videoDriveId": "1ZJuRLHQednMy6rz7Q5adEhyGZPanWz_2",
+    "videoDriveUrl": "https://drive.google.com/file/d/1ZJuRLHQednMy6rz7Q5adEhyGZPanWz_2/preview",
     "description": "Bases moleculares de la vida, agua y equilibrio hidroelectrolítico.",
     "topics": [
       "Agua",
@@ -1083,6 +1085,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 2/orien13.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 3DIA.pdf",
+    "videoDriveId": "1JEg4onDyYmoGOW1tS8LefnR3MapOH3PD",
+    "videoDriveUrl": "https://drive.google.com/file/d/1JEg4onDyYmoGOW1tS8LefnR3MapOH3PD/preview",
     "description": "Estructura, niveles de organización y funciones de las proteínas.",
     "topics": [
       "Proteínas",
@@ -1098,6 +1102,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 2/orien14.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 4DIA.pdf",
+    "videoDriveId": "1Z2GWBx050Cgb-ffj1uJjc93LHKzPwcuj",
+    "videoDriveUrl": "https://drive.google.com/file/d/1Z2GWBx050Cgb-ffj1uJjc93LHKzPwcuj/preview",
     "description": "Enzimas, cinética enzimática y termodinámica de sistemas vivos.",
     "topics": [
       "Enzimas",
@@ -1113,6 +1119,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 3/orien15.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 5DIA.pdf",
+    "videoDriveId": "1KouAjUCjhOXGpezjPqNvhgrGG1u1KXLV",
+    "videoDriveUrl": "https://drive.google.com/file/d/1KouAjUCjhOXGpezjPqNvhgrGG1u1KXLV/preview",
     "description": "Estructura del ADN y replicación celular.",
     "topics": [
       "ADN",
@@ -1128,6 +1136,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 3/orien16.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 6DIA.pdf",
+    "videoDriveId": "1Zh3TL107lcyL-tXNB4XhdG28Uv-GEn4e",
+    "videoDriveUrl": "https://drive.google.com/file/d/1Zh3TL107lcyL-tXNB4XhdG28Uv-GEn4e/preview",
     "description": "Expresión génica: síntesis de ARN y síntesis de proteínas.",
     "topics": [
       "Transcripción",
@@ -1143,6 +1153,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 4/orieno17.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 7DIA.pdf",
+    "videoDriveId": "19Q1EGqpy1RQ0Baxfba7ft0ax5jHNpwH4",
+    "videoDriveUrl": "https://drive.google.com/file/d/19Q1EGqpy1RQ0Baxfba7ft0ax5jHNpwH4/preview",
     "description": "Transporte a través de membrana: difusión, transporte activo.",
     "topics": [
       "Transporte celular",
@@ -1158,6 +1170,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 5/orien18.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 8DIA.pdf",
+    "videoDriveId": "1HIPw_5bOOvkpnvdHpplefwy7m1flQM__",
+    "videoDriveUrl": "https://drive.google.com/file/d/1HIPw_5bOOvkpnvdHpplefwy7m1flQM__/preview",
     "description": "Morfofisiología del núcleo celular, ciclo celular y mitosis.",
     "topics": [
       "Núcleo",
@@ -1173,6 +1187,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 1",
     "pdfFile": "Morfo 1/morfo/contenidos/tema1/material/Semana 6/orien19.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 9DIA.pdf",
+    "videoDriveId": "11yoBmF0EivWH736YbKLu6NTMekxfcxEY",
+    "videoDriveUrl": "https://drive.google.com/file/d/11yoBmF0EivWH736YbKLu6NTMekxfcxEY/preview",
     "description": "Retículo endoplásmico, aparato de Golgi, lisosomas y citoesqueleto.",
     "topics": [
       "Retículo endoplásmico",
@@ -1188,6 +1204,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 2",
     "pdfFile": "Morfo 1/morfo/contenidos/tema2/material/Semana 7/orien210.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 10DIA.pdf",
+    "videoDriveId": "11n-_tlgls4hA7SWGieLXh-EDtKA8zmOw",
+    "videoDriveUrl": "https://drive.google.com/file/d/11n-_tlgls4hA7SWGieLXh-EDtKA8zmOw/preview",
     "description": "Morfología de la mitocondria y fosforilación oxidativa.",
     "topics": [
       "Mitocondria",
@@ -1203,6 +1221,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 2",
     "pdfFile": "Morfo 1/morfo/contenidos/tema2/material/Semana 7/orien211.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 11DIA.pdf",
+    "videoDriveId": "1e0EbuK74NJ3T46MAdpa99Yo2ukWvZ9Th",
+    "videoDriveUrl": "https://drive.google.com/file/d/1e0EbuK74NJ3T46MAdpa99Yo2ukWvZ9Th/preview",
     "description": "Características y clasificación del tejido epitelial de revestimiento y glandular.",
     "topics": [
       "Tejido epitelial",
@@ -1218,6 +1238,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 2",
     "pdfFile": "Morfo 1/morfo/contenidos/tema2/material/Semana 8/orien212.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 12DIA.pdf",
+    "videoDriveId": "1Kp-tvOjiDvR8na3NMSXzxX82HMCr5JXD",
+    "videoDriveUrl": "https://drive.google.com/file/d/1Kp-tvOjiDvR8na3NMSXzxX82HMCr5JXD/preview",
     "description": "Tejido conectivo general, adiposo, reticular y elástico.",
     "topics": [
       "Tejido conectivo",
@@ -1233,6 +1255,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 3",
     "pdfFile": "Morfo 1/morfo/contenidos/tema3/material/Semana 9/orien313.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 13DIA.pdf",
+    "videoDriveId": "1rHY44zagWTyKoufZF9vWm0GfUtcFripT",
+    "videoDriveUrl": "https://drive.google.com/file/d/1rHY44zagWTyKoufZF9vWm0GfUtcFripT/preview",
     "description": "Tejido cartilaginoso y tejido óseo.",
     "topics": [
       "Cartílago",
@@ -1248,6 +1272,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 10/orien414.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 14DIA.pdf",
+    "videoDriveId": "1KoZODNEbhiYg55pOmcvJgxlL7yjg0X3v",
+    "videoDriveUrl": "https://drive.google.com/file/d/1KoZODNEbhiYg55pOmcvJgxlL7yjg0X3v/preview",
     "description": "Morfofisiología general del tejido muscular liso y estriado.",
     "topics": [
       "Tejido muscular",
@@ -1263,6 +1289,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 11/orien415.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 15DIA.pdf",
+    "videoDriveId": "1VazfU75tNmB_pbRn7qErHZCbJ8BpaCL9",
+    "videoDriveUrl": "https://drive.google.com/file/d/1VazfU75tNmB_pbRn7qErHZCbJ8BpaCL9/preview",
     "description": "Huesos del neurocráneo y viscerocráneo.",
     "topics": [
       "Neurocráneo",
@@ -1278,6 +1306,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 12/orien416.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 16DIA.pdf",
+    "videoDriveId": "1Q-PKRuQ3r4CLCdD5EdCamvfvwGiaXZjD",
+    "videoDriveUrl": "https://drive.google.com/file/d/1Q-PKRuQ3r4CLCdD5EdCamvfvwGiaXZjD/preview",
     "description": "Vértebras, articulaciones de la columna y caja torácica.",
     "topics": [
       "Columna vertebral",
@@ -1293,6 +1323,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 13/orien417.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 17DIA.pdf",
+    "videoDriveId": "1gJGFbNmx-ke72qeiesdrVZeNawKM0KMq",
+    "videoDriveUrl": "https://drive.google.com/file/d/1gJGFbNmx-ke72qeiesdrVZeNawKM0KMq/preview",
     "description": "Esqueleto apendicular superior e inferior.",
     "topics": [
       "Miembro superior",
@@ -1308,6 +1340,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 14/orien418.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 18DIA.pdf",
+    "videoDriveId": "1XKZrNYNNS1dEa-VcNTGlpPDQfQBdZHuV",
+    "videoDriveUrl": "https://drive.google.com/file/d/1XKZrNYNNS1dEa-VcNTGlpPDQfQBdZHuV/preview",
     "description": "Características morfofuncionales de los músculos esqueléticos.",
     "topics": [
       "Musculatura",
@@ -1323,6 +1357,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 14/orien419.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 19DIA.pdf",
+    "videoDriveId": "1hq4ZODIw-XA_9XP_oN0P4HYA0NlfNXHk",
+    "videoDriveUrl": "https://drive.google.com/file/d/1hq4ZODIw-XA_9XP_oN0P4HYA0NlfNXHk/preview",
     "description": "Músculos de la mímica, masticatorios y del cuello.",
     "topics": [
       "Músculos faciales",
@@ -1338,6 +1374,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 15/orien420.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 20DIA.pdf",
+    "videoDriveId": "15G57OC_3XBlWEhgejXck3HWIXB_s7Wpk",
+    "videoDriveUrl": "https://drive.google.com/file/d/15G57OC_3XBlWEhgejXck3HWIXB_s7Wpk/preview",
     "description": "Músculos del dorso, tórax, abdomen y diafragma.",
     "topics": [
       "Dorso",
@@ -1353,6 +1391,8 @@ var CLASES_ORIENTADORAS_M1 = [
     "theme": "Tema 4",
     "pdfFile": "Morfo 1/morfo/contenidos/tema4/material/Semana 15/orien421.pdf",
     "slidesFile": "Morfo 1/Clases Orientadoras-Morfo I/AO 21DIA.pdf",
+    "videoDriveId": "1iaIANPKGgracQmSS2HxO2TdF65O0MVhO",
+    "videoDriveUrl": "https://drive.google.com/file/d/1iaIANPKGgracQmSS2HxO2TdF65O0MVhO/preview",
     "description": "Músculos del miembro superior e inferior.",
     "topics": [
       "Miembro superior",

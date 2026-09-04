@@ -23,7 +23,7 @@ import {
     db_toggleFeedbackVisibility,
     db_deleteFeedback
 } from "./db.js";
-import { getAiTutorResponse } from "./ai_tutor_engine.js?v=20260901_1615";
+import { getAiTutorResponse, evaluateConsolidationAnswer } from "./ai_tutor_engine.js?v=20260902_2200";
 
 document.addEventListener("DOMContentLoaded", async function() {
     // Ensure superuser exists and synchronize VIP promo
@@ -981,7 +981,15 @@ document.addEventListener("DOMContentLoaded", async function() {
                                 </div>
                                 <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
                                     <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Tus apuntes y respuesta razonada:</label>
-                                    <textarea class="notes-area" data-key="${localKey}" placeholder="Escribe tu razonamiento aquí...">${savedNote}</textarea>
+                                    <textarea class="notes-area" id="consoTextarea_${index}" data-key="${localKey}" placeholder="Escribe tu razonamiento médico aquí...">${savedNote}</textarea>
+                                </div>
+                                <div class="consolidation-actions-bar">
+                                    <span class="ai-eval-hint">
+                                        🧠 Valida tu fundamentación del 1 al 10 con el Tutor IA
+                                    </span>
+                                    <button type="button" class="btn-eval-ai btn-eval-conso" data-idx="${index}" data-q="${encodeURIComponent(qText)}" data-target="consoTextarea_${index}">
+                                        <span>✨</span> Validar Respuesta con IA
+                                    </button>
                                 </div>
                             </div>
                         `;
@@ -994,7 +1002,15 @@ document.addEventListener("DOMContentLoaded", async function() {
                     html += `
                         <div class="learning-card">
                             <div class="learning-card-title">Cuaderno de Estudio de la Semana ${state.currentWeek}</div>
-                            <textarea class="notes-area" data-key="${localKey}" placeholder="Anota tus conclusiones o respuestas para esta semana...">${savedNote}</textarea>
+                            <textarea class="notes-area" id="consoTextarea_general" data-key="${localKey}" placeholder="Anota tus conclusiones o respuestas para esta semana...">${savedNote}</textarea>
+                            <div class="consolidation-actions-bar">
+                                <span class="ai-eval-hint">
+                                    🧠 Valida tus notas y conclusiones de la semana con el Tutor IA
+                                </span>
+                                <button type="button" class="btn-eval-ai btn-eval-conso" data-idx="general" data-q="${encodeURIComponent('Consolidación general de la semana ' + state.currentWeek)}" data-target="consoTextarea_general">
+                                    <span>✨</span> Validar Apuntes con IA
+                                </button>
+                            </div>
                         </div>
                     `;
                 }
@@ -1012,6 +1028,59 @@ document.addEventListener("DOMContentLoaded", async function() {
                         if (state.currentUser) {
                             db_trackNote(state.currentUser.email, { week: state.currentWeek });
                         }
+                    });
+                });
+
+                // Add event listeners for AI consolidation evaluation buttons
+                const evalButtons = contentContainer.querySelectorAll(".btn-eval-conso");
+                evalButtons.forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const targetId = btn.getAttribute("data-target");
+                        const textarea = document.getElementById(targetId);
+                        const rawAnswer = textarea ? textarea.value.trim() : "";
+                        const qRaw = decodeURIComponent(btn.getAttribute("data-q") || "Pregunta de Consolidación");
+                        const idx = btn.getAttribute("data-idx");
+                        const qTitle = idx === "general" ? `Consolidación Semana ${state.currentWeek}` : `Pregunta ${parseInt(idx, 10) + 1} - Semana ${state.currentWeek}`;
+
+                        if (rawAnswer.length < 5) {
+                            alert("Por favor escribe tu desarrollo o razonamiento en el campo de texto antes de solicitar la evaluación con IA.");
+                            if (textarea) textarea.focus();
+                            return;
+                        }
+
+                        // Set loading state on button
+                        const originalBtnHtml = btn.innerHTML;
+                        btn.disabled = true;
+                        btn.innerHTML = `<span>⏳</span> Analizando con IA...`;
+
+                        setTimeout(() => {
+                            try {
+                                const evalResult = evaluateConsolidationAnswer({
+                                    questionText: qRaw,
+                                    studentAnswer: rawAnswer,
+                                    course: state.currentCourse,
+                                    week: state.currentWeek
+                                });
+
+                                // Telemetry tracking if logged in
+                                if (state.currentUser) {
+                                    db_trackAiChat(state.currentUser.email, {
+                                        type: "consolidation_evaluation",
+                                        course: state.currentCourse,
+                                        week: state.currentWeek,
+                                        score: evalResult.score
+                                    });
+                                }
+
+                                showConsolidationAiModal(evalResult, qTitle);
+                            } catch (err) {
+                                console.error("Error al evaluar consolidación:", err);
+                                alert("Ocurrió un error al procesar la evaluación con IA.");
+                            } finally {
+                                btn.disabled = false;
+                                btn.innerHTML = originalBtnHtml;
+                            }
+                        }, 300);
                     });
                 });
             } else {
@@ -1042,6 +1111,16 @@ document.addEventListener("DOMContentLoaded", async function() {
                     <a href="${ao.slidesFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(99, 102, 241, 0.08)); border-color: rgba(139, 92, 246, 0.4); color: var(--accent-hover);">
                         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
                         <span>${ao.ao}: Diapositiva Explicativa</span>
+                    </a>` : ''}
+                    ${ao.consolidationFile ? `
+                    <a href="${ao.consolidationFile}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(5, 150, 105, 0.08)); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7;">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        <span>${ao.ao}: Respuestas / Consolidación</span>
+                    </a>` : ''}
+                    ${(ao.videoDriveId || ao.videoDriveUrl || ao.videoFile) ? `
+                    <a href="${ao.videoDriveId ? `https://drive.google.com/file/d/${ao.videoDriveId}/view?usp=sharing` : (ao.videoDriveUrl || ao.videoFile)}" target="_blank" class="download-btn" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(244, 63, 94, 0.08)); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5;">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                        <span>${ao.ao}: Video Conferencia</span>
                     </a>` : ''}
                 `;
             });
@@ -1411,6 +1490,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                         <a href="${ao.slidesFile}" target="_blank" class="download-btn" id="viewSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.25)); border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
                             <span>📊</span> Visualizar Diapositiva Explicativa
                         </a>` : ''}
+                        ${ao.consolidationFile ? `
+                        <a href="${ao.consolidationFile}" target="_blank" class="download-btn" id="viewConsolidationBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.25)); border: 1px solid rgba(16, 185, 129, 0.45); color: #6ee7b7;">
+                            <span>📝</span> Respuestas / Consolidación (PDF)
+                        </a>` : ''}
                         ${ao.videoDriveId || ao.videoDriveUrl || ao.videoFile ? `
                         <a href="${ao.videoDriveId ? `https://drive.google.com/file/d/${ao.videoDriveId}/view?usp=sharing` : (ao.videoDriveUrl || ao.videoFile)}" target="_blank" class="download-btn" id="viewVideoBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(244, 63, 94, 0.25)); border: 1px solid rgba(239, 68, 68, 0.45); color: #fca5a5;">
                             <span>🎥</span> Ver Video Conferencia en Google Drive
@@ -1449,6 +1532,20 @@ document.addEventListener("DOMContentLoaded", async function() {
                 });
             });
         }
+        const consolBtn = document.getElementById("viewConsolidationBtn");
+        if (consolBtn && ao.consolidationFile) {
+            consolBtn.addEventListener("click", (e) => {
+                if (!isUserVip()) {
+                    e.preventDefault();
+                    showVipPaywallModal(`${ao.ao}: Respuestas / Consolidación`);
+                    return;
+                }
+                trackUserActivity("download", {
+                    filename: ao.consolidationFile,
+                    type: "Consolidación y Respuestas PDF"
+                });
+            });
+        }
         const videoBtn = document.getElementById("viewVideoBtn");
         if (videoBtn) {
             videoBtn.addEventListener("click", (e) => {
@@ -1461,6 +1558,163 @@ document.addEventListener("DOMContentLoaded", async function() {
                     filename: ao.videoDriveId ? `Google Drive: ${ao.ao} - ${ao.title}` : (ao.videoFile || "Video Conferencia"),
                     type: "Video Conferencia"
                 });
+            });
+        }
+    }
+
+    // ==========================================
+    // AI CONSOLIDATION EVALUATION MODAL (Ventana Emergente 1 a 10)
+    // ==========================================
+    function showConsolidationAiModal(res, qTitle = "Pregunta de Consolidación") {
+        let existingModal = document.getElementById("consolidationAiModal");
+        if (existingModal) existingModal.remove();
+
+        const scoreClass = res.score >= 7 ? 'score-high' : (res.score >= 5 ? 'score-mid' : 'score-low');
+
+        // Reading cards HTML
+        let readingCardsHtml = "";
+        if (res.currentAo) {
+            readingCardsHtml += `
+                <a href="${res.currentAo.pdfFile}" target="_blank" class="reading-card-link">
+                    <span class="reading-card-type">📑 Clase Orientadora Oficial</span>
+                    <span class="reading-card-title">${res.currentAo.ao}: ${res.currentAo.title}</span>
+                    <span class="reading-card-desc">Revisa el documento PDF oficial de la cátedra</span>
+                </a>
+            `;
+            if (res.currentAo.slidesFile) {
+                readingCardsHtml += `
+                    <a href="${res.currentAo.slidesFile}" target="_blank" class="reading-card-link">
+                        <span class="reading-card-type">📊 Diapositiva Explicativa</span>
+                        <span class="reading-card-title">${res.currentAo.ao} (Esquemas y Tablas)</span>
+                        <span class="reading-card-desc">Material visual docente con resúmenes clave</span>
+                    </a>
+                `;
+            }
+        }
+        if (res.recommendedBooks && res.recommendedBooks.length > 0) {
+            res.recommendedBooks.forEach(m => {
+                const b = m.book;
+                readingCardsHtml += `
+                    <a href="${b.file}" target="_blank" class="reading-card-link">
+                        <span class="reading-card-type">📚 Biblioteca Médica</span>
+                        <span class="reading-card-title">${b.title}</span>
+                        <span class="reading-card-desc">Autor: ${b.author} ${m.matchingChapter ? `| Capítulo: ${m.matchingChapter}` : ''}</span>
+                    </a>
+                `;
+            });
+        }
+        if (res.recommendedLaminas && res.recommendedLaminas.length > 0) {
+            res.recommendedLaminas.forEach(l => {
+                readingCardsHtml += `
+                    <div class="reading-card-link" style="cursor: default;">
+                        <span class="reading-card-type">🔬 Atlas y Laminario</span>
+                        <span class="reading-card-title">${l.name}</span>
+                        <span class="reading-card-desc">Disponible en la sección Atlas y Laminarios del portal</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Model key points HTML
+        let keyPointsHtml = "";
+        if (res.modelKeyPoints && res.modelKeyPoints.length > 0) {
+            keyPointsHtml = `
+                <div class="eval-reference-box">
+                    <h5>💡 Puntos Clave que debe contener una respuesta de excelencia:</h5>
+                    <ul>
+                        ${res.modelKeyPoints.map(p => `<li>${p}</li>`).join("")}
+                    </ul>
+                </div>
+            `;
+        }
+
+        const modalHtml = `
+            <div class="ai-modal-overlay" id="consolidationAiModal">
+                <div class="ai-eval-card animate-fade">
+                    <div class="ai-eval-header">
+                        <div class="ai-eval-title-group">
+                            <div class="ai-eval-avatar">🤖</div>
+                            <div>
+                                <h3 class="ai-eval-modal-title">Evaluación del Tutor IA</h3>
+                                <p class="ai-eval-modal-subtitle">${qTitle}</p>
+                            </div>
+                        </div>
+                        <button type="button" class="ai-eval-close-btn" id="closeAiEvalModalBtn" title="Cerrar ventana">&times;</button>
+                    </div>
+
+                    <div class="ai-eval-body">
+                        <!-- SCORE BANNER -->
+                        <div class="ai-eval-score-banner ${scoreClass}">
+                            <div class="score-circle">
+                                <span class="score-num">${res.score}</span>
+                                <span class="score-den">de 10</span>
+                            </div>
+                            <div class="score-meta">
+                                <span class="verdict-tag">${res.verdictBadge}</span>
+                                <h4 class="eval-verdict-title">${res.verdictTitle}</h4>
+                            </div>
+                        </div>
+
+                        <!-- FEEDBACK -->
+                        ${res.isPositive ? `
+                            <div class="eval-praise-box">
+                                <h4>🎉 ¡Felicitaciones!</h4>
+                                <p>${res.praiseHtml}</p>
+                            </div>
+                            ${res.critiqueHtml ? `
+                                <div class="eval-diagnostic-box" style="margin-top: -6px;">
+                                    <h4>💡 Sugerencia para la excelencia (10/10):</h4>
+                                    <p>${res.critiqueHtml}</p>
+                                </div>
+                            ` : ''}
+                        ` : `
+                            <div class="eval-diagnostic-box">
+                                <h4>🩺 Diagnóstico y Orientación Pedagógica:</h4>
+                                <p>${res.critiqueHtml}</p>
+                                ${res.praiseHtml ? `<p style="margin-top: 8px; font-weight: 600; color: #34d399;">${res.praiseHtml}</p>` : ''}
+                            </div>
+                        `}
+
+                        <!-- READING ORIENTATION -->
+                        <div class="eval-reading-section">
+                            <h4>📖 Orientación de Lectura y Fuentes del Proyecto</h4>
+                            <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">
+                                Consulta las fuentes oficiales de Morfofisiología para complementar o afianzar tus conocimientos:
+                            </p>
+                            <div class="reading-cards-grid">
+                                ${readingCardsHtml || '<p class="text-muted" style="font-size:0.85rem;">Revisa las Clases Orientadoras de la semana en la pestaña de descargas.</p>'}
+                            </div>
+                        </div>
+
+                        <!-- KEY REFERENCE POINTS -->
+                        ${keyPointsHtml}
+                    </div>
+
+                    <div class="ai-eval-footer">
+                        <button type="button" class="btn-ai-modal-primary" id="acceptAiEvalModalBtn">
+                            Continuar Estudiando 👍
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML("beforeend", modalHtml);
+
+        // Bind close events
+        const modalEl = document.getElementById("consolidationAiModal");
+        const closeBtn = document.getElementById("closeAiEvalModalBtn");
+        const acceptBtn = document.getElementById("acceptAiEvalModalBtn");
+
+        const closeModal = () => {
+            if (modalEl) modalEl.remove();
+        };
+
+        if (closeBtn) closeBtn.addEventListener("click", closeModal);
+        if (acceptBtn) acceptBtn.addEventListener("click", closeModal);
+        if (modalEl) {
+            modalEl.addEventListener("click", (e) => {
+                if (e.target === modalEl) closeModal();
             });
         }
     }

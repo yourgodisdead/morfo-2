@@ -430,7 +430,15 @@ export function getAiTutorResponse(userQuery, activeCourse) {
         response += `- 🎓 **Materia y Ubicación**: ${bestTopic.exactResourceRef}\n`;
 
         if (matchingAos.length > 0) {
-            response += `- 📑 **Clase Orientadora Oficial (PDF)**: [${matchingAos[0].ao}: ${matchingAos[0].title}](${matchingAos[0].pdfFile})${matchingAos[0].slidesFile ? ` | [📊 Diapositiva Explicativa](${matchingAos[0].slidesFile})` : ''}\n`;
+            const firstAo = matchingAos[0];
+            let extraLinks = [];
+            if (firstAo.slidesFile) extraLinks.push(`[📊 Diapositiva Explicativa](${firstAo.slidesFile})`);
+            if (firstAo.consolidationFile) extraLinks.push(`[📝 Respuestas / Consolidación](${firstAo.consolidationFile})`);
+            if (firstAo.videoDriveId || firstAo.videoDriveUrl) {
+                const vidUrl = firstAo.videoDriveId ? `https://drive.google.com/file/d/${firstAo.videoDriveId}/view?usp=sharing` : firstAo.videoDriveUrl;
+                extraLinks.push(`[🎥 Video Conferencia](${vidUrl})`);
+            }
+            response += `- 📑 **Clase Orientadora Oficial (PDF)**: [${firstAo.ao}: ${firstAo.title}](${firstAo.pdfFile})${extraLinks.length > 0 ? ` | ${extraLinks.join(' | ')}` : ''}\n`;
         }
 
         if (matchingLaminas.length > 0) {
@@ -454,7 +462,14 @@ export function getAiTutorResponse(userQuery, activeCourse) {
             foundSomething = true;
             response += `#### 📑 Clases Orientadoras Directas (PDF):\n`;
             matchingAos.forEach(ao => {
-                response += `- **${ao.ao}**: [${ao.title}](${ao.pdfFile})${ao.slidesFile ? ` &bull; [📊 Diapositiva Explicativa](${ao.slidesFile})` : ''}\n`;
+                let aoExtras = [];
+                if (ao.slidesFile) aoExtras.push(`[📊 Diapositiva](${ao.slidesFile})`);
+                if (ao.consolidationFile) aoExtras.push(`[📝 Consolidación](${ao.consolidationFile})`);
+                if (ao.videoDriveId || ao.videoDriveUrl) {
+                    const vidUrl = ao.videoDriveId ? `https://drive.google.com/file/d/${ao.videoDriveId}/view?usp=sharing` : ao.videoDriveUrl;
+                    aoExtras.push(`[🎥 Video](${vidUrl})`);
+                }
+                response += `- **${ao.ao}**: [${ao.title}](${ao.pdfFile})${aoExtras.length > 0 ? ` &bull; ${aoExtras.join(' &bull; ')}` : ''}\n`;
             });
             response += `\n`;
         }
@@ -491,6 +506,186 @@ export function getAiTutorResponse(userQuery, activeCourse) {
     return response;
 }
 
+/**
+ * Evaluador Pedagógico Inteligente de Respuestas de Consolidación (Escala 1 a 10)
+ */
+export function evaluateConsolidationAnswer({ questionText = "", studentAnswer = "", course = "morfo1", week = 1 }) {
+    const rawAnswer = (studentAnswer || "").trim();
+    if (rawAnswer.length < 5) {
+        return {
+            isEmpty: true,
+            score: 0,
+            isPositive: false,
+            verdictTitle: "Respuesta Incompleta o Vacía",
+            feedback: "Por favor escribe tu desarrollo o razonamiento antes de solicitar la evaluación del Tutor IA.",
+            readingOrientation: null,
+            modelKeyPoints: []
+        };
+    }
+
+    const qLower = questionText.toLowerCase();
+    const aLower = rawAnswer.toLowerCase();
+
+    // 1. Extraer palabras clave de la pregunta y del tema
+    const questionKeywords = extractKeywords(qLower);
+    const answerWords = extractKeywords(aLower);
+    const answerWordsSet = new Set(answerWords);
+
+    // 2. Buscar tema relevante en la base de conocimiento
+    let matchedTopic = null;
+    let maxTopicScore = 0;
+
+    TOPIC_KNOWLEDGE_BASE.forEach(topic => {
+        let sc = 0;
+        if (topic.course === course) sc += 3;
+        
+        topic.keywords.forEach(kw => {
+            if (qLower.includes(kw)) sc += 4;
+            if (aLower.includes(kw)) sc += 2;
+        });
+
+        if (sc > maxTopicScore) {
+            maxTopicScore = sc;
+            matchedTopic = topic;
+        }
+    });
+
+    // 3. Obtener Clases Orientadoras de la semana
+    let aos = [];
+    if (course === "morfo1" && typeof CLASES_ORIENTADORAS_M1 !== "undefined") aos = CLASES_ORIENTADORAS_M1;
+    else if (course === "morfo2" && typeof CLASES_ORIENTADORAS_DATA !== "undefined") aos = CLASES_ORIENTADORAS_DATA;
+    else if (course === "morfo3" && typeof CLASES_ORIENTADORAS_M3 !== "undefined") aos = CLASES_ORIENTADORAS_M3;
+
+    const weekAos = aos.filter(ao => ao.week === Number(week));
+    const currentAo = weekAos.length > 0 ? weekAos[0] : null;
+
+    // 4. Analizar cobertura conceptual y vocabulario médico
+    // Lista de conceptos clave esperados combinando tema y pregunta
+    const targetKeywords = new Set([...questionKeywords]);
+    if (matchedTopic) {
+        matchedTopic.keywords.slice(0, 12).forEach(k => targetKeywords.add(k));
+    }
+    if (currentAo && currentAo.topics) {
+        currentAo.topics.forEach(t => {
+            t.toLowerCase().split(/\s+/).forEach(w => {
+                if (w.length > 3) targetKeywords.add(w);
+            });
+        });
+    }
+
+    const matchedConcepts = [];
+    const missingConcepts = [];
+
+    targetKeywords.forEach(kw => {
+        if (aLower.includes(kw)) {
+            matchedConcepts.push(kw);
+        } else {
+            missingConcepts.push(kw);
+        }
+    });
+
+    // 5. Análisis de conectores de razonamiento científico morfofuncional
+    const reasoningConnectors = [
+        "porque", "debido a", "por lo tanto", "función", "mecanismo", "estructura",
+        "caracteriza", "produce", "inhibe", "activa", "sintetiza", "decusa", "secreta",
+        "regulación", "relación", "consecuencia", "origen", "trayecto", "inervación", "vascularización"
+    ];
+    let connectorCount = 0;
+    reasoningConnectors.forEach(conn => {
+        if (aLower.includes(conn)) connectorCount++;
+    });
+
+    // 6. Cálculo de Calificación Ponderada (1 a 10)
+    let score = 3; // Base inicial
+
+    // Factor 1: Longitud y elaboración cualitativa
+    const wordCount = rawAnswer.split(/\s+/).filter(Boolean).length;
+    if (wordCount >= 50) score += 2.0;
+    else if (wordCount >= 25) score += 1.5;
+    else if (wordCount >= 12) score += 1.0;
+    else score += 0.5;
+
+    // Factor 2: Densidad de conceptos médicos identificados
+    const conceptRatio = targetKeywords.size > 0 ? (matchedConcepts.length / Math.min(targetKeywords.size, 8)) : 0.5;
+    if (conceptRatio >= 0.7) score += 3.5;
+    else if (conceptRatio >= 0.45) score += 2.5;
+    else if (conceptRatio >= 0.25) score += 1.5;
+    else if (matchedConcepts.length > 0) score += 0.8;
+
+    // Factor 3: Conexión morfofuncional / argumentación
+    if (connectorCount >= 3) score += 1.5;
+    else if (connectorCount >= 1) score += 1.0;
+
+    // Normalizar a rango entero 1 - 10
+    score = Math.round(Math.min(10, Math.max(1, score)));
+
+    const isPositive = score >= 7;
+
+    // 7. Generación de Felicitaciones / Diagnóstico Pedagógico
+    let verdictTitle = "";
+    let verdictBadge = "";
+    let praiseHtml = "";
+    let critiqueHtml = "";
+
+    if (score >= 9) {
+        verdictTitle = "¡Excelente Dominio Conceptual! 🌟";
+        verdictBadge = "Sobresaliente";
+        praiseHtml = `Has redactado una respuesta sólida, fundamentada y con excelente uso de terminología morfofisiológica. Se evidencia integración de los conceptos clave (${matchedConcepts.slice(0, 4).join(", ")}). ¡Continúa con este nivel de rigurosidad médica!`;
+    } else if (score >= 7) {
+        verdictTitle = "¡Muy Buen Trabajo! Aprobado con Solvencia 👏";
+        verdictBadge = "Bien";
+        praiseHtml = `Has comprendido los fundamentos esenciales de la pregunta e incorporado ideas clave correctas (${matchedConcepts.slice(0, 3).join(", ")}). Tu razonamiento responde adecuadamente a lo solicitado en la guía.`;
+        critiqueHtml = `Para alcanzar el nivel óptimo (10/10), procura profundizar en el mecanismo fisiopatológico o en la relación de estructura vs función${missingConcepts.length > 0 ? ` (puedes añadir detalles sobre: *${missingConcepts.slice(0, 3).join(", ")}*)` : ''}.`;
+    } else if (score >= 5) {
+        verdictTitle = "Respuesta en Desarrollo / Nivel Regular 📖";
+        verdictBadge = "Regular";
+        critiqueHtml = `Tu respuesta contiene nociones generales, pero aún es incompleta o carece de la precisión técnica necesaria en medicina. Te sugerimos profundizar en la fundamentación morfofuncional y describir con mayor detalle los procesos biológicos involucrados.`;
+        if (matchedConcepts.length > 0) {
+            praiseHtml = `Puntos válidos mencionados: *${matchedConcepts.slice(0, 3).join(", ")}*.`;
+        }
+    } else {
+        verdictTitle = "Respuesta Insuficiente / Requiere Refuerzo 🎯";
+        verdictBadge = "Requiere Refuerzo";
+        critiqueHtml = `La respuesta presentada no cubre los objetivos esenciales planteados para esta actividad de consolidación. Es necesario revisar las lecturas de la semana y reconstruir el razonamiento antes de la evaluación presencial.`;
+    }
+
+    // 8. Buscar recursos recomendados en portal (AO, Libros, Láminas)
+    const matchingLibros = findLibros(Array.from(targetKeywords));
+    const matchingLaminas = findLaminas(Array.from(targetKeywords), course);
+
+    // 9. Construir Puntos Clave Modelo
+    const modelKeyPoints = [];
+    if (matchedTopic) {
+        modelKeyPoints.push(matchedTopic.topicTitle);
+        modelKeyPoints.push(matchedTopic.keyPedagogicalGuideline);
+    }
+    if (currentAo) {
+        modelKeyPoints.push(`Clase Orientadora: ${currentAo.ao} - ${currentAo.title}`);
+        if (currentAo.description) modelKeyPoints.push(currentAo.description);
+    }
+
+    return {
+        isEmpty: false,
+        score,
+        isPositive,
+        verdictTitle,
+        verdictBadge,
+        praiseHtml,
+        critiqueHtml,
+        matchedConcepts,
+        missingConcepts: missingConcepts.slice(0, 4),
+        currentAo,
+        topic: matchedTopic,
+        recommendedBooks: matchingLibros.slice(0, 2),
+        recommendedLaminas: matchingLaminas.slice(0, 2),
+        modelKeyPoints,
+        course,
+        week
+    };
+}
+
 if (typeof window !== "undefined") {
     window.getAiTutorResponse = getAiTutorResponse;
+    window.evaluateConsolidationAnswer = evaluateConsolidationAnswer;
 }
+

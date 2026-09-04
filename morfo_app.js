@@ -1494,6 +1494,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                         <a href="${ao.consolidationFile}" target="_blank" class="download-btn" id="viewConsolidationBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.25)); border: 1px solid rgba(16, 185, 129, 0.45); color: #6ee7b7;">
                             <span>📝</span> Respuestas / Consolidación (PDF)
                         </a>` : ''}
+                        ${ao.consolidationSlidesFile ? `
+                        <a href="${ao.consolidationSlidesFile}" target="_blank" class="download-btn" id="viewConsolidationSlideBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(2, 132, 199, 0.25)); border: 1px solid rgba(14, 165, 233, 0.45); color: #7dd3fc;">
+                            <span>📑</span> Diapositiva de Consolidación
+                        </a>` : ''}
                         ${ao.videoDriveId || ao.videoDriveUrl || ao.videoFile ? `
                         <a href="${ao.videoDriveId ? `https://drive.google.com/file/d/${ao.videoDriveId}/view?usp=sharing` : (ao.videoDriveUrl || ao.videoFile)}" target="_blank" class="download-btn" id="viewVideoBtn" style="padding: 14px 28px; width: auto; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(244, 63, 94, 0.25)); border: 1px solid rgba(239, 68, 68, 0.45); color: #fca5a5;">
                             <span>🎥</span> Ver Video Conferencia en Google Drive
@@ -1543,6 +1547,20 @@ document.addEventListener("DOMContentLoaded", async function() {
                 trackUserActivity("download", {
                     filename: ao.consolidationFile,
                     type: "Consolidación y Respuestas PDF"
+                });
+            });
+        }
+        const consolSlideBtn = document.getElementById("viewConsolidationSlideBtn");
+        if (consolSlideBtn && ao.consolidationSlidesFile) {
+            consolSlideBtn.addEventListener("click", (e) => {
+                if (!isUserVip()) {
+                    e.preventDefault();
+                    showVipPaywallModal(`${ao.ao}: Diapositiva de Consolidación`);
+                    return;
+                }
+                trackUserActivity("download", {
+                    filename: ao.consolidationSlidesFile,
+                    type: "Diapositiva de Consolidación PDF"
                 });
             });
         }

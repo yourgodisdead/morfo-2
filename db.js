@@ -681,6 +681,74 @@ async function db_ensureSuperuser() {
     }
 }
 
+// ============================================================
+//  CONFIGURACIÓN DEL SISTEMA - MODO MANTENIMIENTO
+// ============================================================
+const MAINTENANCE_CACHE_KEY = "morfo_maintenance_mode";
+
+/**
+ * Obtener el estado del Modo Mantenimiento
+ * @returns {Promise<{enabled: boolean, message: string, updatedAt?: string}>}
+ */
+async function db_getMaintenanceStatus() {
+    try {
+        const docRef = doc(db, "system_config", "maintenance");
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+            const data = snap.data();
+            const res = {
+                enabled: data.enabled === true,
+                message: data.message || "Estamos actualizando los contenidos y materiales del portal. Por favor, vuelve a intentarlo más tarde.",
+                updatedAt: data.updatedAt || new Date().toISOString()
+            };
+            localStorage.setItem(MAINTENANCE_CACHE_KEY, JSON.stringify(res));
+            return res;
+        }
+    } catch (err) {
+        console.warn("[Morfo DB] Error al leer estado de mantenimiento de Firestore:", err);
+    }
+    // Fallback a localStorage
+    try {
+        const cached = localStorage.getItem(MAINTENANCE_CACHE_KEY);
+        if (cached) return JSON.parse(cached);
+    } catch (_) {}
+
+    return {
+        enabled: false,
+        message: "Estamos actualizando los contenidos y materiales del portal. Por favor, vuelve a intentarlo más tarde."
+    };
+}
+
+/**
+ * Actualizar el estado del Modo Mantenimiento (solo superusuario)
+ * @param {boolean} enabled 
+ * @param {string} message 
+ * @param {string} updatedBy 
+ * @returns {Promise<boolean>}
+ */
+async function db_setMaintenanceStatus(enabled, message = "", updatedBy = "lams210488@gmail.com") {
+    const finalMsg = message.trim() || "Estamos actualizando los contenidos y materiales del portal. Por favor, vuelve a intentarlo más tarde.";
+    const payload = {
+        enabled: Boolean(enabled),
+        message: finalMsg,
+        updatedAt: new Date().toISOString(),
+        updatedBy: updatedBy
+    };
+    
+    // Guardar en localStorage inmediatamente
+    localStorage.setItem(MAINTENANCE_CACHE_KEY, JSON.stringify(payload));
+
+    try {
+        const docRef = doc(db, "system_config", "maintenance");
+        await setDoc(docRef, payload, { merge: true });
+        console.log(`[Morfo DB] Modo Mantenimiento actualizado a: ${enabled ? 'ACTIVO' : 'INACTIVO'}`);
+        return true;
+    } catch (err) {
+        console.error("[Morfo DB] Error al guardar modo mantenimiento en Firestore:", err);
+        return false;
+    }
+}
+
 // Exportar funciones
 export {
     db_getAllUsers,
@@ -706,5 +774,8 @@ export {
     db_toggleFeedbackVisibility,
     db_deleteFeedback,
     db_trackEvaluation,
-    db_getAllEvaluations
+    db_getAllEvaluations,
+    db_getMaintenanceStatus,
+    db_setMaintenanceStatus
 };
+

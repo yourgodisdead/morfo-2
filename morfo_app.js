@@ -23,13 +23,92 @@ import {
     db_toggleFeedbackVisibility,
     db_deleteFeedback,
     db_trackEvaluation,
-    db_getAllEvaluations
+    db_getAllEvaluations,
+    db_getMaintenanceStatus,
+    db_setMaintenanceStatus
 } from "./db.js";
 import { getAiTutorResponse, evaluateConsolidationAnswer } from "./ai_tutor_engine.js?v=20260902_2200";
 
 document.addEventListener("DOMContentLoaded", async function() {
     // Helper to route media files to Firebase Storage or local
     const _res = (path) => (typeof window !== "undefined" && window.resolveMediaUrl ? window.resolveMediaUrl(path) : path);
+
+    // ==========================================
+    // MAINTENANCE MODE (PÁGINA EN ACTUALIZACIÓN)
+    // ==========================================
+    function showMaintenanceModal(message = "", isPreview = false) {
+        const modal = document.getElementById("maintenanceModalOverlay");
+        const msgEl = document.getElementById("maintenanceDisplayMessage");
+        if (msgEl && message) {
+            msgEl.textContent = message;
+        }
+        if (modal) {
+            modal.style.display = "flex";
+            let closeBtn = modal.querySelector(".maintenance-preview-close-btn");
+            if (isPreview) {
+                if (!closeBtn) {
+                    closeBtn = document.createElement("button");
+                    closeBtn.className = "maintenance-preview-close-btn";
+                    closeBtn.innerHTML = "&times;";
+                    closeBtn.style.cssText = "position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 50%; width: 34px; height: 34px; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;";
+                    closeBtn.title = "Cerrar previsualización";
+                    closeBtn.onclick = () => { modal.style.display = "none"; };
+                    modal.querySelector(".maintenance-card").appendChild(closeBtn);
+                } else {
+                    closeBtn.style.display = "flex";
+                }
+            } else if (closeBtn) {
+                closeBtn.style.display = "none";
+            }
+        }
+    }
+
+    function hideMaintenanceModal() {
+        const modal = document.getElementById("maintenanceModalOverlay");
+        if (modal) modal.style.display = "none";
+    }
+
+    // Bind check button inside maintenance modal
+    const btnCheckMaintenance = document.getElementById("btnCheckMaintenanceRefresh");
+    if (btnCheckMaintenance) {
+        btnCheckMaintenance.addEventListener("click", async () => {
+            btnCheckMaintenance.disabled = true;
+            btnCheckMaintenance.innerHTML = `<span>⏳</span> Comprobando disponibilidad...`;
+            const status = await db_getMaintenanceStatus();
+            btnCheckMaintenance.disabled = false;
+            btnCheckMaintenance.innerHTML = `<span>🔄</span> Reintentar Acceso / Comprobar Disponibilidad`;
+            if (!status.enabled) {
+                hideMaintenanceModal();
+                showToast("¡El portal ya se encuentra disponible!");
+                setTimeout(() => window.location.reload(), 600);
+            } else {
+                showToast("El portal continúa en labores de actualización docente.");
+            }
+        });
+    }
+
+    // Verify maintenance status on initial load for non-superusers
+    async function checkMaintenanceOnInitialLoad() {
+        try {
+            const storedSession = localStorage.getItem("morfo_session");
+            let isSuper = false;
+            if (storedSession) {
+                try {
+                    const session = JSON.parse(storedSession);
+                    isSuper = session.email && (session.email.toLowerCase() === "lams210488@gmail.com");
+                } catch (_) {}
+            }
+            if (!isSuper) {
+                const maint = await db_getMaintenanceStatus();
+                if (maint.enabled) {
+                    showMaintenanceModal(maint.message);
+                }
+            }
+        } catch (e) {
+            console.warn("Maintenance check error:", e);
+        }
+    }
+    checkMaintenanceOnInitialLoad();
 
     // Ensure superuser exists and synchronize VIP promo
     try { 
@@ -2616,6 +2695,18 @@ document.addEventListener("DOMContentLoaded", async function() {
                     }
                     if (loginError) loginError.style.display = "none";
 
+                    // Check maintenance mode: block students if active
+                    const isSuperEmail = email.toLowerCase() === "lams210488@gmail.com";
+                    const maintStatus = await db_getMaintenanceStatus();
+                    if (maintStatus.enabled && !isSuperEmail) {
+                        showMaintenanceModal(maintStatus.message);
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                        }
+                        return;
+                    }
+
                     const user = await db_login(email, pass);
                     
                     // Create dynamic session token
@@ -2664,6 +2755,13 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (storedSession) {
             try {
                 const session = JSON.parse(storedSession);
+                const isSuperEmail = session.email && session.email.toLowerCase() === "lams210488@gmail.com";
+                const maintStatus = await db_getMaintenanceStatus();
+                if (maintStatus.enabled && !isSuperEmail) {
+                    showMaintenanceModal(maintStatus.message);
+                    return;
+                }
+
                 db_getUserByEmail(session.email).then(user => {
                     if (user && user.activeSessionToken === session.token) {
                         state.currentUser = user;
@@ -2752,6 +2850,17 @@ document.addEventListener("DOMContentLoaded", async function() {
             
             try {
                 const session = JSON.parse(storedSession);
+                const isSuper = state.currentUser.role === "superuser" || session.email.toLowerCase() === "lams210488@gmail.com";
+                
+                // Real-time maintenance guard for connected regular students
+                if (!isSuper) {
+                    const maintStatus = await db_getMaintenanceStatus();
+                    if (maintStatus.enabled) {
+                        showMaintenanceModal(maintStatus.message);
+                        return;
+                    }
+                }
+
                 const activeToken = await db_getSessionToken(session.email);
                 
                 if (activeToken && activeToken !== session.token) {
@@ -2984,6 +3093,9 @@ document.addEventListener("DOMContentLoaded", async function() {
     // ADMIN DASHBOARD & GIS MAP
     // ==========================================
     function initAdmin() {
+        // Initialize Superuser Maintenance Control Widget
+        initMaintenanceControlWidget();
+
         const filterState = document.getElementById("gisFilterState");
         const filterYear = document.getElementById("gisFilterYear");
         const searchInput = document.getElementById("gisSearchStudent");
@@ -3465,6 +3577,69 @@ document.addEventListener("DOMContentLoaded", async function() {
             });
         } catch(err) {
             console.error("Users list render fail:", err);
+        }
+    }
+
+    // ==========================================
+    // MAINTENANCE CONTROL WIDGET (SUPERUSER)
+    // ==========================================
+    async function initMaintenanceControlWidget() {
+        const toggleSwitch = document.getElementById("toggleMaintenanceSwitch");
+        const switchText = document.getElementById("maintenanceSwitchText");
+        const badge = document.getElementById("adminMaintenanceStatusBadge");
+        const msgInput = document.getElementById("maintenanceCustomMessageInput");
+        const btnSave = document.getElementById("btnSaveMaintenanceSettings");
+        const btnPreview = document.getElementById("btnPreviewMaintenanceModal");
+
+        if (!toggleSwitch || !btnSave) return;
+
+        // Load current maintenance status
+        const currentStatus = await db_getMaintenanceStatus();
+        updateWidgetUI(currentStatus.enabled, currentStatus.message);
+
+        function updateWidgetUI(enabled, msg) {
+            toggleSwitch.checked = enabled;
+            if (msg && msgInput && !msgInput.value) {
+                msgInput.value = msg;
+            }
+            if (enabled) {
+                badge.className = "maintenance-status-badge status-active";
+                badge.textContent = "PORTAL EN MANTENIMIENTO (BLOQUEADO)";
+                switchText.textContent = "Mantenimiento ACTIVADO";
+                switchText.style.color = "#f87171";
+            } else {
+                badge.className = "maintenance-status-badge status-inactive";
+                badge.textContent = "PORTAL ABIERTO";
+                switchText.textContent = "Mantenimiento Desactivado";
+                switchText.style.color = "var(--text-secondary)";
+            }
+        }
+
+        toggleSwitch.addEventListener("change", () => {
+            updateWidgetUI(toggleSwitch.checked, msgInput ? msgInput.value : "");
+        });
+
+        btnSave.addEventListener("click", async () => {
+            btnSave.disabled = true;
+            btnSave.innerHTML = `<span>⏳</span> Guardando...`;
+            const isEnabled = toggleSwitch.checked;
+            const message = msgInput ? msgInput.value.trim() : "";
+            const ok = await db_setMaintenanceStatus(isEnabled, message, state.currentUser?.email || "lams210488@gmail.com");
+            btnSave.disabled = false;
+            btnSave.innerHTML = `<span>💾</span> Guardar y Aplicar Estado`;
+            if (ok) {
+                updateWidgetUI(isEnabled, message);
+                showToast(isEnabled ? "Modo Mantenimiento ACTIVADO: Los estudiantes verán el aviso de actualización." : "Modo Mantenimiento DESACTIVADO: Acceso restaurado.");
+            } else {
+                showToast("Error al sincronizar con Firestore.");
+            }
+        });
+
+        if (btnPreview) {
+            btnPreview.addEventListener("click", () => {
+                const message = msgInput && msgInput.value.trim() ? msgInput.value.trim() : "Estamos realizando mejoras y actualizando los contenidos pedagógicos del Portal Morfo.";
+                showMaintenanceModal(message, true);
+            });
         }
     }
 

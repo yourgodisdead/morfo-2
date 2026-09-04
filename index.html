@@ -12,7 +12,7 @@
     <link rel="icon" href="Logo/morfo_logo.png" type="image/png">
 
     <!-- Design System Stylesheet -->
-    <link rel="stylesheet" href="morfo_styles.css?v=20260904_0230">
+    <link rel="stylesheet" href="morfo_styles.css?v=20260904_0300">
 
     <!-- Leaflet GIS Mapping CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -39,10 +39,10 @@
     <script src="bibliografias_data.js?v=20260901_1615"></script>
 
     <!-- Firebase Config -->
-    <script src="firebase_config.js?v=20260904_0230"></script>
+    <script src="firebase_config.js?v=20260904_0300"></script>
 
     <!-- SPA Logic Controller (ES Module for Firebase imports) -->
-    <script type="module" src="morfo_app.js?v=20260904_0230"></script>
+    <script type="module" src="morfo_app.js?v=20260904_0300"></script>
 </head>
 <body>
 
@@ -869,13 +869,61 @@
             </div>
         </section>
 
-        <!-- SECTION: ADMINISTRACIÓN & MAPA GIS -->
+            <!-- SECTION: ADMINISTRACIÓN & MAPA GIS -->
         <section class="content-section" id="adminSection">
             <header class="hero-banner">
                 <span class="hero-tag">Panel Exclusivo Superusuario</span>
                 <h2 class="hero-title">Centro de Gestión y Mapa GIS Geoespacial</h2>
                 <p class="hero-subtitle">Visualiza la distribución geográfica de los estudiantes en Venezuela, audita su actividad de navegación y registra nuevos usuarios en la plataforma.</p>
             </header>
+
+            <!-- MAINTENANCE / PÁGINA EN ACTUALIZACIÓN CONTROL WIDGET (SUPERUSER) -->
+            <div class="card admin-maintenance-widget" id="adminMaintenanceWidget" style="padding: 24px 28px; margin-bottom: 28px; border: 1px solid rgba(239, 68, 68, 0.35); background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(18, 24, 38, 0.7)); position: relative; overflow: hidden; border-radius: var(--border-radius-md);">
+                <div style="position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(239, 68, 68, 0.18) 0%, transparent 70%); pointer-events: none;"></div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 14px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.6rem;">🛠️</span>
+                            <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.25rem; color: var(--text-primary); margin: 0;">
+                                Modo "Página en Actualización / Mantenimiento"
+                            </h3>
+                            <span class="maintenance-status-badge status-inactive" id="adminMaintenanceStatusBadge">PORTAL ABIERTO</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.45;">
+                            Bloquea el inicio de sesión a todos los estudiantes y muestra automáticamente una ventana emergente informando que el portal se encuentra en mantenimiento. Tu acceso de superusuario permanece siempre habilitado.
+                        </p>
+                    </div>
+
+                    <!-- TOGGLE SWITCH -->
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <label class="switch-maintenance-label" for="toggleMaintenanceSwitch">
+                            <span id="maintenanceSwitchText" style="font-weight: 700; font-size: 0.88rem; color: var(--text-secondary);">Mantenimiento Desactivado</span>
+                        </label>
+                        <label class="switch-ui">
+                            <input type="checkbox" id="toggleMaintenanceSwitch">
+                            <span class="slider-ui round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- MENSAJE PERSONALIZADO -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
+                    <label for="maintenanceCustomMessageInput" style="font-size: 0.84rem; font-weight: 600; color: var(--text-secondary);">
+                        Mensaje Informativo para los Estudiantes:
+                    </label>
+                    <textarea id="maintenanceCustomMessageInput" class="search-input" rows="2" style="width: 100%; border-radius: var(--border-radius-sm); padding: 12px 16px; resize: vertical; font-size: 0.88rem;" placeholder="Ej: Estamos actualizando los contenidos y materiales del portal. Por favor, vuelve a intentarlo más tarde."></textarea>
+                    
+                    <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 4px; flex-wrap: wrap;">
+                        <button type="button" class="download-btn" id="btnPreviewMaintenanceModal" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.15); font-size: 0.84rem; padding: 8px 18px;">
+                            <span>👁️</span> Previsualizar Ventana Emergente
+                        </button>
+                        <button type="button" class="download-btn btn-primary" id="btnSaveMaintenanceSettings" style="font-size: 0.84rem; padding: 8px 22px;">
+                            <span>💾</span> Guardar y Aplicar Estado
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             <!-- VIP PROMO STATS DASHBOARD (SUPERUSER WIDGET) -->
             <div class="card vip-admin-promo-widget" id="adminVipPromoWidget" style="padding: 24px 28px; margin-bottom: 28px; border: 1px solid rgba(245, 158, 11, 0.45); background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(0,0,0,0.45)); position: relative; overflow: hidden;">
@@ -1694,6 +1742,52 @@
                     <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: currentColor;"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.27-2.42 5.82a8.173 8.173 0 0 1-5.82 2.42c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.174 8.174 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24m4.51 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.19 3.7 2.46 1.07 2.46.71 2.91.67.44-.04 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
                     <span>Solicitar Insignia VIP por WhatsApp</span>
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAINTENANCE / PÁGINA EN ACTUALIZACIÓN POPUP MODAL (BLOQUEO DE USUARIOS) -->
+    <div class="maintenance-modal-backdrop" id="maintenanceModalOverlay" style="display: none;">
+        <div class="maintenance-card animate-scale-up">
+            <div class="maintenance-card-header">
+                <div class="maintenance-gear-wrapper">
+                    <span class="maintenance-animated-icon">⚙️</span>
+                </div>
+                <div class="maintenance-badge-row">
+                    <span class="maintenance-tag-pill">SISTEMA EN MANTENIMIENTO</span>
+                </div>
+                <h2 class="maintenance-title">Página en Actualización</h2>
+                <p class="maintenance-subtitle">Plataforma Educativa de Morfofisiología Humana</p>
+            </div>
+
+            <div class="maintenance-card-body">
+                <div class="maintenance-message-box" id="maintenanceDisplayMessage">
+                    Estamos realizando mejoras y actualizando los contenidos pedagógicos del Portal Morfo. El acceso para los estudiantes se restablecerá en breve.
+                </div>
+
+                <div class="maintenance-features-note">
+                    <div class="maintenance-note-item">
+                        <span class="note-icon">🔒</span>
+                        <div>El ingreso de usuarios regulares está temporalmente pausado por labores docentes y de optimización de datos.</div>
+                    </div>
+                    <div class="maintenance-note-item">
+                        <span class="note-icon">⏱️</span>
+                        <div>Tus notas, progreso de lectura y evaluaciones están 100% resguardados en nuestros servidores.</div>
+                    </div>
+                </div>
+
+                <div class="maintenance-actions-row">
+                    <button type="button" class="maintenance-btn-refresh" id="btnCheckMaintenanceRefresh">
+                        <span>🔄</span> Reintentar Acceso / Comprobar Disponibilidad
+                    </button>
+                    <a href="https://wa.me/584129031966?text=Hola%20profesor%20Leonardo%2C%20vi%20el%20aviso%20de%20sitio%20en%20mantenimiento%20en%20el%20Portal%20Morfo%20y%20quisiera%20saber%20a%20qu%C3%A9%20hora%20estar%C3%A1%20activo." target="_blank" rel="noopener noreferrer" class="maintenance-btn-whatsapp">
+                        <span>💬</span> Consultar al Docente por WhatsApp
+                    </a>
+                </div>
+            </div>
+            
+            <div class="maintenance-card-footer">
+                <span>Cátedra de Morfofisiología Humana &bull; Medicina Integral Comunitaria</span>
             </div>
         </div>
     </div>

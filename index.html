@@ -42,7 +42,7 @@
     <script src="firebase_config.js?v=20260904_0300"></script>
 
     <!-- SPA Logic Controller (ES Module for Firebase imports) -->
-    <script type="module" src="morfo_app.js?v=20260904_0315"></script>
+    <script type="module" src="morfo_app.js?v=20260904_0330"></script>
 </head>
 <body>
 
@@ -1779,6 +1779,9 @@
                 <div class="maintenance-actions-row">
                     <button type="button" class="maintenance-btn-refresh" id="btnCheckMaintenanceRefresh">
                         <span>🔄</span> Reintentar Acceso / Comprobar Disponibilidad
+                    </button>
+                    <button type="button" class="download-btn" id="btnDismissMaintenanceModal" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--text-secondary); width: 100%; justify-content: center; font-size: 0.88rem; padding: 10px;">
+                        <span>✖️</span> Entendido / Volver a la Pantalla de Inicio
                     </button>
                     <a href="https://wa.me/584129031966?text=Hola%20profesor%20Leonardo%2C%20vi%20el%20aviso%20de%20sitio%20en%20mantenimiento%20en%20el%20Portal%20Morfo%20y%20quisiera%20saber%20a%20qu%C3%A9%20hora%20estar%C3%A1%20activo." target="_blank" rel="noopener noreferrer" class="maintenance-btn-whatsapp">
                         <span>💬</span> Consultar al Docente por WhatsApp

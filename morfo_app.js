@@ -85,30 +85,22 @@ document.addEventListener("DOMContentLoaded", async function() {
                 showToast("El portal continúa en labores de actualización docente.");
             }
         });
+    // Bind dismiss button on maintenance modal
+    const btnDismissMaintenance = document.getElementById("btnDismissMaintenanceModal");
+    if (btnDismissMaintenance) {
+        btnDismissMaintenance.addEventListener("click", () => {
+            hideMaintenanceModal();
+        });
     }
 
-    // Verify maintenance status on initial load for non-superusers
-    async function checkMaintenanceOnInitialLoad() {
-        try {
-            const storedSession = localStorage.getItem("morfo_session");
-            let isSuper = false;
-            if (storedSession) {
-                try {
-                    const session = JSON.parse(storedSession);
-                    isSuper = session.email && (session.email.toLowerCase() === "lams210488@gmail.com");
-                } catch (_) {}
+    const maintenanceOverlay = document.getElementById("maintenanceModalOverlay");
+    if (maintenanceOverlay) {
+        maintenanceOverlay.addEventListener("click", (e) => {
+            if (e.target === maintenanceOverlay) {
+                hideMaintenanceModal();
             }
-            if (!isSuper) {
-                const maint = await db_getMaintenanceStatus();
-                if (maint.enabled) {
-                    showMaintenanceModal(maint.message);
-                }
-            }
-        } catch (e) {
-            console.warn("Maintenance check error:", e);
-        }
+        });
     }
-    checkMaintenanceOnInitialLoad();
 
     // Ensure superuser exists and synchronize VIP promo
     try { 
@@ -2615,6 +2607,17 @@ document.addEventListener("DOMContentLoaded", async function() {
                 }
 
                 try {
+                    // Check maintenance mode: block student self-registration if active
+                    const maintStatus = await db_getMaintenanceStatus();
+                    if (maintStatus.enabled) {
+                        showMaintenanceModal(maintStatus.message);
+                        if (selfRegSubmitBtn) {
+                            selfRegSubmitBtn.disabled = false;
+                            selfRegSubmitBtn.textContent = "✍️ Inscribirse en el Portal";
+                        }
+                        return;
+                    }
+
                     // Check if email already registered
                     const existing = await db_getUserByEmail(email);
                     if (existing) {

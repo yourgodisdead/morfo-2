@@ -2756,36 +2756,40 @@ document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const session = JSON.parse(storedSession);
                 const isSuperEmail = session.email && session.email.toLowerCase() === "lams210488@gmail.com";
-                const maintStatus = await db_getMaintenanceStatus();
-                if (maintStatus.enabled && !isSuperEmail) {
-                    showMaintenanceModal(maintStatus.message);
-                    return;
-                }
-
-                db_getUserByEmail(session.email).then(user => {
-                    if (user && user.activeSessionToken === session.token) {
-                        state.currentUser = user;
-                        loginOverlay.classList.remove("active");
-                        setupAuthenticatedUI();
-                        
-                        // Set active course based on registration
-                        if (user.currentYear && user.currentYear.includes("1er")) {
-                            setCourse("morfo1");
-                        } else if (user.currentYear && user.currentYear.includes("3er")) {
-                            setCourse("morfo3");
-                        } else {
-                            setCourse("morfo2");
-                        }
-
-                        startSessionLivenessCheck();
-                    } else {
-                        // Token mismatch or invalid
-                        localStorage.removeItem("morfo_session");
-                        loginOverlay.classList.add("active");
+                
+                db_getMaintenanceStatus().then(maintStatus => {
+                    if (maintStatus && maintStatus.enabled && !isSuperEmail) {
+                        showMaintenanceModal(maintStatus.message);
+                        return;
                     }
-                }).catch(e => {
-                    console.error("Session auto login error:", e);
-                    loginOverlay.classList.add("active");
+
+                    db_getUserByEmail(session.email).then(user => {
+                        if (user && user.activeSessionToken === session.token) {
+                            state.currentUser = user;
+                            loginOverlay.classList.remove("active");
+                            setupAuthenticatedUI();
+                            
+                            // Set active course based on registration
+                            if (user.currentYear && user.currentYear.includes("1er")) {
+                                setCourse("morfo1");
+                            } else if (user.currentYear && user.currentYear.includes("3er")) {
+                                setCourse("morfo3");
+                            } else {
+                                setCourse("morfo2");
+                            }
+
+                            startSessionLivenessCheck();
+                        } else {
+                            // Token mismatch or invalid
+                            localStorage.removeItem("morfo_session");
+                            loginOverlay.classList.add("active");
+                        }
+                    }).catch(e => {
+                        console.error("Session auto login error:", e);
+                        loginOverlay.classList.add("active");
+                    });
+                }).catch(err => {
+                    console.warn("Maintenance check error during auto-login:", err);
                 });
             } catch (err) {
                 localStorage.removeItem("morfo_session");

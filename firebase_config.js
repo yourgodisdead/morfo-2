@@ -32,6 +32,7 @@ function resolveMediaUrl(path) {
 }
 
 if (typeof window !== "undefined") {
+    window.FIREBASE_CONFIG = FIREBASE_CONFIG;
     window.resolveMediaUrl = resolveMediaUrl;
     window.USE_FIREBASE_STORAGE = USE_FIREBASE_STORAGE;
 }

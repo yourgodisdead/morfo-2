@@ -85,6 +85,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                 showToast("El portal continúa en labores de actualización docente.");
             }
         });
+    }
+
     // Bind dismiss button on maintenance modal
     const btnDismissMaintenance = document.getElementById("btnDismissMaintenanceModal");
     if (btnDismissMaintenance) {
